@@ -6,15 +6,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CarouselController extends AbstractController
+class HomeController extends AbstractController
 {
     /**
-     * @Route("/carousel", name="carousel")
+     * @Route("/", name="app_home")
      */
     public function index(): Response
     {
-        return $this->render('carousel/index.html.twig', [
-            'controller_name' => 'CarouselController',
+        return $this->render('home/index.html.twig', [
+            'controller_name' => 'HomeController',
         ]);
     }
 }
