@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 
-{% block title 'Nouveau Pin' %}
+{% block title 'Nouveau Carousel' %}
 
 {% block body %}
 	<div class="row">
@@ -10,8 +10,7 @@
 				{{ form_start(monForm) }}
 
 					{{ form_widget(monForm)}}
-					<input class="btn btn-primary btn-block " type="submit" value="Create Pin" formnovalidate>
-					<a href="{{ path('app_carousel_create') }}"></a>
+					<input class="btn btn-primary btn-block " type="submit" value="Create carousel" formnovalidate>
 
 				{{ form_end(monForm) }}
 		</div>

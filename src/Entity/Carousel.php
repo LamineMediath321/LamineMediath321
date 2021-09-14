@@ -6,6 +6,9 @@ use App\Repository\CarouselRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Length;
 
 /**
  * @ORM\Entity(repositoryClass=CarouselRepository::class)
@@ -23,6 +26,7 @@ class Carousel
 
     /**
      * @ORM\Column(type="string", length=255)
+     *@Assert\NotBlank(message="Le titre 1 ne doit pas etre vide")
      */
     private $titre1;
 
@@ -33,6 +37,8 @@ class Carousel
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     *@Assert\Length(min=10,minMessage="La description doit avoir plus de 10 caracteres")
+
      */
     private $description;
 
