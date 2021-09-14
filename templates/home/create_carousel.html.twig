@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title 'Nouveau Pin' %}
+
+{% block body %}
+	<div class="row">
+		<div class="col-6 mx-auto">
+			<h1>Creer un carousel</h1>
+				{{ form_start(monForm) }}
+
+					{{ form_widget(monForm)}}
+					<input class="btn btn-primary btn-block " type="submit" value="Create Pin" formnovalidate>
+					<a href="{{ path('app_carousel_create') }}"></a>
+
+				{{ form_end(monForm) }}
+		</div>
+	</div>
+	
+{% endblock %}
