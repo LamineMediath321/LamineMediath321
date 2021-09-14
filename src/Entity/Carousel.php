@@ -71,7 +71,7 @@ class Carousel
         return $this->titre1;
     }
 
-    public function setTitre1(string $titre1): self
+    public function setTitre1(?string $titre1): self
     {
         $this->titre1 = $titre1;
 
