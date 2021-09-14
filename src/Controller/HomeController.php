@@ -55,6 +55,67 @@ class HomeController extends AbstractController
                                 'monForm' => $form->createView()
                             ]);
     }
+
+     /**
+    *@Route("/home/{id<[0-9]+>},name=app_carousel_show")
+    */
+    public function show(CarouselRepository $repo,int $id): Response
+    {
+        /*id est un parametre de route*/
+
+        $carousel = $repo->find($id);
+
+        if (!$carousel) {
+            throw $this->createNotFoundException('Carousel # '.$id.' not found');
+            
+        }
+
+        return $this->render('home/show.html.twig',compact('carousel'));
+    }
+
+
+      /**
+    *@Route("/home/{id<[0-9]+>}/edit", name="app_carousel_edit",methods={"GET","POST","PUT"})
+    */
+    public function edit(Request $request,Carousel $carousel,EntityManagerInterface $em):Response
+    {
+        $form=$this->createForm(CarouselType::class,$pin,[
+            ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $em->flush();
+
+                        //$this->addFlash('success','Pin Successfully updated !');
+
+
+            return $this->redirectToRoute('app_home');
+        }
+
+        return $this->render('home/edit_carousel.html.twig',[
+                                'carousel' => $carousel,  
+                                'monForm' => $form->createView()
+                            ]);
+    }
+
+
+     /**
+    *@Route("/home/{id<[0-9]+>}/delete", name="app_carousel_delete",methods={"DELETE","GET","POST"})
+    */
+    public function delete(Request $request,Carousel $carousel,EntityManagerInterface $em):Response
+    {
+        if ($this->isCsrfTokenValid('carousel_delete_'.$carousel->getId(),$request->request->get('csrf_token'))) 
+        {
+            $em->remove($carousel);
+            $em->flush();
+                        //$this->addFlash('info','Pin Successfully deleted !');
+
+        }
+        return $this->redirectToRoute('app_home');
+
+    }
 }
 
 
