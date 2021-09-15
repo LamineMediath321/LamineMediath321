@@ -1,0 +1,42 @@
+<!-- Start Banner Hero -->
+{% if carousels|length > 0 %}
+<div class="container-fluid">
+    <div id="template-mo-zay-hero-carousel" class="carousel slide" data-bs-ride="carousel">
+        <ol class="carousel-indicators">
+            {% for i in 1..carousels|length %}
+                <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="{{i}}"
+                    {%if loop.index == 1 %} class="active" {% endif %}></li>
+            {% endfor %}
+        </ol>
+        <div class="carousel-inner" >
+            {% for carousel in carousels %}
+                <div class="carousel-item {%if loop.index == 1 %} active {% endif %}" >
+                    <div class="container">
+                        <div class="row p-5">
+                            <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                                <img class="img-fluid" src="{{vich_uploader_asset(carousel)}}" 
+                                        alt="{{ carousel.titre1 }}">
+                            </div>
+                            <div class="col-lg-6 mb-0 d-flex align-items-center">
+                                <div class="text-align-left align-self-center">
+                                    <h1 class="h1 text-success"><b>Zay</b> {{ carousel.titre1 }}</h1>
+                                    <h3 class="h2">{{ carousel.titre2 }}</h3>
+                                    <p>
+                                       {{ carousel.description }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+        <a class="carousel-control-prev text-decoration-none w-auto ps-3" href="#template-mo-zay-hero-carousel" role="button" data-bs-slide="prev">
+            <i class="fas fa-chevron-left"></i>
+        </a>
+        <a class="carousel-control-next text-decoration-none w-auto pe-3" href="#template-mo-zay-hero-carousel" role="button" data-bs-slide="next">
+            <i class="fas fa-chevron-right"></i>
+        </a>
+    </div>
+</div>
+    <!-- End Banner Hero -->
+{% endif %}

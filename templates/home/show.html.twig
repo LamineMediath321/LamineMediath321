@@ -8,14 +8,14 @@
 			<article class="pin bg-white rounded shadow">
                            <div class="mw-100 rounded-top overflow-hidden">
                                 
-                                <img src="{{ (carousel.imageName ? vich_uploader_asset(carousel) : asset('images/placeholder.jpg')) | imagine_filter('squared_thumbnail_small')}}" alt="{{ carousel.title }}" class="w-100">
+                                <img src="{{ (carousel.imageName ? vich_uploader_asset(carousel) : asset('images/placeholder.jpg')) | imagine_filter('squared_thumbnail_small')}}" alt="{{ carousel.titre1 }}" class="w-100">
                            </div>
                             
                             <h1 class="h5 pl-3 pt-3 text-secondary">{{ carousel.titre1 }}</h1>
                              <p class="pl-3 pb-3 text-muted">
-                             	<smal>
-                             		                        
-								</small> 
+                             	<small>
+                                                        
+                                </small> 
                              </p>
                              <p class="pl-3 pr-3 pb-3 text-break">
                              	{{ carousel.description }}

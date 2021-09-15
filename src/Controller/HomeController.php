@@ -17,10 +17,16 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="app_home")
      */
-    public function index(): Response
+    public function index(EntityManagerInterface $em): Response
     {
+
+    	$repo=$em->getRepository(Carousel::class);
+
+        $carousels=$repo->findBy([],['createdAt'=>'DESC']);
+
+
         return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
+            'carousels' => $carousels,
         ]);
     }
 
