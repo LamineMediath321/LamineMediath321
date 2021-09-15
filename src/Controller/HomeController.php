@@ -9,6 +9,7 @@ use App\Entity\Carousel;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\CarouselType;
+use App\Repository\CarouselRepository;
 
 
 class HomeController extends AbstractController
@@ -40,15 +41,15 @@ class HomeController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $pin->setUser($this->getUser());
+            //$carousel->setUser($this->getUser());
 
 
             $em->persist($carousel);
 
             $em->flush();
-            //$this->addFlash('success','Pin Successfully created !');
+            $this->addFlash('success','Carousel Successfully created !');
 
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_carousel_show',['id' => $carousel->getId()]);
         }
 
         return $this->render('home/create_carousel.html.twig',[
@@ -57,7 +58,7 @@ class HomeController extends AbstractController
     }
 
      /**
-    *@Route("/home/{id<[0-9]+>},name=app_carousel_show")
+    *@Route("/home/{id<[0-9]+>}",name="app_carousel_show")
     */
     public function show(CarouselRepository $repo,int $id): Response
     {
@@ -74,12 +75,12 @@ class HomeController extends AbstractController
     }
 
 
-      /**
+    /**
     *@Route("/home/{id<[0-9]+>}/edit", name="app_carousel_edit",methods={"GET","POST","PUT"})
     */
     public function edit(Request $request,Carousel $carousel,EntityManagerInterface $em):Response
     {
-        $form=$this->createForm(CarouselType::class,$pin,[
+        $form=$this->createForm(CarouselType::class,$carousel,[
             ]);
 
         $form->handleRequest($request);
@@ -88,7 +89,7 @@ class HomeController extends AbstractController
 
             $em->flush();
 
-                        //$this->addFlash('success','Pin Successfully updated !');
+            $this->addFlash('success','carousel Successfully updated !');
 
 
             return $this->redirectToRoute('app_home');
@@ -110,7 +111,7 @@ class HomeController extends AbstractController
         {
             $em->remove($carousel);
             $em->flush();
-                        //$this->addFlash('info','Pin Successfully deleted !');
+            $this->addFlash('info','Carousel Successfully deleted !');
 
         }
         return $this->redirectToRoute('app_home');

@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Constraints\Length;
  * @ORM\Entity(repositoryClass=CarouselRepository::class)
  * @ORM\Table(name="carousels")
   * @Vich\Uploadable
+  *@ORM\HasLifecycleCallbacks
  */
 class Carousel
 {
@@ -54,10 +55,10 @@ class Carousel
     /**
      * @ORM\Column(type="datetime_immutable",options={"default":"CURRENT_TIMESTAMP"})
      */
-    private $cratedAt;
+    private $createdAt;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255,nullable=true)
      */
     private $imageName;
 
@@ -127,14 +128,14 @@ class Carousel
         return $this->imageFile;
     }
 
-    public function getCratedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->cratedAt;
+        return $this->createdAt;
     }
 
-    public function setCratedAt(\DateTimeImmutable $cratedAt): self
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
-        $this->cratedAt = $cratedAt;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
@@ -149,5 +150,17 @@ class Carousel
         $this->imageName = $imageName;
 
         return $this;
+    }
+
+     /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updatedTimestamps()
+    {
+
+        if ($this->getCreatedAt()===null) {
+            $this->setCreatedAt(new\DateTimeImmutable);
+        }
     }
 }

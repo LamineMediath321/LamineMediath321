@@ -17,6 +17,7 @@
                  <!-- Load fonts style after rendering the layout styles -->
                  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
                 <link rel="stylesheet" href="{{asset('assets/css/fontawesome.min.css')}}">
+                <link rel="stylesheet" type="text/css" href="{{asset('build/app.css')}}">
 
         {% endblock %}
 
@@ -27,6 +28,9 @@
             <script src="{{asset('assets/js/bootstrap.bundle.min.js')}}"></script>
             <script src="{{asset('assets/js/templatemo.js')}}"></script>
             <script src="{{asset('assets/js/custom.js')}}"></script>
+            <script src="{{asset('build/app.js')}}"></script>
+            <script src="{{asset('build/runtime.js')}}"></script>
+
             <!-- End Script -->
         {% endblock %}
     </head>
