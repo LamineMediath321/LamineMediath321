@@ -1,0 +1,98 @@
+     <div class="wrapper">
+        <!-- Sidebar  -->
+        <nav id="sidebar" style="background: #212934">
+            <div class="sidebar-header" style="background: #212934">
+                <h3 style="color: #59ab6e">Ladiastore</h3>
+                <strong style="color: #59ab6e">LS</strong>
+            </div>
+
+            <ul class="list-unstyled components">
+                 <li>
+                    <a href="{{ path('app_home') }}" style="background: #59ab6e">
+                        <i class="fas fa-home"></i>
+                        Acceuil
+                    </a>
+                </li>
+                <li  class="active">
+                    <a href="#">
+                        <i class="fas fa-image"></i>
+                        Profil
+                    </a>
+                </li>
+                <li >
+                    <a href="#">
+                        <i class="fas fa-coins"></i>
+                        Achetez des pieces
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-briefcase"></i>
+                        Creer un article
+                    </a>
+                    <a href="#">
+                        <i class="fas fa-store"></i>
+                        Creer un store
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-eye"></i>
+                        Voir mes articles
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-envelope"></i>
+                        Messages
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-paper-plane"></i>
+                        Contact
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="list-unstyled CTAs">
+                <li>
+                    <a href="{{ path('app_logout') }}" class="download">Deconnexion</a>
+                </li>
+                
+            </ul>
+        </nav>
+        <!-- Page Content  -->
+        <div id="content">
+
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+
+                    <button type="button" id="sidebarCollapse" class="btn btn-success">
+                        <i class="fas fa-align-left"></i>
+                        <span >Basculer </span>
+                    </button>
+                    <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="fas fa-align-justify"></i>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="nav navbar-nav ml-auto">
+                           
+                            <li class="nav-item ml-1">
+                                 <h2 style="color: #59ab6e">{{user.firstName}}  {{user.lastName}}</h2>
+                            </li>
+                            
+                            <li class="nav-item ml-auto">
+                                <a class="nav-link" href="#">
+                                    20 Pieces 
+                                    <i class="fas fa-coins"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+
+   

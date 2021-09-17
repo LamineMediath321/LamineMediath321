@@ -1,0 +1,36 @@
+{% extends 'compte_user/user_layouts/base.html.twig' %}
+
+{% block title %}Ladiastore Vendez & Achetez !{% endblock %}
+
+{% block body %}
+
+
+     {{ include('compte_user/user_layouts/partials/_sidebar.html.twig') }}
+
+
+           <div class="mw-100 rounded-top overflow-hidden">                             
+            	<img src="{{ (user.imageName ? vich_uploader_asset(user) : asset('images/avatar1.png')) | imagine_filter('squared_thumbnail_small')}}" alt="{{ user.firstName }}">
+            <div class="line"></div>
+
+            <h4>Numero de téléphone</h4>
+            <p>{{user.phone}}</p>
+
+            <div class="line"></div>
+            <h4>Store</h4>
+            <p>non </p>
+
+            <div class="line"></div>
+            <h4>Date de creation du compte</h4>
+            <p> {{user.createdAt|date}} </p>
+
+            <div class="line"></div>
+            <div class="text-center">
+                <a href="{{path('app_user_edit')}}" class="btn btn-light">Editer</a>
+            </div>
+            
+      
+        </div>
+    </div>
+    
+
+{% endblock %}
