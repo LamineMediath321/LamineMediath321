@@ -54,4 +54,13 @@ class CompteUserController extends AbstractController
     }
 
 
+     /**
+    *@Route("/compte_user/creer_article", name="app_article",methods={"GET","POST","PUT"})
+    */
+    public function creer_article()
+    {
+
+    }
+
+
 }
