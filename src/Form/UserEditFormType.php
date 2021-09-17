@@ -28,6 +28,7 @@ class UserEditFormType extends AbstractType
             ->add('firstName')
             ->add('lastName')
             ->add('phone')
+            ->add('adresse')
         ;
     }
 

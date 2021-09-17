@@ -39,7 +39,6 @@ class Carousel
     /**
      * @ORM\Column(type="text", nullable=true)
      *@Assert\Length(min=10,minMessage="La description doit avoir plus de 10 caracteres")
-
      */
     private $description;
 
