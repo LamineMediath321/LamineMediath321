@@ -4,10 +4,14 @@ namespace App\Entity;
 
 use App\Repository\ImageArticleRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ImageArticleRepository::class)
  * @ORM\Table(name="image_articles")
+ * @Vich\Uploadable
  */
 class ImageArticle
 {
@@ -19,7 +23,7 @@ class ImageArticle
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255,nullable=true)
      */
     private $imageName;
 
@@ -44,7 +48,7 @@ class ImageArticle
         return $this->imageName;
     }
 
-    public function setImageName(string $imageName): self
+    public function setImageName(?string $imageName): self
     {
         $this->imageName = $imageName;
 
@@ -73,5 +77,10 @@ class ImageArticle
         $this->article = $article;
 
         return $this;
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
     }
 }

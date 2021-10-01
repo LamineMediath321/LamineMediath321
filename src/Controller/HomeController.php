@@ -53,7 +53,7 @@ class HomeController extends AbstractController
             $em->persist($carousel);
 
             $em->flush();
-            $this->addFlash('success','Carousel Successfully created !');
+            //$this->addFlash('success','Carousel Successfully created !');
 
             return $this->redirectToRoute('app_carousel_show',['id' => $carousel->getId()]);
         }

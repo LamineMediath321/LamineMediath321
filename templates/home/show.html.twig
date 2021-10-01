@@ -1,9 +1,10 @@
 {% extends 'layouts/base.html.twig' %}
 
-{% block title carousel.titre1 %}
+{% block title 'Vendez & Achetez beaucoup plus librement!' %}
+
 
 {% block body %}
-	<div class="row">
+	<div class="row m-5">
 		<div class="col-md-6 mx-auto">
 			<article class="pin bg-white rounded shadow">
                            <div class="mw-100 rounded-top overflow-hidden">
@@ -24,7 +25,7 @@
                              	<a href="{{ path('app_carousel_edit',{'id':carousel.id}) }}" class="btn btn-light">Editer</a>
 								<a class="btn btn-light" href="#" onclick="event.preventDefault(); confirm('Are you sure ?') && document.getElementById('js-pin-delete-form').submit();">Supprimer</a>
 								<form id="js-pin-delete-form" action="{{ path('app_carousel_delete',{'id':carousel.id}) }}" method="post" style="display: none;">
-									<input type="hidden" name="csrf_token" value="{{ csrf_token('pin_delete_'~carousel.id) }}">
+									<input type="hidden" name="csrf_token" value="{{ csrf_token('carousel_delete_'~carousel.id) }}">
 									<input type="hidden" name="_method" value="DELETE">
 								</form>
                              </div>

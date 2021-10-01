@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
+use App\Entity\Traits\Timestampable;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
@@ -17,6 +18,7 @@ use Symfony\Component\Validator\Constraints\Length;
  */
 class Article
 {
+    use Timestampable;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -55,11 +57,6 @@ class Article
      */
     private $sousCategorie;
 
-    /**
-     * @ORM\Column(type="datetime_immutable",options={"default":"CURRENT_TIMESTAMP"})
-     */
-    private $createdAt;
-
 
     public function __construct()
     {
@@ -88,7 +85,7 @@ class Article
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
@@ -161,27 +158,4 @@ class Article
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     */
-    public function updatedTimestamps()
-    {
-
-        if ($this->getCreatedAt()===null) {
-            $this->setCreatedAt(new\DateTimeImmutable);
-        }
-    }
 }

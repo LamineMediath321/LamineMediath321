@@ -9,6 +9,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
+use App\Entity\Traits\Timestampable;    
 
 /**
  * @ORM\Entity(repositoryClass=CarouselRepository::class)
@@ -18,6 +19,7 @@ use Symfony\Component\Validator\Constraints\Length;
  */
 class Carousel
 {
+    use Timestampable;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -50,11 +52,6 @@ class Carousel
      * @var File|null
      */
     private $imageFile;
-
-    /**
-     * @ORM\Column(type="datetime_immutable",options={"default":"CURRENT_TIMESTAMP"})
-     */
-    private $createdAt;
 
     /**
      * @ORM\Column(type="string", length=255,nullable=true)
@@ -127,39 +124,16 @@ class Carousel
         return $this->imageFile;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
 
     public function getImageName(): ?string
     {
         return $this->imageName;
     }
 
-    public function setImageName(string $imageName): self
+    public function setImageName(?string $imageName): self
     {
         $this->imageName = $imageName;
 
         return $this;
-    }
-
-     /**
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     */
-    public function updatedTimestamps()
-    {
-
-        if ($this->getCreatedAt()===null) {
-            $this->setCreatedAt(new\DateTimeImmutable);
-        }
     }
 }

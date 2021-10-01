@@ -1,0 +1,48 @@
+ {% extends 'compte_user/user_layouts/base.html.twig' %}
+
+
+{% block title 'Creer un article ' %}
+
+
+{% block body %}
+	{{ include('compte_user/user_layouts/partials/_sidebar.html.twig') }}
+	<h1 class="text-center display-4">Creer un <span class="text-success">article</span></h1>
+	<div class="text-center mt-3">
+	</div>
+	<div class="row">
+		<div class="col-6 mx-auto m-5">
+		
+			{{ form_start(form)}}
+
+			{{ form_row(form.Categorie)}}
+			{{ form_row(form.Sous_Categorie)}}
+			{{ form_row(form.Nom_article)}}
+			{{ form_row(form.Description)}}
+			{{ form_row(form.Lieu_de_Vente)}}
+			<h6>Veillez choisir les photos de votre article</h6>
+			<div class="row">
+				<img class="" src="{{asset('assets/img/lesPhotos.png')|
+				imagine_filter('squared_thumbnail_medium')}}">
+				<div class="">
+					<div class="row">
+						<div class="col-6">
+							{{ form_row(form.image_1)}}
+						</div>
+						<div class="col-6">
+							{{ form_row(form.image_2)}}
+						</div>
+						<div class="col-6">
+							{{ form_row(form.image_3)}}
+						</div>
+						<div class="col-6">
+							{{ form_row(form.image_4)}}
+						</div>
+					</div>
+				</di²v>
+			</div>
+			<input class="btn btn-success btn-block" type="submit" value="Suivant" formnovalidate >
+
+			{{ form_end(form) }}
+		</div>
+	</div>
+{% endblock %}

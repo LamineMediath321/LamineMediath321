@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Image;
 use Vich\UploaderBundle\Form\Type\VichImageType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class UserEditFormType extends AbstractType
 {
@@ -19,15 +20,21 @@ class UserEditFormType extends AbstractType
                 'required' => false,
                 'allow_delete' => true,
                 'delete_label' => 'Delete',
-                'download_uri' => true,
+                'download_uri' => false,
                 'imagine_pattern' => 'squared_thumbnail_small',
                 'constraints' => [
                         new Image(['maxSize' => '8M'])
                 ]
         ])
-            ->add('firstName')
-            ->add('lastName')
-            ->add('phone')
+            ->add('firstName',TextType::class,[
+                'label' => 'Prenom'
+            ])
+            ->add('lastName',TextType::class,[
+                'label' => 'Nom'
+            ])
+            ->add('phone',TextType::class,[
+                'label' => 'Téléphone'
+            ])
             ->add('adresse')
         ;
     }
