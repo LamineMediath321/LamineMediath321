@@ -41,6 +41,17 @@ class Article
      */
     private $lieuVente;
 
+
+     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $price;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $etoiles;
+
     /**
      * @ORM\OneToMany(targetEntity=ImageArticle::class, mappedBy="article", orphanRemoval=true)
      */
@@ -56,6 +67,7 @@ class Article
      * @ORM\JoinColumn(nullable=false)
      */
     private $sousCategorie;
+
 
 
     public function __construct()
@@ -100,6 +112,30 @@ class Article
     public function setLieuVente(string $lieuVente): self
     {
         $this->lieuVente = $lieuVente;
+
+        return $this;
+    }
+
+    public function getPrice(): ?string
+    {
+        return $this->price;
+    }
+
+    public function setPrice(?string $price): self
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    public function getEtoiles(): ?int
+    {
+        return $this->etoiles;
+    }
+
+    public function setEtoiles(?int $etoiles): self
+    {
+        $this->etoiles = $etoiles;
 
         return $this;
     }
@@ -157,5 +193,7 @@ class Article
 
         return $this;
     }
+
+    
 
 }

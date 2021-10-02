@@ -19,6 +19,8 @@
 			{{ form_row(form.Nom_article)}}
 			{{ form_row(form.Description)}}
 			{{ form_row(form.Lieu_de_Vente)}}
+			{{ form_row(form.Prix_article)}}
+			{{ form_row(form.Nombre_etoiles)}}
 			<h6>Veillez choisir les photos de votre article</h6>
 			<div class="row">
 				<img class="" src="{{asset('assets/img/lesPhotos.png')|
@@ -38,7 +40,7 @@
 							{{ form_row(form.image_4)}}
 						</div>
 					</div>
-				</di²v>
+				</div>
 			</div>
 			<input class="btn btn-success btn-block" type="submit" value="Suivant" formnovalidate >
 

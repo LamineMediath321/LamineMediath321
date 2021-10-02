@@ -28,9 +28,10 @@ liip_imagine:
                       allow_upscale: true
 
 
-        squared_thumbnail_large:
+        squared_thumbnail_min:
               filters:
                   thumbnail:
-                      size: [200,100]
+                      size: [10,20]
                       mode: outbound
                       allow_upscale: true
+       

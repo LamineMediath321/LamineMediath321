@@ -5,13 +5,36 @@
  {% block body %}
 	{{ include('compte_user/user_layouts/partials/_sidebar.html.twig') }}
 	<h1 class="text-center display-4">Creer un <span class="text-success">article</span></h1>
+	<p class="text-center text-muted">Veillez cochez un des offres ci dessous.</p>
 	<div class="text-center mt-3">
 	</div>
 	<div class="row">
-		<div class="col-6 mx-auto m-5">
+		<div class="col-10 mx-auto m-5">
 			{{ form_start(form)}}
-				{{form_row(form.offre_de_base)}}<img src="{{ (imageArticle.imageName ? asset('/uploads/articles/'~imageArticle.imageName) : asset('images/placeholder.jpg')) | imagine_filter('squared_thumbnail_large')}}" class="w-100 rounded-top">
-				{{form_row(form.ofrre_vip)}}
+				<div class="row bg-white rounded shadow m-5">
+					<div class="col-2">
+						<img src="{{ (imageArticle.imageName ? asset('/uploads/articles/'~imageArticle.imageName) : asset('images/placeholder.jpg')) | imagine_filter('squared_thumbnail_min')}}" class="w-100 rounded-top" width="10">
+					</div>
+					<div class="col-6">
+						<h6>Offre de base pour une duree deux semaine à 10 pieces</h6>
+					</div>
+					<div class="col-4">
+						{{form_row(form.offre_de_base)}}
+					</div>
+				</div>
+
+				<div class="row bg-white rounded shadow m-5">
+					<div class="col-2">
+						<img src="{{ (imageArticle.imageName ? asset('/uploads/articles/'~imageArticle.imageName) : asset('images/placeholder.jpg')) | imagine_filter('squared_thumbnail_min')}}" class="w-100 rounded-top" width="10">
+					</div>
+					<div class="col-6">
+						<h6>Offre vip pour une duree d'un mois à 20 pieces</h6>
+					</div>
+					<div class="col-4">
+						{{form_row(form.ofrre_vip)}}
+					</div>
+				</div>
+				<input class="btn btn-success" type="submit" value="Creer un article" formnovalidate >
 			{{ form_end(form) }}
 		</div>
 	</div>
