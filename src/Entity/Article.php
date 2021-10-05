@@ -68,6 +68,12 @@ class Article
      */
     private $sousCategorie;
 
+    /**
+     * @ORM\Column(type="string", length=255,nullable=true)
+     */
+    private $choixVisbilite;
+
+
 
 
     public function __construct()
@@ -193,6 +199,20 @@ class Article
 
         return $this;
     }
+
+    public function getChoixVisbilite(): ?string
+    {
+        return $this->choixVisbilite;
+    }
+
+    public function setChoixVisbilite(?string $choixVisbilite): self
+    {
+        $this->choixVisbilite = $choixVisbilite;
+
+        return $this;
+    }
+
+
 
     
 

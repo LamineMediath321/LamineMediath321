@@ -13,7 +13,10 @@
 			{{ form_start(form)}}
 				<div class="row bg-white rounded shadow m-5">
 					<div class="col-2">
-						<img src="{{ (imageArticle.imageName ? asset('/uploads/articles/'~imageArticle.imageName) : asset('images/placeholder.jpg')) | imagine_filter('squared_thumbnail_min')}}" class="w-100 rounded-top" width="10">
+						{% if imageArticles %}
+							<img src="{{ (imageArticles[0].imageName ? asset('/uploads/articles/'~imageArticles[0].imageName) : asset('images/placeholder.jpg')) | imagine_filter('squared_thumbnail_min')}}" class="w-100 rounded-top" width="10">
+							
+						{% endif %}
 					</div>
 					<div class="col-6">
 						<h6>Offre de base pour une duree deux semaine à 10 pieces</h6>
@@ -25,13 +28,16 @@
 
 				<div class="row bg-white rounded shadow m-5">
 					<div class="col-2">
-						<img src="{{ (imageArticle.imageName ? asset('/uploads/articles/'~imageArticle.imageName) : asset('images/placeholder.jpg')) | imagine_filter('squared_thumbnail_min')}}" class="w-100 rounded-top" width="10">
+						{% if imageArticles %}
+							<img src="{{ (imageArticles[0].imageName ? asset('/uploads/articles/'~imageArticles[0].imageName) : asset('images/placeholder.jpg')) | imagine_filter('squared_thumbnail_min')}}" class="w-100 rounded-top" width="10">
+							
+						{% endif %}
 					</div>
 					<div class="col-6">
 						<h6>Offre vip pour une duree d'un mois à 20 pieces</h6>
 					</div>
 					<div class="col-4">
-						{{form_row(form.ofrre_vip)}}
+						{{form_row(form.offre_vip)}}
 					</div>
 				</div>
 				<input class="btn btn-success" type="submit" value="Creer un article" formnovalidate >

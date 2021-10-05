@@ -26,6 +26,7 @@ use App\Repository\ImageArticleRepository;
 use App\Repository\BanqueRepository;
 use App\Repository\ArticleRepository;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 class CompteUserController extends AbstractController
@@ -193,6 +194,7 @@ class CompteUserController extends AbstractController
                     $img = new ImageArticle();
                     $img->setImageName($fichier);
                     $img->setNumImage($i);
+                    $img->setArticle($article);
                     $em->persist($img);
                     $article->addImageArticle($img);
                 }
@@ -202,7 +204,7 @@ class CompteUserController extends AbstractController
             $article->setUser($this->getUser());
             $em->flush();
             return $this->redirectToRoute('app_article_2',[
-                'id_article' => $article->getId() 
+                'id' => $article->getId(),
             ]);
         }
 
@@ -217,22 +219,19 @@ class CompteUserController extends AbstractController
 
 
     /**
-     * @Route("/compte_user/creer_article_2/{id_article<[0-9]+>}", name="app_article_2")
+     * @Route("/compte_user/creer_article_2/{id<[0-9]+>}", name="app_article_2")
      */
-    public function creer_article2(Request $request,ImageArticleRepository $imgRepo,int $id_article,BanqueRepository $bankRepo,EntityManagerInterface $em): Response
+    public function creer_article2(Request $request,Article $article,BanqueRepository $bankRepo,EntityManagerInterface $em): Response
     {
         $user=$this->getUser();
         //On recupere son compte bancaire
         $bank=$bankRepo->findOneBy([
             'user' => $user->getId()
         ]);
-        $imageArticle=$imgRepo->findOneBy([
-            'article' => $id_article,
-            'numImage' => 1
-        ]);
+        $imageArticles=$article->getImageArticles();
         $form=$this->createFormBuilder()
             ->add('offre_de_base',CheckboxType::class)
-            ->add('ofrre_vip',CheckboxType::class)
+            ->add('offre_vip',CheckboxType::class)
             ->getForm()
         ;
 
@@ -244,6 +243,7 @@ class CompteUserController extends AbstractController
                //On verifie si il possible d'effectuer l'operation
                 if ($bank->getPieces()>=10) {
                     $bank->setPieces($bank->getPieces()-10);
+                    $article->setChoixVisbilite("offre_de_base");
                     $em->flush();
                 }
                 /*else{
@@ -254,6 +254,7 @@ class CompteUserController extends AbstractController
             elseif ($form->get('offre_vip')->getData()===true) {
                 if ($bank->getPieces()>=20) {
                     $bank->setPieces($bank->getPieces()-20);
+                    $article->setChoixVisbilite("offre_vip");
                     $em->flush();
                 }
                 /*else{
@@ -263,7 +264,7 @@ class CompteUserController extends AbstractController
             }
             //On redirige vers la page d'affichage d'article
             return $this->redirectToRoute('app_article_show',[
-                'id_article' => $id_article 
+                'id' => $article->getId()
             ]);
 
         }/*Fin du if $form->isSubmitted() && $form->isValid()*/
@@ -272,26 +273,29 @@ class CompteUserController extends AbstractController
         return $this->render('compte_user/creer_article_2.html.twig',[
             'user' => $user,
             'bank' => $bank,
-            'imageArticle' => $imageArticle,
+            'imageArticles' => $imageArticles,
             'form' => $form->createView()
         ]);
     }
 
 
     /**
-     * @Route("/compte_user/show_edit/{id_article<[0-9]+>}", name="app_article_show")
+     * @Route("/compte_user/show_edit/{id<[0-9]+>}", name="app_article_show")
      */
-    public function show_edit(Request $request,ImageArticleRepository $imgRepo,ArticleRepository $articleRepo,int $id_article,BanqueRepository $bankRepo,EntityManagerInterface $em): Response
+    public function show_edit(Request $request,Article $article,BanqueRepository $bankRepo,EntityManagerInterface $em): Response
     { 
         $user=$this->getUser();
-        //On recupere l'article
-        $article=$articleRepo->find($id_article);
+        //On recupere son compte bancaire
+        $bank=$bankRepo->findOneBy([
+            'user' => $user->getId()
+        ]);
         $imageArticles=$article->getImageArticles();
         $form=$this->createFormBuilder([
             'Nom_article' => $article->getNomArticle(),
             'Description' => $article->getDescription(),
             'Lieu_de_Vente' => $article->getLieuVente(),
-            'Prix_article' => $article->getPrice()
+            'Prix_article' => $article->getPrice(),
+            'Nombre_etoiles' => $article->getEtoiles()
         ])
             ->add('Nom_article',TextType::class,[
                 'constraints' => new NotBlank(['message' => 'Le nom ne de votre article ne doit pas être vide']) 
@@ -326,6 +330,68 @@ class CompteUserController extends AbstractController
             'article' => $article,
             'form' => $form->createView()
         ]);
+    }
+
+
+    /**
+ * @Route("/compte_user/delete/{id<[0-9]+>}", name="app_delete_image", methods={"DELETE"})
+ */
+public function delete_image(ImageArticle $image, Request $request,EntityManagerInterface $em){
+    $data = json_decode($request->getContent(), true);
+
+    // On vérifie si le token est valide
+    if($this->isCsrfTokenValid('delete'.$image->getId(), $data['_token'])){
+        // On récupère le nom de l'image
+        $imageName = $image->getImageName();
+        // On supprime le fichier
+        unlink($this->getParameter('images_directory').'/'.$imageName);
+
+        // On supprime l'entrée de la base
+        $em->remove($image);
+        $em->flush();
+
+        // On répond en json
+        return new JsonResponse(['success' => 1]);
+    }else{
+        return new JsonResponse(['error' => 'Token Invalide'], 400);
+    }
+}
+
+    
+    /**
+    *@Route("/compte_user/terminer/{id<[0-9]+>}", name="app_terminer")
+    */
+    public function finaliser(Request $request,Article $article,BanqueRepository $bankRepo,EntityManagerInterface $em):Response
+    {
+        $user=$this->getUser();
+        //On recupere son compte bancaire pour finaliser l'operation
+        $bank=$bankRepo->findOneBy([
+            'user' => $user->getId()
+            ]);
+        //On retire les pieces de son compte
+
+        $choix=$article->getChoixVisbilite();
+        switch ($choix) {
+            case 'offre_vip':
+                $bank->setPieces($bank->getPieces()-20);
+                 $em->flush();
+                break;
+            case 'offre_de_base':
+                $bank->setPieces($bank->getPieces()-10);
+                 $em->flush();
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+
+
+        $this->addFlash('success','Vous avez creer un article !');
+          return $this->render('compte_user/admin_user.html.twig',[
+                                'user' => $user,
+                                'bank' => $bank
+                            ]);
     }
 
 
