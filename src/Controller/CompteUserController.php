@@ -173,6 +173,8 @@ class CompteUserController extends AbstractController
             $article->setSousCategorie($form->get('Sous_Categorie')->getData());
             $article->setPrice($form->get('Prix_article')->getData());
             $article->setEtoiles($form->get('Nombre_etoiles')->getData());
+            //Par default l'article n'est pas paye, il sera true lorsqu'on retire la somme de son compte 
+            $article->setEstPaye(false);
 
             for ($i=1; $i <=4 ; $i++) { 
                 // On récupère les images transmises
@@ -373,12 +375,18 @@ public function delete_image(ImageArticle $image, Request $request,EntityManager
         $choix=$article->getChoixVisbilite();
         switch ($choix) {
             case 'offre_vip':
+            {
                 $bank->setPieces($bank->getPieces()-20);
-                 $em->flush();
+                $article->setEstPaye(true);
+                $em->flush();
+             }
                 break;
             case 'offre_de_base':
+            {
                 $bank->setPieces($bank->getPieces()-10);
-                 $em->flush();
+                $article->setEstPaye(true);
+                $em->flush();
+             }
                 break;
             
             default:

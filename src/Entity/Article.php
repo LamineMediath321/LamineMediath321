@@ -73,6 +73,11 @@ class Article
      */
     private $choixVisbilite;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $estPaye;
+
 
 
 
@@ -208,6 +213,18 @@ class Article
     public function setChoixVisbilite(?string $choixVisbilite): self
     {
         $this->choixVisbilite = $choixVisbilite;
+
+        return $this;
+    }
+
+    public function getEstPaye(): ?bool
+    {
+        return $this->estPaye;
+    }
+
+    public function setEstPaye(bool $estPaye): self
+    {
+        $this->estPaye = $estPaye;
 
         return $this;
     }
