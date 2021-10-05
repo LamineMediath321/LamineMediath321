@@ -50,8 +50,8 @@
                                 <i class="fa fa-star 
                                     {%if loop.index <= article.etoiles %} 
                                         text-warning
-                                            else  text-secondary {% endif %}"> 
-                                    </i>
+                                            else  text-muted {% endif %}"> 
+                                </i>
                             {% endfor %}
                             <span class="list-inline-item text-dark">Nombre d'etoiles</span>
                             <div>
@@ -72,9 +72,17 @@
     </div>
     <div class="text-center">
         <p class="">Si vous venez de modifier les informations du formulaire en haut cliquez sur Mettez à jour? </p>
-        <p class="">ou cliquez sur Terminer pour terminer votre creation</p>
-        <input class="btn btn-light" type="submit" value="Mettez à jour" formnovalidate >
-        <a href="{{ path('app_terminer', {id: article.id}) }}" class="btn btn-success">Terminer</a>
+        {% if article.estPaye==false %}
+            <p class="">ou cliquez sur Terminer pour terminer votre creation</p>
+        {% endif %}
+        <input class="btn btn-success" type="submit" value="Mettez à jour" formnovalidate >
+        {% if article.estPaye==false %}
+            <a href="{{ path('app_terminer', {id: article.id}) }}" class="btn btn-success">Terminer</a>
+        {% endif %}
+        {% if article.estPaye==true %}
+            <a href="{{ path('app_voir_article') }}" class="btn btn-light">Précédent</a>
+            <a href="{{ path('app_admin_user') }}" class="btn btn-light">Au menu</a>
+        {% endif %}
     </div>
     <div class="d-flex justify-content-between col-10 text-center m-3">
          
@@ -85,7 +93,7 @@
     <!-- Close Content -->
 
     {{ include('compte_user/user_layouts/partials/_footer.html.twig') }}
-
+^
     {% block javascripts %}
         <script src="{{ asset('assets/js/images.js') }}"></script>
     {% endblock %}

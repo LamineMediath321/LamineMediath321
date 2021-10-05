@@ -1,0 +1,67 @@
+ {% extends 'compte_user/user_layouts/base.html.twig' %}
+
+
+{% block title 'Article' %}
+
+{% block body %}
+{{ include('compte_user/user_layouts/partials/_nav.html.twig') }}
+	    <!-- Open Content -->
+ <h3 class="text-center text-muted mt-5">Ladiastore Vendez & Achetez beaucoup plus librement !</h3>
+
+ <!-- Start Featured Product -->
+    <section class="bg-light">
+        <div class="container py-5">
+            <div class="row text-center py-3">
+                <div class="col-lg-6 m-auto">
+                    <h1 class="h1">Mes articles</h1>
+                    <p>
+                        Reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                        Excepteur sint occaecat cupidatat non proident.
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                {% for article in articles %}
+                    <div class="col-12 col-md-4 mb-4">
+                        <div class="card h-100">
+                            <a href="{{ path('app_article_show',{'id':article.id}) }}">
+                                {% if article.imageArticles %}
+                                    <img class="card-img img-fluid" src="{{asset('/uploads/articles/'~article.imageArticles[0].imageName) | imagine_filter('squared_thumbnail_article_view')}}" alt="{{article.nomArticle}}" id="product-detail">
+                                {% endif %}
+                            </a>
+                            <div class="card-body">
+                                <ul class="list-unstyled d-flex justify-content-between">
+                                    <li>
+                                         {% for i in 1..5 %}
+                                            <i class="fa fa-star 
+                                                {%if loop.index <= article.etoiles %} 
+                                                    text-warning
+                                                    else  text-secondary {% endif %}"> 
+                                            </i>
+                                        {% endfor %}
+                                    </li>
+                                    <li class="text-muted text-right">{{article.price}}</li>
+                                </ul>
+                                <a href="shop-single.html" class="h2 text-decoration-none text-dark">{{article.nomArticle}} </a>
+                                <p class="card-text">
+                                    {{article.description}}
+                                </p>
+                                <p class="text-muted"> {{article.choixVisbilite}} </p>
+                            </div>
+                        </div>
+                    </div>
+
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <div class="text-center">
+         <a href="{{ path('app_admin_user')}}" class="btn btn-success">Précédent</a>
+         <a href="{{ path('app_article')}}" class="btn btn-light">Creer article</a>
+    </div>
+    <!-- End Featured Product -->
+
+
+ {{ include('compte_user/user_layouts/partials/_footer.html.twig') }}
+{% endblock %}

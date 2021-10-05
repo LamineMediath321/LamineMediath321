@@ -19,6 +19,7 @@ use App\Entity\Article;
 use App\Repository\SousCategorieRepository;
 use App\Repository\CategorieRepository;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -120,7 +121,7 @@ class CompteUserController extends AbstractController
             ])
 
             ->add('Nom_article',TextType::class,[
-                'constraints' => new NotBlank(['message' => 'Le nom ne de votre article ne doit pas être vide']) 
+                'constraints' => new NotBlank(['message' => 'Le nom de votre article ne doit pas être vide']) 
             ])
 
            ->add('Description',TextareaType::class,[
@@ -139,7 +140,8 @@ class CompteUserController extends AbstractController
             ->add('image_1', FileType::class,[
                 'multiple' => true,
                 'mapped' => false,
-                'required' => false
+                'required' => true,
+                'constraints' => new NotBlank(['message' => 'Veillez soummettre La photo principale'])
             ])
             ->add('image_2', FileType::class,[
                 'multiple' => true,
@@ -225,6 +227,7 @@ class CompteUserController extends AbstractController
      */
     public function creer_article2(Request $request,Article $article,BanqueRepository $bankRepo,EntityManagerInterface $em): Response
     {
+        //Il va falloir revoir cette methode car elle n'est pas complet
         $user=$this->getUser();
         //On recupere son compte bancaire
         $bank=$bankRepo->findOneBy([
@@ -244,7 +247,6 @@ class CompteUserController extends AbstractController
             if ($form->get('offre_de_base')->getData()===true) {
                //On verifie si il possible d'effectuer l'operation
                 if ($bank->getPieces()>=10) {
-                    $bank->setPieces($bank->getPieces()-10);
                     $article->setChoixVisbilite("offre_de_base");
                     $em->flush();
                 }
@@ -255,7 +257,6 @@ class CompteUserController extends AbstractController
             }
             elseif ($form->get('offre_vip')->getData()===true) {
                 if ($bank->getPieces()>=20) {
-                    $bank->setPieces($bank->getPieces()-20);
                     $article->setChoixVisbilite("offre_vip");
                     $em->flush();
                 }
@@ -264,9 +265,11 @@ class CompteUserController extends AbstractController
                     return $this->redirectToRoute('app_achat_piece');
                 }*/
             }
+            $route=$request->attributes->get('_route');
             //On redirige vers la page d'affichage d'article
             return $this->redirectToRoute('app_article_show',[
-                'id' => $article->getId()
+                'id' => $article->getId(),
+                'route' => $route
             ]);
 
         }/*Fin du if $form->isSubmitted() && $form->isValid()*/
@@ -324,7 +327,7 @@ class CompteUserController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
+            //Il va falloir essayer de sauvegarder les modifications du formulaire
         }
         return $this->render('compte_user/show_edit.html.twig',[
             'user' => $user,
@@ -395,7 +398,7 @@ public function delete_image(ImageArticle $image, Request $request,EntityManager
         }
 
 
-        $this->addFlash('success','Vous avez creer un article !');
+        //$this->addFlash('success','Vous avez creer un article !');
           return $this->render('compte_user/admin_user.html.twig',[
                                 'user' => $user,
                                 'bank' => $bank
@@ -429,5 +432,28 @@ public function delete_image(ImageArticle $image, Request $request,EntityManager
                                 'form' => $form->createView()
                             ]);
     }
+
+
+    /**
+    *@Route("/compte_user/voir_article", name="app_voir_article")
+    */
+    public function voir_article(Request $request,ArticleRepository $articleRepo,EntityManagerInterface $em):Response
+    {
+        $user=$this->getUser();
+
+        //Je recupere les articles du user courant 
+        $articles=$articleRepo->findBy([
+            'user' => $user->getId(),
+            'estPaye' => true
+            ],
+            ['createdAt' => 'DESC']);
+
+
+        return $this->render('compte_user/voir_article.html.twig',[
+                                'user' => $user,
+                                'articles' => $articles
+                            ]);
+    }
+
 
 }
