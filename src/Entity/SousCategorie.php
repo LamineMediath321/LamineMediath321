@@ -35,9 +35,15 @@ class SousCategorie
      */
     private $articles;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Store::class, mappedBy="domaine")
+     */
+    private $stores;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
+        $this->stores = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -93,6 +99,36 @@ class SousCategorie
             // set the owning side to null (unless already changed)
             if ($article->getSousCategorie() === $this) {
                 $article->setSousCategorie(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Store[]
+     */
+    public function getStores(): Collection
+    {
+        return $this->stores;
+    }
+
+    public function addStore(Store $store): self
+    {
+        if (!$this->stores->contains($store)) {
+            $this->stores[] = $store;
+            $store->setDomaine($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStore(Store $store): self
+    {
+        if ($this->stores->removeElement($store)) {
+            // set the owning side to null (unless already changed)
+            if ($store->getDomaine() === $this) {
+                $store->setDomaine(null);
             }
         }
 

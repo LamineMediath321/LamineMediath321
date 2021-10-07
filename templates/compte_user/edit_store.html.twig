@@ -6,9 +6,8 @@
 
 {% block body %}
 	{{ include('compte_user/user_layouts/partials/_sidebar.html.twig') }}
-	<h1 class="text-center display-4">Creer un <span class="text-success">Store</span></h1>
+	<h1 class="text-center display-4">Editer mon <span class="text-success">Store</span></h1>
 	<div class="text-center mt-3">
-		<h5>Lecture du contrat à faire apres enquête</h5>
 		<p>
          Reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</br>
          Excepteur sint occaecat cupidatat non proident.
@@ -21,7 +20,7 @@
 				{{form_row(form.nomStore)}}
 				{{form_row(form.description)}}
 				{{form_row(form.imageFile)}}
-				<input class="btn btn-success btn-block mt-5" type="submit" value="Creer un store" formnovalidate >
+				<input class="btn btn-success btn-block mt-5" type="submit" value="Mettez à jour" formnovalidate >
 
 			{{ form_end(form) }}
 			

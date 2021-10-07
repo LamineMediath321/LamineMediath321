@@ -28,6 +28,9 @@ use App\Repository\BanqueRepository;
 use App\Repository\ArticleRepository;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Form\StoreType;
+use App\Entity\Store;
+use App\Repository\StoreRepository;
 
 
 class CompteUserController extends AbstractController
@@ -35,7 +38,7 @@ class CompteUserController extends AbstractController
     /**
      * @Route("/compte/user", name="app_admin_user")
      */
-    public function index(BanqueRepository $bankRepo): Response
+    public function index(BanqueRepository $bankRepo,StoreRepository $storeRepo): Response
     {
 
     	$user=$this->getUser();
@@ -45,8 +48,14 @@ class CompteUserController extends AbstractController
             'user' => $user->getId()
         ]);
 
+        //On recupere son store s'il a un store
+        $store=$storeRepo->findOneBy([
+            'user' => $user->getId()
+        ]);
+
         return $this->render('compte_user/admin_user.html.twig', [
             'user' => $user,
+            'store' => $store,
             'bank' => $bank
         ]);
     }
@@ -55,11 +64,15 @@ class CompteUserController extends AbstractController
     /**
     *@Route("/compte_user/edit_user", name="app_user_edit",methods={"GET","POST","PUT"})
     */
-    public function edit_user(Request $request,EntityManagerInterface $em,BanqueRepository $bankRepo):Response
+    public function edit_user(Request $request,EntityManagerInterface $em,BanqueRepository $bankRepo,StoreRepository $storeRepo):Response
     {
         $user=$this->getUser();
          //On recupere son compte bancaire
         $bank=$bankRepo->findOneBy([
+            'user' => $user->getId()
+        ]);
+        //On recupere son store s'il a un store
+        $store=$storeRepo->findOneBy([
             'user' => $user->getId()
         ]);
         $form=$this->createForm(UserEditFormType::class,$user,[
@@ -80,6 +93,7 @@ class CompteUserController extends AbstractController
           return $this->render('compte_user/edit_user.html.twig',[
                                 'user' => $user,
                                 'bank' => $bank,
+                                'store' => $store,
                                 'monForm' => $form->createView()
                             ]);
     }
@@ -88,11 +102,15 @@ class CompteUserController extends AbstractController
     /**
     *@Route("/compte_user/creer_article", name="app_article",methods={"GET","POST","PUT"})
     */
-    public function creer_article(Request $request,EntityManagerInterface $em,BanqueRepository $bankRepo):Response
+    public function creer_article(Request $request,EntityManagerInterface $em,BanqueRepository $bankRepo,StoreRepository $storeRepo):Response
     {
         $user=$this->getUser();
           //On recupere son compte bancaire
         $bank=$bankRepo->findOneBy([
+            'user' => $user->getId()
+        ]);
+        //On recupere son store s'il a un store
+        $store=$storeRepo->findOneBy([
             'user' => $user->getId()
         ]);
 
@@ -216,6 +234,7 @@ class CompteUserController extends AbstractController
         return $this->render('compte_user/creer_article.html.twig',[
             'user' => $user,
             'bank' => $bank,
+            'store' => $store,
             'form' => $form->createView()
         ]);
 
@@ -225,7 +244,7 @@ class CompteUserController extends AbstractController
     /**
      * @Route("/compte_user/creer_article_2/{id<[0-9]+>}", name="app_article_2")
      */
-    public function creer_article2(Request $request,Article $article,BanqueRepository $bankRepo,EntityManagerInterface $em): Response
+    public function creer_article2(Request $request,Article $article,BanqueRepository $bankRepo,EntityManagerInterface $em,StoreRepository $storeRepo): Response
     {
         //Il va falloir revoir cette methode car elle n'est pas complet
         $user=$this->getUser();
@@ -233,6 +252,11 @@ class CompteUserController extends AbstractController
         $bank=$bankRepo->findOneBy([
             'user' => $user->getId()
         ]);
+        //On recupere son store s'il a un store
+        $store=$storeRepo->findOneBy([
+            'user' => $user->getId()
+        ]);
+
         $imageArticles=$article->getImageArticles();
         $form=$this->createFormBuilder()
             ->add('offre_de_base',CheckboxType::class)
@@ -278,6 +302,7 @@ class CompteUserController extends AbstractController
         return $this->render('compte_user/creer_article_2.html.twig',[
             'user' => $user,
             'bank' => $bank,
+            'store' => $store,
             'imageArticles' => $imageArticles,
             'form' => $form->createView()
         ]);
@@ -287,13 +312,18 @@ class CompteUserController extends AbstractController
     /**
      * @Route("/compte_user/show_edit/{id<[0-9]+>}", name="app_article_show")
      */
-    public function show_edit(Request $request,Article $article,BanqueRepository $bankRepo,EntityManagerInterface $em): Response
+    public function show_edit(Request $request,Article $article,BanqueRepository $bankRepo,EntityManagerInterface $em,StoreRepository $storeRepo): Response
     { 
         $user=$this->getUser();
         //On recupere son compte bancaire
         $bank=$bankRepo->findOneBy([
             'user' => $user->getId()
         ]);
+        //On recupere son store s'il a un store
+        $store=$storeRepo->findOneBy([
+            'user' => $user->getId()
+        ]);
+
         $imageArticles=$article->getImageArticles();
         $form=$this->createFormBuilder([
             'Nom_article' => $article->getNomArticle(),
@@ -366,13 +396,19 @@ public function delete_image(ImageArticle $image, Request $request,EntityManager
     /**
     *@Route("/compte_user/terminer/{id<[0-9]+>}", name="app_terminer")
     */
-    public function finaliser(Request $request,Article $article,BanqueRepository $bankRepo,EntityManagerInterface $em):Response
+    public function finaliser(Request $request,Article $article,BanqueRepository $bankRepo,EntityManagerInterface $em,StoreRepository $storeRepo):Response
     {
         $user=$this->getUser();
         //On recupere son compte bancaire pour finaliser l'operation
         $bank=$bankRepo->findOneBy([
             'user' => $user->getId()
             ]);
+        //On recupere son store s'il a un store
+        $store=$storeRepo->findOneBy([
+            'user' => $user->getId()
+        ]);
+
+
         //On retire les pieces de son compte
 
         $choix=$article->getChoixVisbilite();
@@ -401,6 +437,7 @@ public function delete_image(ImageArticle $image, Request $request,EntityManager
         //$this->addFlash('success','Vous avez creer un article !');
           return $this->render('compte_user/admin_user.html.twig',[
                                 'user' => $user,
+                                'store' => $store,
                                 'bank' => $bank
                             ]);
     }
@@ -409,19 +446,33 @@ public function delete_image(ImageArticle $image, Request $request,EntityManager
     /**
     *@Route("/compte_user/store", name="app_store")
     */
-    public function creer_vitrine(Request $request,EntityManagerInterface $em):Response
+    public function creer_vitrine(Request $request,BanqueRepository $bankRepo,EntityManagerInterface $em,StoreRepository $storeRepo):Response
     {
         $user=$this->getUser();
-        $form=$this->createForm(UserEditFormType::class,$user,[
+        //On recupere son compte bancaire pour finaliser l'operation
+        $bank=$bankRepo->findOneBy([
+            'user' => $user->getId()
+            ]);
+        //On recupere son store s'il a un store
+        $store=$storeRepo->findOneBy([
+            'user' => $user->getId()
+        ]);
+
+        if ($store==null) {
+            $store= new Store();
+        }
+
+        $form=$this->createForm(StoreType::class,$store,[
             ]);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            //$em->flush();
-
-            //$this->addFlash('success','Mise a jour effectue avec succes !');
+            //On fera le retrait sur le compte bancaire du user mais apres
+            $store->setUser($user);
+            $em->persist($store);
+            $em->flush();
 
 
             return $this->redirectToRoute('app_admin_user');
@@ -429,9 +480,44 @@ public function delete_image(ImageArticle $image, Request $request,EntityManager
 
           return $this->render('compte_user/store.html.twig',[
                                 'user' => $user,
+                                'bank' => $bank,
+                                'store' => $store,
                                 'form' => $form->createView()
                             ]);
     }
+
+
+    /**
+    *@Route("/compte_user/store_edit/{id<[0-9]+>}", name="app_store_edit")
+    */
+    public function edit_vitrine(Request $request,BanqueRepository $bankRepo,EntityManagerInterface $em,Store $store):Response
+    {
+        $user=$this->getUser();
+        //On recupere son compte bancaire pour finaliser l'operation
+        $bank=$bankRepo->findOneBy([
+            'user' => $user->getId()
+            ]);
+
+        $form=$this->createForm(StoreType::class,$store,[
+            ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $em->flush();
+
+            return $this->redirectToRoute('app_admin_user');
+        }
+
+          return $this->render('compte_user/edit_store.html.twig',[
+                                'user' => $user,
+                                'bank' => $bank,
+                                'store' => $store,
+                                'form' => $form->createView()
+                            ]);
+    }
+
 
 
     /**
@@ -454,6 +540,7 @@ public function delete_image(ImageArticle $image, Request $request,EntityManager
                                 'articles' => $articles
                             ]);
     }
+
 
 
 }

@@ -1,0 +1,92 @@
+<!-- Start Article -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row text-left p-2 pb-3">
+                <h4>Les VIP</h4>
+            </div>
+
+            <!--Start Carousel Wrapper-->
+            <div id="carousels-related-product">
+                {% for article in articles %}
+                    <!--BEGIN of articles-->
+                    <div class="p-2 pb-3">
+                        <div class="product-wap card rounded-0">
+                            <div class="card rounded-0">
+                                <div class="mw-100 rounded-top overflow-hidden">
+                                         <img src="{{asset('/uploads/articles/'~article.imageArticles[0].imageName) | imagine_filter('squared_thumbnail_medium')}}" alt="{{article.nomArticle}}" class="w-100 rounded-top" id="product-detail">
+                                   </div>
+                                <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                    <ul class="list-unstyled">
+                                        <li><a class="btn btn-success text-white" href="{{ path('app_article_details', {'id':article.id}) }}"><i class="far fa-heart"></i></a></li>
+                                        <li><a class="btn btn-success text-white mt-2" href="{{ path('app_article_details', {'id':article.id}) }}"><i class="far fa-eye"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <a href="shop-single.html" class="h3 text-decoration-none">{{article.nomArticle}}</a>
+                                <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                                    <li>M/L/X/XL</li>
+                                    <li class="pt-2">
+                                        <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
+                                        <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
+                                        <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
+                                        <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
+                                        <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
+                                    </li>
+                                </ul>
+                                <ul class="list-unstyled d-flex justify-content-center mb-1">
+                                    <li>
+                                        {% for i in 1..5 %}
+                                            <i class="fa fa-star 
+                                                {%if loop.index <= article.etoiles %} 
+                                                    text-warning
+                                                    else  text-secondary {% endif %}"> 
+                                            </i>
+                                        {% endfor %}
+                                    </li>
+                                </ul>
+                                <p class="text-center mb-0">{{ article.price }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!--End of articles-->
+                {% endfor %}
+
+            </div>
+
+
+        </div>
+    </section>
+    <!-- End Article -->
+    <script>
+        $('#carousels-related-product').slick({
+            infinite: true,
+            arrows: false,
+            slidesToShow: 4,
+            slidesToScroll: 3,
+            dots: true,
+            responsive: [{
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 3
+                    }
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 3
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 3
+                    }
+                }
+            ]
+        });
+    </script>
+    <!-- End Slider Script -->

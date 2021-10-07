@@ -30,10 +30,19 @@
                         <i class="fas fa-briefcase"></i>
                         Creer un article
                     </a>
-                    <a href="{{path('app_store')}}">
-                        <i class="fas fa-store"></i>
-                        Creer un store
-                    </a>
+                </li>
+                <li>
+                    {% if store %}
+                        <a href="{{path('app_store_edit',{'id':store.id})}}">
+                            <i class="fas fa-store"></i> 
+                            Editer mon store
+                        </a>
+                    {% else %}
+                         <a href="{{path('app_store')}}">
+                            <i class="fas fa-store"></i>
+                            Creer un store
+                        </a>
+                    {% endif %}
                 </li>
                 <li>
                     <a href="{{path('app_voir_article')}}">
@@ -55,12 +64,9 @@
                 </li>
             </ul>
 
-            <ul class="list-unstyled CTAs">
                 <li>
-                    <a href="{{ path('app_logout') }}" class="">Deconnexion</a>
-                </li>
-                
-            </ul>
+                    <a class="btn btn-success" href="{{ path('app_logout') }}" class="">Deconnexion</a>
+                </li>    
         </nav>
         <!-- Page Content  -->
         <div id="content">

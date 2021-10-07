@@ -26,7 +26,9 @@
                         <div class="card h-100">
                             <a href="{{ path('app_article_show',{'id':article.id}) }}">
                                 {% if article.imageArticles %}
-                                    <img class="card-img img-fluid" src="{{asset('/uploads/articles/'~article.imageArticles[0].imageName) | imagine_filter('squared_thumbnail_article_view')}}" alt="{{article.nomArticle}}" id="product-detail">
+                                    <div class="mw-100 rounded-top overflow-hidden">
+                                         <img src="{{asset('/uploads/articles/'~article.imageArticles[0].imageName) | imagine_filter('squared_thumbnail_medium')}}" alt="{{article.nomArticle}}" class="w-100 rounded-top" id="product-detail">
+                                   </div>
                                 {% endif %}
                             </a>
                             <div class="card-body">

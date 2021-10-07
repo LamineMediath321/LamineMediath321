@@ -100,6 +100,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface,\Seriali
      */
     private $banque;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Store::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $store;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
@@ -373,6 +378,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface,\Seriali
                     $this->articles,
                     $this->banque,
         ) = unserialize($serialized);
+    }
+
+    public function getStore(): ?Store
+    {
+        return $this->store;
+    }
+
+    public function setStore(?Store $store): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($store === null && $this->store !== null) {
+            $this->store->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($store !== null && $store->getUser() !== $this) {
+            $store->setUser($this);
+        }
+
+        $this->store = $store;
+
+        return $this;
     }
 
 

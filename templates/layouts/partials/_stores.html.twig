@@ -1,0 +1,61 @@
+<!-- Start Article -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row text-left p-2 pb-3">
+                <h3>Stores</h3>
+            </div>
+
+            <!--Start Carousel Wrapper-->
+
+            <div id="carousel-related-product">
+
+                {% for store in stores %}
+                <div class="p-1 mt-1">
+                    <div class="mw-100 rounded-top overflow-hidden">
+                        <a href="">
+                            <img src="{{ (store.imageName ? vich_uploader_asset(store) : asset('images/placeholder.jpg')) | imagine_filter('squared_thumbnail_medium')}}" alt="{{ store.nomStore }}" class="w-100 rounded-top">
+                        </a>
+                    </div>
+                    <p class="text-center mt-3 mb-3">{{ store.nomStore }}</p>
+                    <p class="text-center"><a class="btn btn-success">Go store</a></p>
+                </div>
+                
+                {% endfor %}
+
+
+
+        </div>
+    </section>
+    <!-- End Article -->
+     <script>
+        $('#carousel-related-product').slick({
+            infinite: true,
+            arrows: false,
+            slidesToShow: 4,
+            slidesToScroll: 3,
+            dots: true,
+            responsive: [{
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 3
+                    }
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 3
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 3
+                    }
+                }
+            ]
+        });
+    </script>
+    <!-- End Slider Script -->

@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\CarouselType;
 use App\Repository\CarouselRepository;
+use App\Repository\StoreRepository;
+use App\Repository\ArticleRepository;
+use App\Entity\Article;
 
 
 class HomeController extends AbstractController
@@ -17,16 +20,27 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="app_home")
      */
-    public function index(EntityManagerInterface $em): Response
+    public function index(EntityManagerInterface $em,StoreRepository $storeRepo,ArticleRepository $articleRepo): Response
     {
 
     	$repo=$em->getRepository(Carousel::class);
 
         $carousels=$repo->findBy([],['createdAt'=>'DESC']);
+        //pour les stores
+        $stores=$storeRepo->findAll();
+
+        //por les offres vip mais pour l'instant on a findall
+        $articles=$articleRepo->findBy([
+            'estPaye' => true
+            ],
+            ['createdAt' => 'DESC']
+    );
 
 
         return $this->render('home/index.html.twig', [
             'carousels' => $carousels,
+            'stores' => $stores,
+            'articles' => $articles
         ]);
     }
 
@@ -123,6 +137,52 @@ class HomeController extends AbstractController
         return $this->redirectToRoute('app_home');
 
     }
+
+
+     /**
+    *@Route("/home/{id<[0-9]+>}/article_details", name="app_article_details")
+    */
+    public function article_details(Article $article,EntityManagerInterface $em):Response
+    {
+
+        $imageArticles=$article->getImageArticles();
+
+        $vendeur=$article->getUser();
+        
+        return $this->render('home/article_details.html.twig',[
+            'article' => $article,
+            'imageArticles' => $imageArticles,
+            'vendeur' => $vendeur
+        ]);
+
+    }
+
+
+     /**
+    *@Route("/home/acheter/{id<[0-9]+>}", name="app_acheter")
+    */
+    public function acheter(ArticleRepository $articleRepo,int $id):Response
+    {
+        if ($id===100) {
+            //Pour tous les articles
+            $articles=$articleRepo->findBy(['estPaye' => true],['createdAt' => 'DESC']);
+        }
+        else{
+                //Pour les articles specifiques
+                $articles=$articleRepo->findBy([
+                  'sousCategorie' => $id,
+                  'estPaye' => true
+                ],
+                ['createdAt' => 'DESC']);
+
+        }
+        
+        return $this->render('home/acheter.html.twig',[
+            'articles' => $articles
+        ]);
+    }
+
+
 }
 
 

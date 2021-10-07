@@ -17,7 +17,7 @@
 
             <div class="line"></div>
             <h4><i class="fas fa-store"></i> Store</h4>
-            <p>non <i class="fas fa-ban"></i> </p>
+            <p>{% if store %} {{store.nomStore}}</br> {{store.description}} {% else %} non <i class="fas fa-ban"></i> {% endif %}  </p>
 
             <div class="line"></div>
             <h4><i class="fas fa-calendar"></i> Date de creation du compte</h4>
