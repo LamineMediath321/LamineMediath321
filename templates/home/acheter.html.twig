@@ -48,8 +48,9 @@
                             <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':13}) }}">Chaussures de femme</a></li>
                             <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':14}) }}">Foulards</a></li>
                             <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':15}) }}">Sacs à mains</a></li>
-                            <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':16}) }}">Vêtements d'Homme</a></li>
-                            <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':17}) }}">Chaussures homme</a></li>
+                            <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':16}) }}">Sacs à dos</a></li>
+                            <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':17}) }}">Vêtements d'homme</a></li>
+                            <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':18}) }}">Chaussures d'homme</a></li>
                             <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':19}) }}">Autres</a></li>
                         </ul>
                     </li>
@@ -134,7 +135,7 @@
                                 <div class="card-body">
                                     <a href="shop-single.html" class="h3 text-decoration-none">{{article.nomArticle}} </a>
                                     <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
-                                        <li><h6> {{article.lieuVente}}</h6> </li>
+                                        <li><h6> {{ article.lieuVente|u.truncate(10,'...',false) }}</h6> </li>
                                         <li class="pt-2">
                                             <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
                                             <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>

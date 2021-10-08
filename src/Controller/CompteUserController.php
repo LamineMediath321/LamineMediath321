@@ -446,21 +446,15 @@ public function delete_image(ImageArticle $image, Request $request,EntityManager
     /**
     *@Route("/compte_user/store", name="app_store")
     */
-    public function creer_vitrine(Request $request,BanqueRepository $bankRepo,EntityManagerInterface $em,StoreRepository $storeRepo):Response
+    public function creer_vitrine(Request $request,BanqueRepository $bankRepo,EntityManagerInterface $em):Response
     {
         $user=$this->getUser();
         //On recupere son compte bancaire pour finaliser l'operation
         $bank=$bankRepo->findOneBy([
             'user' => $user->getId()
             ]);
-        //On recupere son store s'il a un store
-        $store=$storeRepo->findOneBy([
-            'user' => $user->getId()
-        ]);
 
-        if ($store==null) {
-            $store= new Store();
-        }
+        $store= new Store();
 
         $form=$this->createForm(StoreType::class,$store,[
             ]);
@@ -488,15 +482,19 @@ public function delete_image(ImageArticle $image, Request $request,EntityManager
 
 
     /**
-    *@Route("/compte_user/store_edit/{id<[0-9]+>}", name="app_store_edit")
+    *@Route("/compte_user/store_edit", name="app_store_edit")
     */
-    public function edit_vitrine(Request $request,BanqueRepository $bankRepo,EntityManagerInterface $em,Store $store):Response
+    public function edit_vitrine(Request $request,BanqueRepository $bankRepo,EntityManagerInterface $em,StoreRepository $storeRepo):Response
     {
         $user=$this->getUser();
         //On recupere son compte bancaire pour finaliser l'operation
         $bank=$bankRepo->findOneBy([
             'user' => $user->getId()
             ]);
+        //On recupere son store s'il a un store
+        $store=$storeRepo->findOneBy([
+            'user' => $user->getId()
+        ]);
 
         $form=$this->createForm(StoreType::class,$store,[
             ]);
