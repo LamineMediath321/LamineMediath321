@@ -10,9 +10,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\CarouselType;
 use App\Repository\CarouselRepository;
+use App\Repository\UserRepository;
 use App\Repository\StoreRepository;
 use App\Repository\ArticleRepository;
 use App\Entity\Article;
+use App\Entity\Store;
+use Knp\Component\Pager\PaginatorInterface;
 
 
 class HomeController extends AbstractController
@@ -161,25 +164,67 @@ class HomeController extends AbstractController
      /**
     *@Route("/home/acheter/{id<[0-9]+>}", name="app_acheter")
     */
-    public function acheter(ArticleRepository $articleRepo,int $id):Response
+    public function acheter(Request $request,PaginatorInterface $paginator,ArticleRepository $articleRepo,int $id):Response
     {
         if ($id===100) {
             //Pour tous les articles
-            $articles=$articleRepo->findBy(['estPaye' => true],['createdAt' => 'DESC']);
+            $donnees=$articleRepo->findBy(['estPaye' => true],['createdAt' => 'DESC']);
         }
         else{
                 //Pour les articles specifiques
-                $articles=$articleRepo->findBy([
+                $donnees=$articleRepo->findBy([
                   'sousCategorie' => $id,
                   'estPaye' => true
                 ],
                 ['createdAt' => 'DESC']);
 
         }
+        //La pagination
+        $articles = $paginator->paginate(
+            $donnees, //Les donnees
+            $request->query->getInt('page',1), //Current page or default page 1
+            9 //Le nombre d'articles / page 
+        );
         
         return $this->render('home/acheter.html.twig',[
             'articles' => $articles
         ]);
+    }
+
+
+     /**
+    *@Route("/home/{id<[0-9]+>}/voir_store", name="app_voir_store")
+    */
+    public function voir_store(Store $store,UserRepository $userRepo,ArticleRepository $articleRepo,PaginatorInterface $paginator,Request $request):Response
+    {
+
+        //On recupere le proprietaire du store
+        $storien=$userRepo->findOneBY([
+            'id' => $store->getUser()
+        ]);
+
+        //Je recupere ses articles
+        $donnees=$articleRepo->findBy([
+            'user' => $storien->getId(),
+            'estPaye' => true
+            ],
+            ['createdAt' => 'DESC']);
+
+
+        //La pagination
+        $articles = $paginator->paginate(
+            $donnees, //Les donnees
+            $request->query->getInt('page',1), //Current page or default page 1
+            3 //Le nombre d'articles / page 
+        );
+
+
+        return $this->render('home/voir_store.html.twig',[
+            'store' => $store,
+            'storien' => $storien,
+            'articles' => $articles 
+        ]);
+
     }
 
 

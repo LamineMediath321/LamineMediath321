@@ -61,6 +61,11 @@ class Store
      */
     private $user;
 
+    /**
+     * @ORM\Column(type="text", length=255, nullable=true)
+     */
+    private $adresseStore;
+
     
 
 
@@ -151,6 +156,18 @@ class Store
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getAdresseStore(): ?string
+    {
+        return $this->adresseStore;
+    }
+
+    public function setAdresseStore(?string $adresseStore): self
+    {
+        $this->adresseStore = $adresseStore;
 
         return $this;
     }

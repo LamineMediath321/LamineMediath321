@@ -13,6 +13,7 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 use App\Entity\SousCategorie;
 use App\Repository\SousCategorieRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class StoreType extends AbstractType
 {
@@ -33,6 +34,9 @@ class StoreType extends AbstractType
                 'constraints' => new NotBlank(['message' => 'Veillez donner un nom à votre store'])
             ])
             ->add('description')
+            ->add('adresseStore',TextareaType::class,[
+                'label' => 'Adresse du boutique (store)'
+            ])
             ->add('imageFile', VichImageType::class, [
                 'label' => 'Votre logo (JPG or PNG file)',
                 'required' => true,

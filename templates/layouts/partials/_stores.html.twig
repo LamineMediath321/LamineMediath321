@@ -12,12 +12,12 @@
                 {% for store in stores %}
                 <div class="p-1 mt-1">
                     <div class="mw-100 rounded-top overflow-hidden">
-                        <a href="">
+                        <a href="{{ path('app_voir_store',{'id' : store.id}) }}">
                             <img src="{{ (store.imageName ? vich_uploader_asset(store) : asset('images/placeholder.jpg')) | imagine_filter('squared_thumbnail_medium')}}" alt="{{ store.nomStore }}" class="w-100 rounded-top">
                         </a>
                     </div>
                     <p class="text-center mt-3 mb-3">{{ store.nomStore }}</p>
-                    <p class="text-center"><a class="btn btn-success">Go store</a></p>
+                    <p class="text-center"><a href="{{ path('app_voir_store',{'id' : store.id}) }}" class="btn btn-success">Go store</a></p>
                 </div>
                 
                 {% endfor %}
