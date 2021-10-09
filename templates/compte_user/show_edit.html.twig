@@ -10,13 +10,15 @@
      <!-- Open Content -->
     <section class="bg-light">
      <div class="container pb-5">
-        <div class="row">
+        <div class="row"> 
             <div class="col-lg-5 mt-5">
                 <div class="card mb-3">
                     {% if imageArticles %}
+                    <div>
                         <img class="card-img img-fluid" src="{{imageArticles[0].imageName ? asset('/uploads/articles/'~imageArticles[0].imageName) : asset('images/placeholder.jpg')}}" alt="Card image cap" id="product-detail">
                         {# On ajoute un lien permettant de supprimer une image (sera géré en Ajax) #}
-                        <a class="btn btn-light" href="{{ path('app_delete_image', {id: imageArticles[0].id})}}" data-delete data-token="{{ csrf_token('delete'~imageArticles[0].id)}}">Supprimer</a>
+                        <a class="btn btn-light" href="{{ path('app_delete_image', {'id' : imageArticles[0].id})}}" data-delete data-token="{{ csrf_token('delete'~imageArticles[0].id)}}">Supprimer</a>
+                    </div>
                     {% endif %}
                 </div>
                 <div class="row">  
@@ -29,9 +31,11 @@
                                     {% for image in imageArticles %}
                                         {% if loop.index >=2 %}
                                             <div class="col-4">
-                                                <img class="card-img img-fluid" src="{{image.imageName ? asset('/uploads/articles/'~image.imageName) : asset('images/placeholder.jpg')}}" alt="Card image cap" id="product-detail">
-                                                <a class="btn btn-light" href="{{ path('app_delete_image', {id: image.id})}}" data-delete data-token="{{ csrf_token('delete'~image.id)}}">Supprimer</a>
+                                                <div>
+                                                    <img class="card-img img-fluid" src="{{image.imageName ? asset('/uploads/articles/'~image.imageName) : asset('images/placeholder.jpg')}}" alt="Card image cap" id="product-detail">
+                                                    <a class="btn btn-light" href="{{ path('app_delete_image', {'id' : image.id})}}" data-delete data-token="{{ csrf_token('delete'~image.id)}}">Supprimer</a>
                                                 </div>
+                                            </div>
                                         {% endif %}
                                     {% endfor %}
                                 </div>

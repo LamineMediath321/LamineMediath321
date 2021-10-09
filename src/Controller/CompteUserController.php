@@ -156,23 +156,23 @@ class CompteUserController extends AbstractController
             ])
 
             ->add('image_1', FileType::class,[
-                'multiple' => true,
+                'multiple' => false,
                 'mapped' => false,
                 'required' => true,
                 'constraints' => new NotBlank(['message' => 'Veillez soummettre La photo principale'])
             ])
             ->add('image_2', FileType::class,[
-                'multiple' => true,
+                'multiple' => false,
                 'mapped' => false,
                 'required' => false
             ])
             ->add('image_3', FileType::class,[
-                'multiple' => true,
+                'multiple' => false,
                 'mapped' => false,
                 'required' => false
             ])
             ->add('image_4', FileType::class,[
-                'multiple' => true,
+                'multiple' => false,
                 'mapped' => false,
                 'required' => false
             ])
@@ -198,20 +198,16 @@ class CompteUserController extends AbstractController
 
             for ($i=1; $i <=4 ; $i++) { 
                 // On récupère les images transmises
-                $images = $form->get('image_'.$i)->getData();
+                $image = $form->get('image_'.$i)->getData();
                 
-              // On boucle sur les images
-                foreach($images as $image)
-                {
-                    // On génère un nouveau nom de fichier
-                    $fichier = md5(uniqid()).'.'.$image->guessExtension();
-                        
-                    // On copie le fichier dans le dossier uploads
+                if ($image!=null) {
+                 // On génère un nouveau nom de fichier
+                    $fichier = $image->getClientOriginalName();
+                // On copie le fichier dans le dossier uploads
                     $image->move(
-                    $this->getParameter('images_directory'),
-                        $fichier
+                        $this->getParameter('images_directory'),
+                            $fichier
                     );
-                        
                     // On crée l'image dans la base de données
                     $img = new ImageArticle();
                     $img->setImageName($fichier);
@@ -219,7 +215,7 @@ class CompteUserController extends AbstractController
                     $img->setArticle($article);
                     $em->persist($img);
                     $article->addImageArticle($img);
-                }
+                }         
             }
            
             $em->persist($article);
@@ -347,8 +343,8 @@ class CompteUserController extends AbstractController
             ->add('Nombre_etoiles',IntegerType::class)
 
             ->add('image', FileType::class,[
-                    'label' => false,
-                    'multiple' => true,
+                    'label' => 'Ajouter une image si vous avez moins de 4 images',
+                    'multiple' => false,
                     'mapped' => false,
                     'required' => false
                 ])
@@ -358,6 +354,40 @@ class CompteUserController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             //Il va falloir essayer de sauvegarder les modifications du formulaire
+            $article->setNomArticle($form->get('Nom_article')->getData());
+            $article->setDescription($form->get('Description')->getData());
+            $article->setLieuVente($form->get('Lieu_de_Vente')->getData());
+            $article->setDescription($form->get('Description')->getData());
+            $article->setPrice($form->get('Prix_article')->getData());
+            $article->setEtoiles($form->get('Nombre_etoiles')->getData());
+            //Par default l'article n'est pas paye, il sera true lorsqu'on retire la somme de son compte 
+                
+            // On récupère l'image transmise
+            $image = $form->get('image')->getData();
+                
+              
+            if ($image!=null) {
+                 // On génère un nouveau nom de fichier
+                $fichier = $image->getClientOriginalName();
+                // On copie le fichier dans le dossier uploads
+                $image->move(
+                    $this->getParameter('images_directory'),
+                        $fichier
+                );
+                // On crée l'image dans la base de données
+                $img = new ImageArticle();
+                $img->setImageName($fichier);
+                $img->setArticle($article);
+                $em->persist($img);
+                $article->addImageArticle($img);
+            }          
+               
+           
+            $em->persist($article);
+            $em->flush();
+            return $this->redirectToRoute('app_article_show',[
+                'id' => $article->getId()
+            ]);
         }
         return $this->render('compte_user/show_edit.html.twig',[
             'user' => $user,
@@ -372,6 +402,7 @@ class CompteUserController extends AbstractController
  * @Route("/compte_user/delete/{id<[0-9]+>}", name="app_delete_image", methods={"DELETE"})
  */
 public function delete_image(ImageArticle $image, Request $request,EntityManagerInterface $em){
+
     $data = json_decode($request->getContent(), true);
 
     // On vérifie si le token est valide
@@ -435,11 +466,7 @@ public function delete_image(ImageArticle $image, Request $request,EntityManager
 
 
         //$this->addFlash('success','Vous avez creer un article !');
-          return $this->render('compte_user/admin_user.html.twig',[
-                                'user' => $user,
-                                'store' => $store,
-                                'bank' => $bank
-                            ]);
+          return $this->redirectToRoute('app_voir_article');
     }
 
 
@@ -469,7 +496,7 @@ public function delete_image(ImageArticle $image, Request $request,EntityManager
             $em->flush();
 
 
-            return $this->redirectToRoute('app_admin_user');
+            return $this->redirectToRoute('app_store_edit');
         }
 
           return $this->render('compte_user/store.html.twig',[

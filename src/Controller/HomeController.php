@@ -13,6 +13,7 @@ use App\Repository\CarouselRepository;
 use App\Repository\UserRepository;
 use App\Repository\StoreRepository;
 use App\Repository\ArticleRepository;
+use App\Repository\SousCategorieRepository;
 use App\Entity\Article;
 use App\Entity\Store;
 use Knp\Component\Pager\PaginatorInterface;
@@ -195,14 +196,17 @@ class HomeController extends AbstractController
      /**
     *@Route("/home/{id<[0-9]+>}/voir_store", name="app_voir_store")
     */
-    public function voir_store(Store $store,UserRepository $userRepo,ArticleRepository $articleRepo,PaginatorInterface $paginator,Request $request):Response
+    public function voir_store(Store $store,UserRepository $userRepo,ArticleRepository $articleRepo,SousCategorieRepository $sousCatRepo,PaginatorInterface $paginator,Request $request):Response
     {
 
         //On recupere le proprietaire du store
-        $storien=$userRepo->findOneBY([
+        $storien=$userRepo->findOneBy([
             'id' => $store->getUser()
         ]);
-
+        //Je recupere son domaine
+        $domaine=$sousCatRepo->findOneBy([
+            'id' => $store->getDomaine()
+        ]);
         //Je recupere ses articles
         $donnees=$articleRepo->findBy([
             'user' => $storien->getId(),
@@ -215,13 +219,14 @@ class HomeController extends AbstractController
         $articles = $paginator->paginate(
             $donnees, //Les donnees
             $request->query->getInt('page',1), //Current page or default page 1
-            3 //Le nombre d'articles / page 
+            6 //Le nombre d'articles / page 
         );
 
 
         return $this->render('home/voir_store.html.twig',[
             'store' => $store,
             'storien' => $storien,
+            'domaine' => $domaine,
             'articles' => $articles 
         ]);
 

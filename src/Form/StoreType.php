@@ -35,7 +35,7 @@ class StoreType extends AbstractType
             ])
             ->add('description')
             ->add('adresseStore',TextareaType::class,[
-                'label' => 'Adresse du boutique (store)'
+                'label' => 'Adresse du boutique (store)',
             ])
             ->add('imageFile', VichImageType::class, [
                 'label' => 'Votre logo (JPG or PNG file)',

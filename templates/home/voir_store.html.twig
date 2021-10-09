@@ -22,20 +22,32 @@
                 <div class="col-lg-7 mt-5">
                     <div class="card">
                         <div class="card-body">
-                            <h1 class="h2"> {{store.nomStore}} </h1>
-                            <p class="h3 py-2">hhhh </p>
+                            <h1 class="h2">Infos du Store  </h1>
+                            <p class="h3 py-2">{{store.nomStore}}</p>
                             
                             <ul class="list-inline">
                                 <li class="list-inline-item">
-                                    <h6>Lieu de vente:</h6>
+                                    <h6>Domaine:</h6>
                                 </li>
                                 <li class="list-inline-item">
-                                    <p class="text-muted"><strong>lieuVente </strong></p>
+                                    <p class="text-muted"><strong>{{ domaine.nomCategorie }}  </strong></p>
+                                </li></br>
+                                <li class="list-inline-item">
+                                    <h6>Adresse:</h6>
+                                </li>
+                                <li class="list-inline-item">
+                                    <p class="text-muted"><strong>{{ store.adresseStore }}  </strong></p>
+                                </li></br>
+                                 <li class="list-inline-item">
+                                    <h6>Store creer le (sur le site):</h6>
+                                </li>
+                                <li class="list-inline-item">
+                                    <p class="text-muted"><strong>{{ store.createdAt|date('d/m/Y') }}  </strong></p>
                                 </li>
                             </ul>
 
-                            <h6>Description:</h6>
-                            <p>description </p>
+                            <h6></h6>
+                            <p></p>
 
                             <h6>Vendeur:</h6>
                             <ul class="list-unstyled pb-3">
@@ -98,11 +110,14 @@
                     </p>
                 </div>
             </div>
+            <div class="text-center" >
+                <p>Les articles de {{ store.nomStore }}</p>
+            </div>
             <div class="row">
                 {% for article in articles %}
                     <div class="col-12 col-md-4 mb-4">
                         <div class="card h-100">
-                            <a href="{{ path('app_article_show',{'id':article.id}) }}">
+                            <a href="{{ path('app_article_details',{'id':article.id}) }}">
                                 {% if article.imageArticles %}
                                     <div class="mw-100 rounded-top overflow-hidden">
                                          <img src="{{asset('/uploads/articles/'~article.imageArticles[0].imageName) | imagine_filter('squared_thumbnail_medium')}}" alt="{{article.nomArticle}}" class="w-100 rounded-top" id="product-detail">
@@ -126,7 +141,7 @@
                                 <p class="card-text">
                                     {{article.description}}
                                 </p>
-                                <p class="text-muted"> {{article.choixVisbilite}} </p>
+                                <p class="text-muted"> </p>
                             </div>
                         </div>
                     </div>
