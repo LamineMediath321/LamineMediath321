@@ -62,8 +62,8 @@ class RegistrationController extends AbstractController
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
             // do anything else you need here, like send an email
-
-            return $this->redirectToRoute('app_confirmer');
+            $this->addFlash('success', "Apres s'etre authentifier. Veuillez consulter votre boite email pour verifier votre adresse email .");
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('registration/register.html.twig', [
@@ -82,7 +82,7 @@ class RegistrationController extends AbstractController
         try {
             $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
         } catch (VerifyEmailExceptionInterface $exception) {
-            $this->addFlash('verify_email_error', $exception->getReason());
+            $this->addFlash('error', $exception->getReason());
 
             return $this->redirectToRoute('app_register');
         }

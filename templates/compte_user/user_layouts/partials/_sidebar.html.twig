@@ -65,8 +65,11 @@
             </ul>
 
                 <li>
-                    <a class="btn btn-success" href="{{ path('app_logout') }}" class="">Deconnexion</a>
-                </li>    
+                    <a class="btn btn-success" href="#" onclick="event.preventDefault();document.getElementById('js-logout-form').submit();">Deconnexion</a>
+                </li>
+                <form id="js-logout-form" action="{{path('app_logout')}}" method="POST" style="display: none"> 
+                    <input type="hidden" name="_csrf_token" value="{{csrf_token('logout')}}">
+                </form>    
         </nav>
         <!-- Page Content  -->
         <div id="content">
