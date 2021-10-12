@@ -38,7 +38,7 @@
                             Editer mon store
                         </a>
                     {% else %}
-                         <a href="{{path('app_store')}}">
+                         <a href="{{path('app_store_price')}}">
                             <i class="fas fa-store"></i>
                             Creer un store
                         </a>
@@ -91,7 +91,9 @@
                             
                             <li class="nav-item ml-auto">
                                 <a class="nav-link" href="#">
-                                    {{bank.pieces}} 
+                                    {% if bank %}
+                                        {{bank.pieces}} 
+                                    {% endif %}
                                     <i class="fas fa-coins"></i>
                                 </a>
                             </li>

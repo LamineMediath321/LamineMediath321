@@ -17,6 +17,7 @@
                             <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
                         </a>
                         <ul class="collapse show list-unstyled pl-3">
+                            <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':27}) }}">Immobiler</a></li>
                             <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':1}) }}">Appartement à louer</a></li>
                             <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':2}) }}">Appartement meublés</a></li>
                             <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':3}) }}">Terrains à vendre </a></li>
@@ -30,7 +31,8 @@
                             <i class="pull-right fa fa-fw fa-chevron-circle-down mt-1"></i>
                         </a>
                         <ul id="collapseTwo" class="collapse list-unstyled pl-3">
-                            <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':6}) }}">Téléphones</a></li>
+                            <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':28}) }}">Electroniques</a></li>
+                             <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':6}) }}">Téléphones</a></li>
                             <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':7}) }}">Appareils photos</a></li>
                             <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':8}) }}">Ordinateurs & Tablettes</a></li>
                             <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':9}) }}">Son et Vision(Tv)</a></li>
@@ -44,7 +46,8 @@
                             <i class="pull-right fa fa-fw fa-chevron-circle-down mt-1"></i>
                         </a>
                         <ul id="collapseThree" class="collapse list-unstyled pl-3">
-                            <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':12}) }}">Vêtements de femme</a></li>
+                            <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':29}) }}">Vêtements</a></li>
+                             <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':12}) }}">Vêtements de femme</a></li>
                             <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':13}) }}">Chaussures de femme</a></li>
                             <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':14}) }}">Foulards</a></li>
                             <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':15}) }}">Sacs à mains</a></li>
@@ -60,7 +63,9 @@
                             <i class="pull-right fa fa-fw fa-chevron-circle-down mt-1"></i>
                         </a>
                         <ul id="collapseThree" class="collapse list-unstyled pl-3">
-                            <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':20}) }}">Parfums & Produits Cosmetiques</a></li>
+                            <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':30}) }}">Beaute</a>
+                            </li>
+                            <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':20}) }}">Parfums & Produits Cosmetiques</a>
                             <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':21}) }}">Cheveux naturels & greffages</a></li>
                             <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':22}) }}">Montres & Bijoux</a></li>
                         </ul>
@@ -71,7 +76,8 @@
                             <i class="pull-right fa fa-fw fa-chevron-circle-down mt-1"></i>
                         </a>
                         <ul id="collapseThree" class="collapse list-unstyled pl-3">
-                            <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':23}) }}">Materiels de sport</a></li>
+                            <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':31}) }}">Sport</a></li>
+                             <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':23}) }}">Materiels de sport</a></li>
                             <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':24}) }}">Tenues de sport</a></li>
                         </ul>
                     </li>
@@ -81,6 +87,7 @@
                             <i class="pull-right fa fa-fw fa-chevron-circle-down mt-1"></i>
                         </a>
                         <ul id="collapseThree" class="collapse list-unstyled pl-3">
+                            <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':32}) }}">Services</a></li>
                             <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':25}) }}">Cours particuliers</a></li>
                             <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':26}) }}">Formations</a></li>
                         </ul>
@@ -91,7 +98,7 @@
                             <i class="pull-right fa fa-fw fa-chevron-circle-down mt-1"></i>
                         </a>
                         <ul id="collapseThree" class="collapse list-unstyled pl-3">
-                            <li><a class="text-decoration-none" href="#">Alimentation</a></li>
+                            <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':33}) }}">Alimentation</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -104,6 +111,8 @@
                             <li class="list-inline-item">
                                 <a class="h3 text-dark text-decoration-none mr-3" href="{{ path('app_acheter',{'id':100}) }}">All</a>
                             </li>
+                            
+
                         </ul>
                     </div>
                     <div class="col-md-6 pb-4">
@@ -126,9 +135,9 @@
                                    </div>
                                     <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                                         <ul class="list-unstyled">
-                                            <li><a class="btn btn-success text-white" href="shop-single.html"><i class="far fa-heart"></i></a></li>
+                                            <li><a class="btn btn-success text-white" href=""><i class="fab fa-whatsapp"></i></a></li>
                                             <li><a class="btn btn-success text-white mt-2" href="{{ path('app_article_details', {'id':article.id}) }}"><i class="far fa-eye"></i></a></li>
-                                            <li><a class="btn btn-success text-white mt-2" href="shop-single.html"><i class="fas fa-cart-plus"></i></a></li>
+                                            
                                         </ul>
                                     </div>
                                 </div>

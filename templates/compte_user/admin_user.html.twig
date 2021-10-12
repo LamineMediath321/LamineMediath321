@@ -3,7 +3,7 @@
 {% block title %}Ladiastore Vendez & Achetez !{% endblock %}
 
 {% block body %}
-
+    
 
      {{ include('compte_user/user_layouts/partials/_sidebar.html.twig') }}
 
@@ -21,7 +21,7 @@
 
             <div class="line"></div>
             <h4><i class="fas fa-calendar"></i> Date de creation du compte</h4>
-            <p> {{user.createdAt|date}} </p>
+            <p> {{user.createdAt|date('d/m/Y')}} </p>
 
             <div class="line"></div>
             <h4><i class="fas fa-building"></i> Mon Adreese</h4>

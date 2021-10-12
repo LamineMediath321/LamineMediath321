@@ -31,6 +31,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Form\StoreType;
 use App\Entity\Store;
 use App\Repository\StoreRepository;
+use Knp\Component\Pager\PaginatorInterface;
 
 
 class CompteUserController extends AbstractController
@@ -84,7 +85,7 @@ class CompteUserController extends AbstractController
 
             $em->flush();
 
-            //$this->addFlash('success','Mise a jour effectue avec succes !');
+            $this->addFlash('success','Mise a jour effectue avec succes !');
 
 
             return $this->redirectToRoute('app_admin_user');
@@ -465,8 +466,33 @@ public function delete_image(ImageArticle $image, Request $request,EntityManager
         }
 
 
-        //$this->addFlash('success','Vous avez creer un article !');
+        $this->addFlash('warning','Vous avez creer une annonce !');
           return $this->redirectToRoute('app_voir_article');
+    }
+
+
+    /**
+    *@Route("/compte_user/store_price", name="app_store_price")
+    */
+    public function store_price(Request $request,BanqueRepository $bankRepo,StoreRepository $storeRepo, EntityManagerInterface $em):Response
+    {
+        $user=$this->getUser();
+        //On recupere son compte bancaire pour finaliser l'operation
+        $bank=$bankRepo->findOneBy([
+            'user' => $user->getId()
+            ]);
+        //On recupere son store s'il a un store
+        $store=$storeRepo->findOneBy([
+            'user' => $user->getId()
+        ]);
+
+            return $this->render('compte_user/store_price.html.twig',[
+                                'user' => $user,
+                                'bank' => $bank,
+                                'store' => $store
+                            ]);
+
+  
     }
 
 
@@ -548,16 +574,24 @@ public function delete_image(ImageArticle $image, Request $request,EntityManager
     /**
     *@Route("/compte_user/voir_article", name="app_voir_article")
     */
-    public function voir_article(Request $request,ArticleRepository $articleRepo,EntityManagerInterface $em):Response
+    public function voir_article(Request $request,ArticleRepository $articleRepo,EntityManagerInterface $em,PaginatorInterface $paginator):Response
     {
+        //Pour consulter les articles du user en connecte
         $user=$this->getUser();
 
         //Je recupere les articles du user courant 
-        $articles=$articleRepo->findBy([
+        $donnees=$articleRepo->findBy([
             'user' => $user->getId(),
             'estPaye' => true
             ],
             ['createdAt' => 'DESC']);
+
+        //La pagination
+        $articles = $paginator->paginate(
+            $donnees, //Les donnees
+            $request->query->getInt('page',1), //Current page or default page 1
+            6 //Le nombre d'articles / page 
+        );
 
 
         return $this->render('compte_user/voir_article.html.twig',[

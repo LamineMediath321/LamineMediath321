@@ -57,6 +57,7 @@
         {% endblock %}
     </head>
     <body>
+        {{ include('compte_user/user_layouts/partials/_flash_message.html.twig') }}
     
         <main role="main">  
              {% block body %}{% endblock %}

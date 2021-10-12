@@ -146,17 +146,23 @@ class HomeController extends AbstractController
      /**
     *@Route("/home/{id<[0-9]+>}/article_details", name="app_article_details")
     */
-    public function article_details(Article $article,EntityManagerInterface $em):Response
+    public function article_details(Article $article,ArticleRepository $articleRepo,EntityManagerInterface $em):Response
     {
 
         $imageArticles=$article->getImageArticles();
+
+        //On recupere les articles similaires
+        $store=$article->getUser()->getStore();
+        $similaires=$articleRepo->findBySimilaire($article->getSousCategorie(),$article->getId());
 
         $vendeur=$article->getUser();
         
         return $this->render('home/article_details.html.twig',[
             'article' => $article,
             'imageArticles' => $imageArticles,
-            'vendeur' => $vendeur
+            'vendeur' => $vendeur,
+            'store' => $store,
+            'similaires' => $similaires
         ]);
 
     }
@@ -180,6 +186,7 @@ class HomeController extends AbstractController
                 ['createdAt' => 'DESC']);
 
         }
+        
         //La pagination
         $articles = $paginator->paginate(
             $donnees, //Les donnees
@@ -230,6 +237,14 @@ class HomeController extends AbstractController
             'articles' => $articles 
         ]);
 
+    }
+
+    /**
+     * @Route("/home/confirmer", name="app_confirmer")
+     */
+    public function confirmer(Request $request): Response
+    {
+        return $this->render('home/confirm.html.twig');
     }
 
 

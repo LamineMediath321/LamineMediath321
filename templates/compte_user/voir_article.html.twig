@@ -57,11 +57,17 @@
             </div>
         </div>
     </section>
-
-    <div class="text-center">
+     <div class="d-flex justify-content-center mt-5">
+                    {% do articles.setPageRange(2) %}
+                    {{knp_pagination_render(articles,'layouts/partials/_pagination.html.twig')}}
+                    
+    </div>
+    <div class="text-center mt-5">
          <a href="{{ path('app_admin_user')}}" class="btn btn-success">Précédent</a>
          <a href="{{ path('app_article')}}" class="btn btn-light">Creer article</a>
+         <a href="{{ path('app_admin_user') }}" class="btn btn-light">Au menu</a>
     </div>
+    
     <!-- End Featured Product -->
 
 

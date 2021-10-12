@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\HttpFoundation\File\File;
@@ -19,7 +20,8 @@ use App\Entity\Traits\Timestampable;
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="users")
  *@Vich\Uploadable
-  *@ORM\HasLifecycleCallbacks
+ *@ORM\HasLifecycleCallbacks
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface,\Serializable
 {
@@ -46,6 +48,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface,\Seriali
 
     /**
      * @ORM\Column(type="string", length=180, unique=true,nullable=true)
+     *@Assert\NotBlank(message="L' adresse email ne doit pas être vide")
+     *@Assert\Email(message="Veillez entrer une adresse email valide")
      */
     private $email;
 
@@ -104,6 +108,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface,\Seriali
      * @ORM\OneToOne(targetEntity=Store::class, mappedBy="user", cascade={"persist", "remove"})
      */
     private $store;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isVerified = false;
+
+    
 
     public function __construct()
     {
@@ -401,6 +412,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface,\Seriali
 
         return $this;
     }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+   
 
 
 

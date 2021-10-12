@@ -1,8 +1,9 @@
-<!-- Start Article -->
+<!-- Section des stores -->
     <section class="py-5">
         <div class="container">
-            <div class="row text-left p-2 pb-3">
+            <div class="row text-center p-2 pb-3">
                 <h3>Stores</h3>
+                <p>Les boutiques </p>
             </div>
 
             <!--Start Carousel Wrapper-->
@@ -10,21 +11,46 @@
             <div id="carousel-related-product">
 
                 {% for store in stores %}
-                <div class="p-1 mt-1">
-                    <div class="mw-100 rounded-top overflow-hidden">
-                        <a href="{{ path('app_voir_store',{'id' : store.id}) }}">
-                            <img src="{{ (store.imageName ? vich_uploader_asset(store) : asset('images/placeholder.jpg')) | imagine_filter('squared_thumbnail_medium')}}" alt="{{ store.nomStore }}" class="w-100 rounded-top">
-                        </a>
-                    </div>
-                    <p class="text-center mt-3 mb-3">{{ store.nomStore }}</p>
-                    <p class="text-center"><a href="{{ path('app_voir_store',{'id' : store.id}) }}" class="btn btn-success">Go store</a></p>
-                </div>
+                <!--BEGIN of articles-->
+                        <div class="col-6 p-2 pb-3">
+                            <div class="product-wap card rounded-0">
+                                <div class="card rounded-0">
+                                    <div class="mw-100 rounded-top overflow-hidden">
+                                        <img src="{{ (store.imageName ? vich_uploader_asset(store) : asset('images/placeholder.jpg')) | imagine_filter('squared_thumbnail_medium')}}" alt="{{ store.nomStore }}" class="w-100 rounded-top">
+                                    </div>
+                                    <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                    <ul class="list-unstyled">
+                                        
+                                        <li><a class="btn btn-light text-white mt-2" href="{{ path('app_voir_store',{'id' : store.id}) }}"><i class="far fa-eye" style="color: black"></i></a></li>
+                                    </ul>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <a href="shop-single.html" class="h3 text-decoration-none">{{store.nomStore}}</a>
+                                    <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                                      
+                                        <li class="pt-2">
+                                            <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
+                                            <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
+                                            <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
+                                            <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
+                                            <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
+                                        </li>
+                                    </ul>
+                                    <h6 class="text-left mb-0">Domaine: {{store.domaine.categorie.nomCategorie|u.truncate(10,'...',false) }}</h6>
+                                </div>
+
+                            </div>
+                            <p class="text-center mt-2"><a href="{{ path('app_voir_store',{'id' : store.id}) }}" class="btn btn-success">Go store</a></p>
+                        </div>
+                        <!--End of articles-->
                 
                 {% endfor %}
 
 
 
         </div>
+        
     </section>
     <!-- End Article -->
      <script>
