@@ -16,24 +16,31 @@
             <div class="row">
                 <div class="col-6">
                     {{ form_row(registrationForm.firstName,{
-                        'label': 'Votre Pérnom'
+                        'label': 'Pérnom'
                     }) }}
                 </div>
                 <div class="col-6">
                      {{ form_row(registrationForm.lastName,{
-                        'label': 'Votre de nom faimmile'
+                        'label': 'Nom famille'
                         }) }}
                 </div>
             </div>
             
+           <div class="row">
+                <div class="col-6">
+                     {{ form_row(registrationForm.email) }}
+                </div>
+                <div class="col-6">
+                    {{ form_row(registrationForm.phone,{
+                        'label': 'Numéro de tél..'
+                     })}}
+                </div>
+           </div>
            
-            {{ form_row(registrationForm.email) }}
             {{ form_row(registrationForm.plainPassword, {
                 label: 'Password'
             }) }}
-            {{ form_row(registrationForm.phone,{
-                'label': 'Votre numero de tél..'
-            }) }}
+          
             {{ form_row(registrationForm.adresse) }}
             
             {{ form_row(registrationForm.agreeTerms) }}

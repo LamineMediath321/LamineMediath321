@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 
 class RegistrationFormType extends AbstractType
 {
@@ -21,7 +22,10 @@ class RegistrationFormType extends AbstractType
             ->add('firstName')
             ->add('lastName')
             ->add('email')
-            ->add('phone',TextType::class,[
+            ->add('phone',TelType::class,[
+                'attr' => array(
+                'placeholder' => '+221 70 123 11 23'
+                ),
                 'constraints' => new NotBlank([
                         'message' => 'Veillez entrer votre numéro de tél'
                     ])

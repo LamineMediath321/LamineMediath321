@@ -5,7 +5,7 @@
 Réinitialisez votre mot de passe{% endblock %}
 
 {% block body %}
-   <div class="row mt-5 mb-5">
+   <div class="">
        <div class="col-6 mx-auto">
             {% for flashError in app.flashes('reset_password_error') %}
             <div class="alert alert-danger mb-3 rounded" role="alert">{{ flashError }}</div>
