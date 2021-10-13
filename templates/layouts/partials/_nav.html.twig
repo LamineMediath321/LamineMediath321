@@ -91,3 +91,10 @@
             </form>
         </div>
     </div>
+    {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type }}" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+{% endfor %}

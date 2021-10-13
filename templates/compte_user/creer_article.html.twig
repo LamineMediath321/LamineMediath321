@@ -19,11 +19,18 @@
 			{{ form_row(form.Nom_article)}}
 			{{ form_row(form.Description)}}
 			{{ form_row(form.Lieu_de_Vente)}}
-			{{ form_row(form.Prix_article)}}
-			{{ form_row(form.Nombre_etoiles)}}
+			<div class="row">
+				<div class="col-6">
+					{{ form_row(form.Prix_annonce)}}
+				</div>
+				<div class="col-6">
+					{{ form_row(form.Nombre_etoiles)}}
+				</div>
+			</div>
+			
 			<h6>Veillez choisir les photos de votre article</h6>
 			<div class="row">
-				<img class="" src="{{asset('assets/img/lesPhotos.png')|
+				<img class="img-fluid img-thumbnail" src="{{asset('assets/img/lesPhotos.png')|
 				imagine_filter('squared_thumbnail_medium')}}">
 				<div class="">
 					<div class="row">
@@ -42,7 +49,7 @@
 					</div>
 				</div>
 			</div>
-			<input class="btn btn-success btn-block" type="submit" value="Suivant" formnovalidate >
+			<input class="btn btn-success btn-block mt-3" type="submit" value="Suivant" formnovalidate >
 
 			{{ form_end(form) }}
 		</div>

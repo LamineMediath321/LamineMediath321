@@ -8,10 +8,21 @@
 	<div class="text-center mt-3">
 		<h1><a href="{{path('app_admin_user')}}" class="btn btn-success">Retour</a></h1>
 	</div>
-	<div class="row">
+	<div class="">
 		<div class="col-6 mx-auto m-5">
-		<h1>Modifier mon profil</h1>
+		<h1 class="text-center m-5">Modifier mon profil</h1>
 			{{ form_start(monForm) }}
+				<div class="row">
+					<div class="col-6">
+						{{form_row(monForm.firstName)}}
+					</div>
+					<div class="col-6">
+						{{form_row(monForm.lastName)}}
+					</div>	
+				</div>
+				{{form_row(monForm.email)}}
+				{{form_row(monForm.phone)}}
+				{{form_row(monForm.adresse)}}
 
 			{{ form_widget(monForm)}}
 			<input class="btn btn-success btn-block" type="submit" value="Mettez à jour" formnovalidate >

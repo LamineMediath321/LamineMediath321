@@ -32,6 +32,8 @@ use App\Form\StoreType;
 use App\Entity\Store;
 use App\Repository\StoreRepository;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Validator\Constraints\GreaterThan;
+use Symfony\Component\Validator\Constraints\LessThan;
 
 
 class CompteUserController extends AbstractController
@@ -125,7 +127,7 @@ class CompteUserController extends AbstractController
                 'query_builder' => function(CategorieRepository $cateRepo){
                     return $cateRepo->createQueryBuilder('c')->orderBy('c.nomCategorie','ASC');
                 },
-                 'constraints' => new NotBlank(['message' => 'Please choisissez une categorie']) 
+                 'constraints' => new NotBlank(['message' => 'Veillez choisir une categorie']) 
             ])
 
             ->add('Sous_Categorie',EntityType::class,[
@@ -136,7 +138,7 @@ class CompteUserController extends AbstractController
                 'query_builder' => function(SousCategorieRepository $sousCateRepo){
                     return $sousCateRepo->createQueryBuilder('s')->orderBy('s.nomCategorie','ASC');
                 },
-                 'constraints' => new NotBlank(['message' => 'Please choisissez une sous categorie']) 
+                 'constraints' => new NotBlank(['message' => 'Veillez choisir une sous categorie']) 
             ])
 
             ->add('Nom_article',TextType::class,[
@@ -150,10 +152,20 @@ class CompteUserController extends AbstractController
                 'constraints' => new NotBlank(['message' => 'Le Lieu de vente ne doit pas être vide'])
             ])
 
-            ->add('Prix_article',TextType::class)
+            ->add('Prix_annonce',TextType::class)
 
             ->add('Nombre_etoiles',IntegerType::class,[
-                'label' => 'Nombre etoiles entre 1 & 5'
+                'label' => 'Nombre etoiles [1 & 5]',
+                'constraints' => [
+                    new GreaterThan([
+                            'value' => 0,
+                            'message' => 'Vous devez avoir un moins 1 etoile',
+                        ]),
+                    new LessThan([
+                            'value' => 0,
+                            'message' => '5 etoiles au maximum',
+                        ]),
+                    ]
             ])
 
             ->add('image_1', FileType::class,[
@@ -190,7 +202,6 @@ class CompteUserController extends AbstractController
             $article->setNomArticle($form->get('Nom_article')->getData());
             $article->setDescription($form->get('Description')->getData());
             $article->setLieuVente($form->get('Lieu_de_Vente')->getData());
-            $article->setDescription($form->get('Description')->getData());
             $article->setSousCategorie($form->get('Sous_Categorie')->getData());
             $article->setPrice($form->get('Prix_article')->getData());
             $article->setEtoiles($form->get('Nombre_etoiles')->getData());

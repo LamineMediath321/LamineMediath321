@@ -277,6 +277,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface,\Seriali
 
         return $this;
     }
+ 
 
     /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
@@ -426,6 +427,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface,\Seriali
     }
 
    
+   public function gravatar(?int $size = 200)
+    {
+        return 'https://www.gravatar.com/avatar/'.md5(strtolower(trim($this->getEmail()))).'/?s='.$size;
+    }
 
 
 

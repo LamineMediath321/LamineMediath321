@@ -2,9 +2,20 @@
         <!-- Sidebar  -->
         <nav id="sidebar" style="background: #212934">
             <div class="sidebar-header" style="background: #212934">
-                <h3 style="color: #59ab6e">Ladiastore</h3>
+                <h3 style="color: #59ab6e">L&part;di&part;store</h3>
                 <strong style="color: #59ab6e">LS</strong>
+                
             </div>
+
+            <ul class="list-unstyled components mt-5">
+
+                <li>
+                    <a class="btn btn-success" href="#" onclick="event.preventDefault();document.getElementById('js-logout-form').submit();"><small>Déconnexion</small></a>
+                </li>
+                    <form id="js-logout-form" action="{{path('app_logout')}}" method="POST" style="display: none"> 
+                        <input type="hidden" name="_csrf_token" value="{{csrf_token('logout')}}">
+                    </form>
+            </ul>   
 
             <ul class="list-unstyled components">
                  <li>
@@ -64,12 +75,7 @@
                 </li>
             </ul>
 
-                <li>
-                    <a class="btn btn-success" href="#" onclick="event.preventDefault();document.getElementById('js-logout-form').submit();">Deconnexion</a>
-                </li>
-                <form id="js-logout-form" action="{{path('app_logout')}}" method="POST" style="display: none"> 
-                    <input type="hidden" name="_csrf_token" value="{{csrf_token('logout')}}">
-                </form>    
+                 
         </nav>
         <!-- Page Content  -->
         <div id="content">

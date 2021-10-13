@@ -16,7 +16,7 @@ class UserEditFormType extends AbstractType
     {
         $builder
              ->add('imageFile', VichImageType::class, [
-                'label' => 'Image (JPG or PNG file)',
+                'label' => 'Image de profil (JPG or PNG file)',
                 'required' => false,
                 'allow_delete' => true,
                 'delete_label' => 'Delete',
@@ -32,6 +32,7 @@ class UserEditFormType extends AbstractType
             ->add('lastName',TextType::class,[
                 'label' => 'Nom'
             ])
+            ->add('email')
             ->add('phone',TextType::class,[
                 'label' => 'Téléphone'
             ])
