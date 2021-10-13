@@ -20,7 +20,7 @@ class LogoutEventSubscriber implements EventSubscriberInterface
     {
         $event->getRequest()->getSession()->getFlashBag()->add(
             'success',
-            'Vous vous êtes déconnecté(e) à bientôt!'
+            'A bientôt '.$event->getToken()->getUser()->getFirstName().' '.$event->getToken()->getUser()->getLastName() //On peut aussi acceder au user en injectant Security
         );
         
         $event->setResponse(new RedirectResponse($this->urlGenerator->generate('app_home')));

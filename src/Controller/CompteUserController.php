@@ -34,14 +34,19 @@ use App\Repository\StoreRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\LessThan;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
+
+/**
+*@IsGranted("ROLE_USER")
+*/
 
 class CompteUserController extends AbstractController
 {
     /**
-     * @Route("/compte/user", name="app_admin_user")
+     * @Route("/compte_user/", name="app_admin_user")
      */
-    public function index(BanqueRepository $bankRepo,StoreRepository $storeRepo): Response
+    public function profil(BanqueRepository $bankRepo,StoreRepository $storeRepo): Response
     {
 
     	$user=$this->getUser();
