@@ -88,10 +88,34 @@ class RegistrationController extends AbstractController
         }
 
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'Your email address has been verified.');
+        $this->addFlash('success', 'Votre adresse e-mail a été vérifiée.');
 
         return $this->redirectToRoute('app_login');
     }
+
+
+    /**
+     * @Route("/new/link/{id<[0-9]+>}", name="app_new_link")
+     */
+    public function new_link(Request $request, UserPasswordEncoderInterface $passwordEncoder,User $user): Response
+    {
+        //Envoie un nouveau lien pour les users qui ont oublies de verifier leur email
+
+            // generate a signed url and email it to the user
+            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+                (new TemplatedEmail())
+                    ->from(new Address('noreply@ladiastore.com', 'Ladiastore'))
+                    ->to($user->getEmail())
+                    ->subject('Veuillez confirmer votre email')
+                    ->htmlTemplate('registration/confirmation_email.html.twig')
+            );
+            // do anything else you need here, like send an email
+            $this->addFlash('success', "On vous a envoye un nouveau lien. Veillez consulter votre boite email pour verifier votre adresse .");
+            return $this->redirectToRoute('app_login');
+
+       
+    }
+
 
 
 

@@ -17,6 +17,7 @@ use App\Repository\SousCategorieRepository;
 use App\Entity\Article;
 use App\Entity\Store;
 use Knp\Component\Pager\PaginatorInterface;
+use App\Form\ChercherArticleType;
 
 
 class HomeController extends AbstractController
@@ -24,7 +25,7 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="app_home")
      */
-    public function index(EntityManagerInterface $em,StoreRepository $storeRepo,ArticleRepository $articleRepo): Response
+    public function index(EntityManagerInterface $em,StoreRepository $storeRepo,ArticleRepository $articleRepo,Request $request): Response
     {
 
     	$repo=$em->getRepository(Carousel::class);
@@ -38,8 +39,8 @@ class HomeController extends AbstractController
             'estPaye' => true
             ],
             ['createdAt' => 'DESC']
-    );
-
+        );
+       
 
         return $this->render('home/index.html.twig', [
             'carousels' => $carousels,
@@ -173,29 +174,76 @@ class HomeController extends AbstractController
     */
     public function acheter(Request $request,PaginatorInterface $paginator,ArticleRepository $articleRepo,int $id):Response
     {
-        if ($id===100) {
-            //Pour tous les articles
-            $donnees=$articleRepo->findBy(['estPaye' => true],['createdAt' => 'DESC']);
+         //Faire des recherches Avec MATCH AGAINTS
+        $form = $this->createForm(ChercherArticleType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $donnees=$articleRepo->chercherArticle($form->get('mots')->getData());
+            //La pagination
+            $articles = $paginator->paginate(
+                $donnees, //Les donnees
+                $request->query->getInt('page',1), //Current page or default page 1
+                8 //Le nombre d'articles / page 
+            );
+            //On remet id a 100
+            //On se qui concerne le formulaire
+            return $this->render('home/acheter.html.twig',[
+                'articles' => $articles,
+                'form' => $form->createView()
+            ]);
         }
-        else{
+
+        switch ($id) {
+            case 100:
+                    //Pour tous les articles
+                    $donnees=$articleRepo->findBy(['estPaye' => true],['createdAt' => 'DESC']);
+                break;
+            case 27:
+                     $donnees=$articleRepo->findByCategorie(1);
+                break;
+            case 28:
+                    $donnees=$articleRepo->findByCategorie(2);
+
+                break;
+            case 29:
+                    $donnees=$articleRepo->findByCategorie(3);
+                break;
+            case 30:
+                    $donnees=$articleRepo->findByCategorie(4);
+                break;
+            case 31:
+                    $donnees=$articleRepo->findByCategorie(5);                
+                    break;
+            case 32:
+                    $donnees=$articleRepo->findByCategorie(6);
+                break;
+            case 33:
+                    $donnees=$articleRepo->findByCategorie(7);
+                break;
+            case 36:
+                    $donnees=$articleRepo->findByCategorie(8);
+                break;
+            
+            default:
                 //Pour les articles specifiques
                 $donnees=$articleRepo->findBy([
                   'sousCategorie' => $id,
                   'estPaye' => true
                 ],
                 ['createdAt' => 'DESC']);
-
+                break;
         }
-        
         //La pagination
         $articles = $paginator->paginate(
             $donnees, //Les donnees
             $request->query->getInt('page',1), //Current page or default page 1
-            9 //Le nombre d'articles / page 
+            8 //Le nombre d'articles / page 
         );
         
         return $this->render('home/acheter.html.twig',[
-            'articles' => $articles
+            'articles' => $articles,
+            'form' => $form->createView()
         ]);
     }
 
@@ -226,7 +274,7 @@ class HomeController extends AbstractController
         $articles = $paginator->paginate(
             $donnees, //Les donnees
             $request->query->getInt('page',1), //Current page or default page 1
-            6 //Le nombre d'articles / page 
+            9 //Le nombre d'articles / page 
         );
 
 
@@ -239,13 +287,7 @@ class HomeController extends AbstractController
 
     }
 
-    /**
-     * @Route("/home/confirmer", name="app_confirmer")
-     */
-    public function confirmer(Request $request): Response
-    {
-        return $this->render('home/confirm.html.twig');
-    }
+
 
 
 }

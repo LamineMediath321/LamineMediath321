@@ -72,7 +72,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
-                                <h1 class="h2">{{article.nomArticle}} </h1>
+                                <h1 class="h2 text-success">{{article.nomArticle}} </h1>
                                 <div>
                                 {% if store %}
                                     <img src="{{ (store.imageName ? vich_uploader_asset(store) : asset('images/placeholder.jpg')) | imagine_filter('squared_thumbnail_min')}}" alt="{{ store.nomStore }}" class="rounded-circle img-fluid border">
@@ -137,11 +137,15 @@
 
                             </ul>
                             <ul>
-                            	<div>
-				                    <i class="fa fa-envelope mx-2"></i>
-				                    <a class="navbar-sm-brand" href="mailto:{{vendeur.email}}">{{vendeur.email}} </a>
-				                    <i class="fa fa-phone mx-2"></i>
-				                    <a class="navbar-sm-brand" href="tel:{{vendeur.phone}}">{{vendeur.phone}}</a>
+                            	<div class="row">
+				                    <div class="col-6">
+                                        <i class="fa fa-envelope mx-2"></i>
+                                        <a class="navbar-sm-brand" href="mailto:{{vendeur.email}}">{{vendeur.email}} </a>            
+                                    </div>
+				                    <div class="col-6">
+                                        <i class="fa fa-phone mx-2"></i>
+                                    <a class="navbar-sm-brand" href="tel:{{vendeur.phone}}">{{vendeur.phone}}</a>            
+                                    </div>
                					 </div>
                             </ul>
 
@@ -193,53 +197,61 @@
     <section class="py-5">
         <div class="container">
             <div class="row text-left p-2 pb-3">
-                <h4>Annonces Similaires</h4>
+                <h4 class="text-center mb-4">Annonces Similaires</h4>
             </div>
 
             <!--Start Carousel Wrapper-->
             <div id="carousel-related-product">
                 {% for similaire in similaires %}
-                    <div class="p-2 pb-3">
-                        <div class="product-wap card rounded-0">
-                            <div class="card rounded-0">
-                                 <div class="mw-100 rounded-top overflow-hidden">
+                        <div class="col-md-6 pb-4">
+                            <div class="card h-100 mb-4 product-wap rounded-0">
+                                <div class="card rounded-0">
+                                    <div class="mw-100 rounded-top overflow-hidden">
                                          <img src="{{asset('/uploads/articles/'~similaire.imageArticles[0].imageName) | imagine_filter('squared_thumbnail_medium')}}" alt="{{similaire.nomArticle}}" class="w-100 rounded-top" id="product-detail">
+                                   </div>
+                                    <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                        <ul class="list-unstyled">
+                                            <li><a class="btn btn-success text-white" href=""><i class="fab fa-whatsapp"></i></a></li>
+                                            <li><a class="btn btn-success text-white mt-2" href="{{ path('app_article_details', {'id':similaire.id}) }}"><i class="far fa-eye"></i></a></li>
+                                            
+                                        </ul>
+                                    </div>
                                 </div>
-                                <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
-                                    <ul class="list-unstyled">
-                                         <li><a class="btn btn-success text-white mt-2" href="shop-single.html"><i class="fab fa-whatsapp"></i></a></li>
-                                        <li><a class="btn btn-success text-white mt-2" href="{{ path('app_article_details', {'id':similaire.id}) }}"><i class="far fa-eye"></i></a></li>
-                                       
+                                <div class="card-body">
+                                    <a href="shop-single.html" class="h3 text-decoration-none">{{similaire.nomArticle}} </a>
+                                    <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                                        <li><h6>Le {{similaire.createdAt|date('d-m-y')}} par
+                                        {% if similaire.user.store %} {{similaire.user.store.nomStore}}
+                                        {% else %}
+                                            {{similaire.user.firstName}} {{similaire.user.lastName}}
+                                        {% endif %}</h6> </li>
+                                        <li class="pt-2">
+                                            <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
+                                            <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
+                                            <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
+                                            <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
+                                            <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
+                                        </li>
                                     </ul>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <a href="shop-single.html" class="h3 text-decoration-none">{{similaire.nomArticle}} </a>
-                                <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
-                                    <li>{{ similaire.lieuVente|u.truncate(10,'...',false) }}</li>
-                                    <li class="pt-2">
-                                        <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
-                                        <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
-                                        <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
-                                        <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
-                                        <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
-                                    </li>
-                                </ul>
-                                <ul class="list-unstyled d-flex justify-content-center mb-1">
-                                    <li>
-                                         {% for i in 1..5 %}
+                                    <ul class="list-unstyled d-flex justify-content-center mb-1">
+                                        <li>
+                                            {% for i in 1..5 %}
                                             <i class="fa fa-star 
                                                 {%if loop.index <= similaire.etoiles %} 
                                                     text-warning
                                                     else  text-secondary {% endif %}"> 
                                             </i>
                                         {% endfor %}
-                                    </li>
-                                </ul>
-                                <p class="text-center mb-0">{{similaire.price}} </p>
+                                        </li>
+                                    </ul>
+                                    <p class="text-center mb-0">{{similaire.price}} </p>
+                                    <div class="d-flex justify-content-center mb-1 text-info">
+                                        <h6><i class="fas fa-map-marker-alt fa-fw"></i>Lieu de vente</span> {{ similaire.lieuVente}}</h6> 
+                                        
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
                 {% endfor %}
 
             </div>

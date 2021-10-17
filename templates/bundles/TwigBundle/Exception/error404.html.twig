@@ -1,11 +1,22 @@
-
-{% extends 'layouts/base.html.twig' %}
+ {% extends 'compte_user/user_layouts/base.html.twig' %}
 
 {% block body %}
-    <h1>Page not found</h1>
+	<div class="m-5 text-center">
+		<div class="col-6 mx-auto">
+			<h1 class="m-5" style="color: green;"> L&part;di&part;store</h1>
+    	<small>
+    		✩░▒▓▆▅▃▂▁𝐏𝐚𝐠𝐞 𝐧𝐨n 𝐭𝐫𝐨𝐮𝐯𝐞𝐞▁▂▃▅▆▓▒░✩
 
-    <p>
-        The requested page couldn't be located. Checkout for any URL
-        misspelling or <a href="{{ path('app_home') }}">return to the homepage</a>.
-    </p>
+     	</small>
+     	<p>
+     		😍💞💘 𝓟𝓪𝓰𝓮 𝓷𝓸n 𝓽𝓻𝓸𝓾𝓿𝓮𝓮 💔💏💖
+     	</p>
+    	<h1>😵😥👀😪😷😣</h1>
+    	<p class="m-5">         
+			faute d'orthographe ou <a style="color: green" href="{{ path('app_home') }}">retourner à la page d'acceuil👈</a>
+		</p>
+	</div>
+	</div>
+	    {{ include('compte_user/user_layouts/partials/_footer.html.twig') }}
+
 {% endblock %}

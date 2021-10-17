@@ -35,15 +35,44 @@ class ArticleRepository extends ServiceEntityRepository
         ;
     }
 
-    /*
-    public function findOneBySomeField($value): ?Article
+    //Faire la recherche par nomArticle ou par description
+    public function chercherArticle($mots)
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $query=$this->createQueryBuilder('a');
+            $query->where('a.estPaye = true');
+            if ($mots!=null) {
+                $query->andWhere('MATCH_AGAINST(a.nomArticle,a.description) AGAINST(:mots boolean)>0')
+                    ->setParameter('mots',$mots);
+            }
+        return $query->getQuery()->getResult();
     }
-    */
+
+    /*public function findByCategorie(int $id)
+    {
+        $em=$this->getEntityManager();
+        $query=$em->getConnection()->prepare(
+            'SELECT *
+            FROM articles a, sous_categorie s, categories c
+            WHERE sous_categorie_id = s.id
+            AND categorie_id = c.id
+            AND c.id ='.$id
+        );
+        $query->execute();
+        return $query->fetchAll();
+    }*/
+
+    public function findByCategorie(int $id) 
+    {
+        $query = $this->createQueryBuilder('a');
+                $query->where('a.estPaye=true');
+                    $query->leftJoin('a.sousCategorie', 's');
+                    $query->leftJoin('s.categorie', 'c');
+                    $query->andWhere('c.id = :id');
+                    $query->setParameter('id', $id);
+ 
+        return $query->getQuery()->getResult();
+
+    }
+
+
 }

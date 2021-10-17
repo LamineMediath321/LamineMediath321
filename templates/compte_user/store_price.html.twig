@@ -6,16 +6,16 @@
 
 {% block body %}
   {{ include('compte_user/user_layouts/partials/_sidebar.html.twig') }}
-
+  <h1 class="text-center">Créer un Store </h1>
  <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
-      <h1 class="display-4 fw-normal">Pricing</h1>
-      <p class="fs-5 text-muted">Quickly build an effective pricing table for your potential customers with this Bootstrap example. It’s built with default Bootstrap components and utilities with little customization.</p>
+      <h1 class="display-4 fw-normal">Prix</h1>
+      <p class="fs-5 text-muted">Tableau de prix </p>
     </div>
     <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
       <div class="col">
         <div class="card mb-4 rounded-3 shadow-sm">
           <div class="card-header py-3">
-            <h4 class="my-0 fw-normal">Free</h4>
+            <h4 class="my-0 fw-normal">Petit store</h4>
           </div>
           <div class="card-body">
             <h1 class="card-title pricing-card-title">$0<small class="text-muted fw-light">/mo</small></h1>
@@ -25,14 +25,14 @@
               <li>Email support</li>
               <li>Help center access</li>
             </ul>
-            <a class="w-100 btn btn-lg btn-outline-success" href="{{path('app_store')}}">Sign up for free</a>
+            <a class="w-100 btn btn-lg btn-outline-success" href="{{path('app_store')}}">Continuer</a>
           </div>
         </div>
       </div>
       <div class="col">
         <div class="card mb-4 rounded-3 shadow-sm">
           <div class="card-header py-3">
-            <h4 class="my-0 fw-normal">Pro</h4>
+            <h4 class="my-0 fw-normal">Store moyen</h4>
           </div>
           <div class="card-body">
             <h1 class="card-title pricing-card-title">$15<small class="text-muted fw-light">/mo</small></h1>
@@ -42,14 +42,14 @@
               <li>Priority email support</li>
               <li>Help center access</li>
             </ul>
-            <a class="w-100 btn btn-lg btn-success" href=" {{path('app_store')}} ">Get started</a>
+            <a class="w-100 btn btn-lg btn-success" href=" {{path('app_store')}} ">Continuer</a>
           </div>
         </div>
       </div>
       <div class="col">
         <div class="card mb-4 rounded-3 shadow-sm border-success">
           <div class="card-header py-3 text-white bg-success border-success">
-            <h4 class="my-0 fw-normal">Enterprise</h4>
+            <h4 class="my-0 fw-normal">Grand store</h4>
           </div>
           <div class="card-body">
             <h1 class="card-title pricing-card-title">$29<small class="text-muted fw-light">/mo</small></h1>
@@ -59,7 +59,7 @@
               <li>Phone and email support</li>
               <li>Help center access</li>
             </ul>
-            <a class="w-100 btn btn-lg btn-success" href=" {{path('app_store')}} ">Contact us</a>
+            <a class="w-100 btn btn-lg btn-success" href=" {{path('app_store')}} ">Continuer</a>
           </div>
         </div>
       </div>

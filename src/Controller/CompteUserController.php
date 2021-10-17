@@ -35,6 +35,9 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\LessThan;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
+//Pour les acces on peut aussi utiliser des voters
 
 
 /**
@@ -71,6 +74,8 @@ class CompteUserController extends AbstractController
 
     /**
     *@Route("/compte_user/edit_user", name="app_user_edit",methods={"GET","POST","PUT"})
+    *@Security("user.isVerified()",message="Veillez verifier votre email",)
+    *@IsGranted("IS_AUTHENTICATED_FULLY")
     */
     public function edit_user(Request $request,EntityManagerInterface $em,BanqueRepository $bankRepo,StoreRepository $storeRepo):Response
     {
@@ -109,6 +114,8 @@ class CompteUserController extends AbstractController
 
     /**
     *@Route("/compte_user/creer_article", name="app_article",methods={"GET","POST","PUT"})
+    *@Security("user.isVerified()",message="Veillez verifier votre email")
+    *@IsGranted("IS_AUTHENTICATED_FULLY")
     */
     public function creer_article(Request $request,EntityManagerInterface $em,BanqueRepository $bankRepo,StoreRepository $storeRepo):Response
     {
@@ -157,7 +164,7 @@ class CompteUserController extends AbstractController
                 'constraints' => new NotBlank(['message' => 'Le Lieu de vente ne doit pas être vide'])
             ])
 
-            ->add('Prix_annonce',TextType::class)
+            ->add('Prix_article',TextType::class)
 
             ->add('Nombre_etoiles',IntegerType::class,[
                 'label' => 'Nombre etoiles [1 & 5]',
@@ -167,7 +174,7 @@ class CompteUserController extends AbstractController
                             'message' => 'Vous devez avoir un moins 1 etoile',
                         ]),
                     new LessThan([
-                            'value' => 0,
+                            'value' => 6,
                             'message' => '5 etoiles au maximum',
                         ]),
                     ]
@@ -243,7 +250,6 @@ class CompteUserController extends AbstractController
             ]);
         }
 
-
         return $this->render('compte_user/creer_article.html.twig',[
             'user' => $user,
             'bank' => $bank,
@@ -256,6 +262,8 @@ class CompteUserController extends AbstractController
 
     /**
      * @Route("/compte_user/creer_article_2/{id<[0-9]+>}", name="app_article_2")
+     * @Security("is_granted('ARTICLE_MANAGE',article)")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function creer_article2(Request $request,Article $article,BanqueRepository $bankRepo,EntityManagerInterface $em,StoreRepository $storeRepo): Response
     {
@@ -272,8 +280,9 @@ class CompteUserController extends AbstractController
 
         $imageArticles=$article->getImageArticles();
         $form=$this->createFormBuilder()
-            ->add('offre_de_base',CheckboxType::class)
-            ->add('offre_vip',CheckboxType::class)
+            ->add('standard',CheckboxType::class)
+            ->add('vip',CheckboxType::class)
+            ->add('vip_premium',CheckboxType::class)
             ->getForm()
         ;
 
@@ -281,10 +290,10 @@ class CompteUserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
              
             //On regarde la ou il a coche 
-            if ($form->get('offre_de_base')->getData()===true) {
+            if ($form->get('standard')->getData()===true) {
                //On verifie si il possible d'effectuer l'operation
                 if ($bank->getPieces()>=10) {
-                    $article->setChoixVisbilite("offre_de_base");
+                    $article->setChoixVisbilite("standard");
                     $em->flush();
                 }
                 /*else{
@@ -292,15 +301,35 @@ class CompteUserController extends AbstractController
                     return $this->redirectToRoute('app_achat_piece');
                 }*/
             }
-            elseif ($form->get('offre_vip')->getData()===true) {
+            elseif ($form->get('vip')->getData()===true) {
                 if ($bank->getPieces()>=20) {
-                    $article->setChoixVisbilite("offre_vip");
+                    $article->setChoixVisbilite("vip");
                     $em->flush();
                 }
                 /*else{
                     //Sinon on redirige vers la page d'achat de pieces 
                     return $this->redirectToRoute('app_achat_piece');
                 }*/
+            }
+            else{
+                 if ($bank->getPieces()>=30) {
+                    $article->setChoixVisbilite("vip_premium");
+                    $em->flush();
+                }
+                /*else{
+                    //Sinon on redirige vers la page d'achat de pieces 
+                    return $this->redirectToRoute('app_achat_piece');
+                }*/
+            }
+            /*Pour eviter des choix multiples*/
+            $a=$form->get('standard')->getData();
+            $b=$form->get('vip')->getData();
+            $c=$form->get('vip_premium')->getData();
+            if (($a&&$b&&$c)||($a&&$b)||($a&&$c)||($b&&$c)) {
+                $this->addFlash('danger', 'Veillez cocher une seule des offres ci-dessous');
+                return $this->redirectToRoute('app_article_2',[
+                    'id' => $article->getId(),
+                ]);
             }
             $route=$request->attributes->get('_route');
             //On redirige vers la page d'affichage d'article
@@ -324,6 +353,8 @@ class CompteUserController extends AbstractController
 
     /**
      * @Route("/compte_user/show_edit/{id<[0-9]+>}", name="app_article_show")
+     * @Security("is_granted('ARTICLE_MANAGE',article)")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function show_edit(Request $request,Article $article,BanqueRepository $bankRepo,EntityManagerInterface $em,StoreRepository $storeRepo): Response
     { 
@@ -337,7 +368,6 @@ class CompteUserController extends AbstractController
             'user' => $user->getId()
         ]);
 
-        $imageArticles=$article->getImageArticles();
         $form=$this->createFormBuilder([
             'Nom_article' => $article->getNomArticle(),
             'Description' => $article->getDescription(),
@@ -357,7 +387,18 @@ class CompteUserController extends AbstractController
             ])
             ->add('Prix_article',TextType::class)
 
-            ->add('Nombre_etoiles',IntegerType::class)
+            ->add('Nombre_etoiles',IntegerType::class,[
+                'constraints' => [
+                    new GreaterThan([
+                            'value' => 0,
+                            'message' => 'Vous devez avoir un moins 1 etoile',
+                        ]),
+                    new LessThan([
+                            'value' => 6,
+                            'message' => '5 etoiles au maximum',
+                        ]),
+                    ]
+            ])
 
             ->add('image', FileType::class,[
                     'label' => 'Ajouter une image si vous avez moins de 4 images',
@@ -397,8 +438,8 @@ class CompteUserController extends AbstractController
                 $img->setArticle($article);
                 $em->persist($img);
                 $article->addImageArticle($img);
-            }          
-               
+            }
+            
            
             $em->persist($article);
             $em->flush();
@@ -406,17 +447,23 @@ class CompteUserController extends AbstractController
                 'id' => $article->getId()
             ]);
         }
+
+        $images=$article->getImageArticles();
+        $img=$images[0];
+       
         return $this->render('compte_user/show_edit.html.twig',[
             'user' => $user,
-            'imageArticles' => $imageArticles,
             'article' => $article,
+            'img' => $img,
             'form' => $form->createView()
         ]);
     }
 
 
-    /**
+/**
  * @Route("/compte_user/delete/{id<[0-9]+>}", name="app_delete_image", methods={"DELETE"})
+ * @Security("user.isVerified()",message="Veillez verifier votre email")
+ *@IsGranted("IS_AUTHENTICATED_FULLY")
  */
 public function delete_image(ImageArticle $image, Request $request,EntityManagerInterface $em){
 
@@ -443,6 +490,7 @@ public function delete_image(ImageArticle $image, Request $request,EntityManager
     
     /**
     *@Route("/compte_user/terminer/{id<[0-9]+>}", name="app_terminer")
+    * @Security("is_granted('ARTICLE_MANAGE',article)")
     */
     public function finaliser(Request $request,Article $article,BanqueRepository $bankRepo,EntityManagerInterface $em,StoreRepository $storeRepo):Response
     {
@@ -461,16 +509,23 @@ public function delete_image(ImageArticle $image, Request $request,EntityManager
 
         $choix=$article->getChoixVisbilite();
         switch ($choix) {
-            case 'offre_vip':
+            case 'vip':
             {
                 $bank->setPieces($bank->getPieces()-20);
                 $article->setEstPaye(true);
                 $em->flush();
              }
                 break;
-            case 'offre_de_base':
+            case 'standard':
             {
                 $bank->setPieces($bank->getPieces()-10);
+                $article->setEstPaye(true);
+                $em->flush();
+             }
+                break;
+            case 'vip_premium':
+            {
+                $bank->setPieces($bank->getPieces()-30);
                 $article->setEstPaye(true);
                 $em->flush();
              }
@@ -482,15 +537,16 @@ public function delete_image(ImageArticle $image, Request $request,EntityManager
         }
 
 
-        $this->addFlash('warning','Vous avez creer une annonce !');
+        $this->addFlash('success','Vous avez creer une annonce !');
           return $this->redirectToRoute('app_voir_article');
     }
 
 
     /**
     *@Route("/compte_user/store_price", name="app_store_price")
+    * @Security("user.isVerified()",message="Veillez verifier votre email")
     */
-    public function store_price(Request $request,BanqueRepository $bankRepo,StoreRepository $storeRepo, EntityManagerInterface $em):Response
+    public function store_price(Request $request,BanqueRepository $bankRepo,StoreRepository $storeRepo,EntityManagerInterface $em):Response
     {
         $user=$this->getUser();
         //On recupere son compte bancaire pour finaliser l'operation
@@ -514,6 +570,7 @@ public function delete_image(ImageArticle $image, Request $request,EntityManager
 
     /**
     *@Route("/compte_user/store", name="app_store")
+    * @Security("user.isVerified()",message="Veillez verifier votre email")
     */
     public function creer_vitrine(Request $request,BanqueRepository $bankRepo,EntityManagerInterface $em):Response
     {
@@ -537,7 +594,7 @@ public function delete_image(ImageArticle $image, Request $request,EntityManager
             $em->persist($store);
             $em->flush();
 
-
+            $this->addFlash('info','Vous avez creer un store !');
             return $this->redirectToRoute('app_store_edit');
         }
 
@@ -551,19 +608,16 @@ public function delete_image(ImageArticle $image, Request $request,EntityManager
 
 
     /**
-    *@Route("/compte_user/store_edit", name="app_store_edit")
+    *@Route("/compte_user/store_edit/{id<[0-9]+>}", name="app_store_edit")
+    * @Security("is_granted('STORE_EDIT',store)")
     */
-    public function edit_vitrine(Request $request,BanqueRepository $bankRepo,EntityManagerInterface $em,StoreRepository $storeRepo):Response
+    public function edit_vitrine(Request $request,BanqueRepository $bankRepo,EntityManagerInterface $em,Store $store):Response
     {
         $user=$this->getUser();
         //On recupere son compte bancaire pour finaliser l'operation
         $bank=$bankRepo->findOneBy([
             'user' => $user->getId()
             ]);
-        //On recupere son store s'il a un store
-        $store=$storeRepo->findOneBy([
-            'user' => $user->getId()
-        ]);
 
         $form=$this->createForm(StoreType::class,$store,[
             ]);
@@ -573,7 +627,7 @@ public function delete_image(ImageArticle $image, Request $request,EntityManager
         if ($form->isSubmitted() && $form->isValid()) {
 
             $em->flush();
-
+            $this->addFlash('primary','Mise à jour éffectuée avec succès !');
             return $this->redirectToRoute('app_admin_user');
         }
 
@@ -589,6 +643,7 @@ public function delete_image(ImageArticle $image, Request $request,EntityManager
 
     /**
     *@Route("/compte_user/voir_article", name="app_voir_article")
+    * @Security("user.isVerified()",message="Veillez verifier votre email")
     */
     public function voir_article(Request $request,ArticleRepository $articleRepo,EntityManagerInterface $em,PaginatorInterface $paginator):Response
     {
@@ -606,7 +661,7 @@ public function delete_image(ImageArticle $image, Request $request,EntityManager
         $articles = $paginator->paginate(
             $donnees, //Les donnees
             $request->query->getInt('page',1), //Current page or default page 1
-            6 //Le nombre d'articles / page 
+            9 //Le nombre d'articles / page 
         );
 
 

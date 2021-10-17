@@ -24,7 +24,7 @@
                         {% for article in row %}
                             <!--BEGIN of articles-->
                             <div class="col-6 col-md-3 p-2 pb-3">
-                                <div class="product-wap card rounded-0">
+                                <div class="product-wap card h-100 rounded-0">
                                     <div class="card rounded-0">
                                         <div class="mw-100 rounded-top overflow-hidden">
                                             <img src="{{asset('/uploads/articles/'~article.imageArticles[0].imageName) | imagine_filter('squared_thumbnail_medium')}}" alt="{{article.nomArticle}}" class="w-100 rounded-top" id="product-detail">

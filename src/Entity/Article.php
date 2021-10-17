@@ -13,7 +13,7 @@ use App\Entity\Traits\Timestampable;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
- * @ORM\Table(name="articles")
+ * @ORM\Table(name="articles", indexes={@ORM\Index(columns={"nom_article", "description"},flags={"fulltext"})})
  *@ORM\HasLifecycleCallbacks
  */
 class Article

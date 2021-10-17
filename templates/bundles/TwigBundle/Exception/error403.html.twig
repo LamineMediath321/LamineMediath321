@@ -1,11 +1,26 @@
-
-{% extends 'layouts/base.html.twig' %}
-
+ {% extends 'compte_user/user_layouts/base.html.twig' %}
+ {% block title %}Ladiastore Vendez & Achetez !{% endblock %}
 {% block body %}
-    <h1>Page not found</h1>
+	<div class="m-5 text-center">
+		<div class="col-6 mx-auto">
+			<h1 class="mb-5 text-center" style="color: green;"> L&part;di&part;store</h1>
+    <p>✩░▒▓▆▅▃▂▁𝐎𝐎𝐎𝐩𝐬 𝐀𝐜𝐜é𝐬 𝐧𝐨𝐧 𝐚𝐮𝐭𝐨𝐫𝐢𝐬𝐞▁▂▃▅▆▓▒░✩</p>
+    <p>🅾🅾🅾🅿🆂 🅰🅲🅲é🆂 🅽🅾🅽 🅰🆄🆃🅾🆁🅸🆂🅴 🎁 😊🎂</p>
+    <p>❌❌❌❌❌❌</p>
 
-    <p>
-        Acces denied
-        misspelling or <a href="{{ path('app_home') }}">return to the homepage</a>.
+    <p class="m-5">            
+		Vellez verifier votre email en consultant votre boite email ou <a style="color: green" href="{{ path('app_home') }}">retourner à la page d'acceuil</a>.
+
     </p>
+
+		</div>
+	</div>
+	{% if not app.user.isVerified %}
+                <div class="text-center">
+                    <p>
+                        <a class="text-success" href="{{ path('app_new_link',{'id':app.user.id}) }}">Si vous voulez recevoir un nouveau lien👈</a>
+                    </p>
+                </div>
+            {% endif %}
+	{{ include('compte_user/user_layouts/partials/_footer.html.twig') }}
 {% endblock %}

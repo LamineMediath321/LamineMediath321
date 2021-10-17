@@ -13,13 +13,13 @@
         <div class="row"> 
             <div class="col-lg-5 mt-5">
                 <div class="card mb-3">
-                    {% if imageArticles %}
                     <div>
-                        <img class="card-img img-fluid" src="{{imageArticles[0].imageName ? asset('/uploads/articles/'~imageArticles[0].imageName) : asset('images/placeholder.jpg')}}" alt="Card image cap" id="product-detail">
-                        {# On ajoute un lien permettant de supprimer une image (sera géré en Ajax) #}
-                        <a class="btn btn-light" href="{{ path('app_delete_image', {'id' : imageArticles[0].id})}}" data-delete data-token="{{ csrf_token('delete'~imageArticles[0].id)}}">Supprimer</a>
+                        {% if img!=null %}
+                            <img class="card-img img-fluid" src="{{asset('/uploads/articles/'~img.imageName)}}" alt="Card image cap" id="product-detail">
+                            {# On ajoute un lien permettant de supprimer une image (sera géré en Ajax) #}
+                            <a class="btn btn-light" href="{{ path('app_delete_image', {'id' : img.id})}}" data-delete data-token="{{ csrf_token('delete'~img.id)}}">Supprimer</a>
+                        {% endif %}
                     </div>
-                    {% endif %}
                 </div>
                 <div class="row">  
                 <!--Start Carousel Wrapper-->
@@ -28,7 +28,7 @@
                         <div class="carousel-inner product-links-wap" role="listbox">
                             <div class="carousel-item active">
                                 <div class="row">
-                                    {% for image in imageArticles %}
+                                    {% for image in article.imageArticles %}
                                         {% if loop.index >=2 %}
                                             <div class="col-4">
                                                 <div>
@@ -79,13 +79,18 @@
         {% if article.estPaye==false %}
             <p class="">ou cliquez sur Terminer pour terminer votre creation</p>
         {% endif %}
-        <input class="btn btn-success" type="submit" value="Mettez à jour" formnovalidate >
+        {% if img==null %}<h3 class="text-danger">Veillez soummettre au moins une image</h3>
+        {% endif %}
+       
         {% if article.estPaye==false %}
             <a href="{{ path('app_terminer', {id: article.id}) }}" class="btn btn-success">Terminer</a>
         {% endif %}
-        {% if article.estPaye==true %}
-            <a href="{{ path('app_voir_article') }}" class="btn btn-light">Précédent</a>
-            <a href="{{ path('app_admin_user') }}" class="btn btn-light">Au menu</a>
+        <input class="btn btn-success" type="submit" value="Mettez à jour" formnovalidate >
+        {% if img!=null %}
+                {% if article.estPaye==true %}
+                    <a href="{{ path('app_voir_article') }}" class="btn btn-light">Précédent</a>
+                    <a href="{{ path('app_admin_user') }}" class="btn btn-light">Au menu</a>
+                {% endif %}
         {% endif %}
     </div>
     <div class="d-flex justify-content-between col-10 text-center m-3">
@@ -97,7 +102,7 @@
     <!-- Close Content -->
 
     {{ include('compte_user/user_layouts/partials/_footer.html.twig') }}
-^
+
     {% block javascripts %}
         <script src="{{ asset('assets/js/images.js') }}"></script>
     {% endblock %}

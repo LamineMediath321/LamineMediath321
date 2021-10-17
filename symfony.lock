@@ -247,6 +247,9 @@
             "./config/packages/sensio_framework_extra.yaml"
         ]
     },
+    "spatie/emoji": {
+        "version": "3.0.0"
+    },
     "symfony/asset": {
         "version": "v5.3.4"
     },

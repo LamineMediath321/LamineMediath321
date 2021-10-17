@@ -5,7 +5,7 @@
  {% block body %}
 	{{ include('compte_user/user_layouts/partials/_sidebar.html.twig') }}
 	<h1 class="text-center display-4">Creer un <span class="text-success">article</span></h1>
-	<p class="text-center text-muted">Veillez cochez un des offres ci dessous.</p>
+	<p class="text-center text-muted">Veillez cochez une des offres ci dessous.</p>
 	<div class="text-center mt-3">
 	</div>
 	<div class="row">
@@ -14,30 +14,46 @@
 				<div class="row bg-white rounded shadow m-5">
 					<div class="col-2">
 						{% if imageArticles %}
-							<img src="{{ (imageArticles[0].imageName ? asset('/uploads/articles/'~imageArticles[0].imageName) : asset('images/placeholder.jpg')) | imagine_filter('squared_thumbnail_min')}}" class="w-100 rounded-top" width="10">
+							<img src="{{ (imageArticles[0].imageName ? asset('/uploads/articles/'~imageArticles[0].imageName) : asset('images/placeholder.jpg')) | imagine_filter('squared_thumbnail_min')}}" class="w-100 rounded-circle" width="10">
 							
 						{% endif %}
 					</div>
 					<div class="col-6">
-						<h6>Offre de base pour une duree deux semaine à 10 pieces</h6>
+						<h6>Offre standard 10 pieces</h6>
+						<p class="text-info">Votre annonce seras visible sur le site pour une durée d'une semaine</p>
 					</div>
 					<div class="col-4">
-						{{form_row(form.offre_de_base)}}
+						{{form_row(form.standard)}}
 					</div>
 				</div>
 
 				<div class="row bg-white rounded shadow m-5">
 					<div class="col-2">
 						{% if imageArticles %}
-							<img src="{{ (imageArticles[0].imageName ? asset('/uploads/articles/'~imageArticles[0].imageName) : asset('images/placeholder.jpg')) | imagine_filter('squared_thumbnail_min')}}" class="w-100 rounded-top" width="10">
+							<img src="{{ (imageArticles[0].imageName ? asset('/uploads/articles/'~imageArticles[0].imageName) : asset('images/placeholder.jpg')) | imagine_filter('squared_thumbnail_min')}}" class="w-100 rounded-circle" width="10">
 							
 						{% endif %}
 					</div>
 					<div class="col-6">
-						<h6>Offre vip pour une duree d'un mois à 20 pieces</h6>
+						<h6>Offre vip à 20 pieces</h6>
+						<p class="text-info">Votre annonce sera visible sur le site pour une durée de deux semaines et elle sera parmi les parmi les plus visibles</p>
 					</div>
 					<div class="col-4">
-						{{form_row(form.offre_vip)}}
+						{{form_row(form.vip)}}
+					</div>
+				</div>
+				<div class="row bg-white rounded shadow m-5">
+					<div class="col-2">
+						{% if imageArticles %}
+							<img src="{{ (imageArticles[0].imageName ? asset('/uploads/articles/'~imageArticles[0].imageName) : asset('images/placeholder.jpg')) | imagine_filter('squared_thumbnail_min')}}" class="w-100 rounded-circle" width="10">
+						{% endif %}
+					</div>
+					<div class="col-6">
+						<h6>Offre vip premium à 30 pieces</h6>
+						<p class="text-info">Votre annonce sera visible sur le site pour une durée d'un mois et elle sera accessible dés la page d'acceuil </p>
+					</div>
+					<div class="col-4">
+						{{form_row(form.vip_premium)}}
 					</div>
 				</div>
 				<input class="btn btn-success" type="submit" value="Creer un article" formnovalidate >

@@ -101,6 +101,17 @@
                             <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':33}) }}">Alimentation</a></li>
                         </ul>
                     </li>
+                        <li class="pb-3">
+                        <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
+                            VOITURES
+                            <i class="pull-right fa fa-fw fa-chevron-circle-down mt-1"></i>
+                        </a>
+                        <ul id="collapseThree" class="collapse list-unstyled pl-3">
+                            <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':36}) }}">Voitures</a></li>
+                            <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':34}) }}">Vente de voitures</a></li>
+                             <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':35}) }}">Location de voitures</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
 
@@ -117,18 +128,26 @@
                     </div>
                     <div class="col-md-6 pb-4">
                         <div class="d-flex">
-                            <select class="form-control">
-                                <option>Featured</option>
-                                <option>A to Z</option>
-                                <option>Item</option>
-                            </select>
+                            {{form_start(form)}}
+                                <div class="row ">
+                                    <div class="col-10">
+                                         {{form_row(form.mots)}}
+                                    </div>
+                                    <div class="col-2">
+                                         <button type="submit" class="input-group-text bg-success text-light">
+                                             <i class="fa fa-fw fa-search text-white"></i>
+                                        </button>
+                                    </div> 
+                                </div> 
+                            {{form_end(form)}}
                         </div>
                     </div>
                 </div>
+                {% if articles|length>0 %}
                 <div class="row">
                     {% for article in articles %}
-                        <div class="col-md-4">
-                            <div class="card mb-4 product-wap rounded-0">
+                        <div class="col-md-6 pb-4">
+                            <div class="card h-100 mb-4 product-wap rounded-0">
                                 <div class="card rounded-0">
                                     <div class="mw-100 rounded-top overflow-hidden">
                                          <img src="{{asset('/uploads/articles/'~article.imageArticles[0].imageName) | imagine_filter('squared_thumbnail_medium')}}" alt="{{article.nomArticle}}" class="w-100 rounded-top" id="product-detail">
@@ -144,7 +163,11 @@
                                 <div class="card-body">
                                     <a href="shop-single.html" class="h3 text-decoration-none">{{article.nomArticle}} </a>
                                     <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
-                                        <li><h6> {{ article.lieuVente|u.truncate(10,'...',false) }}</h6> </li>
+                                        <li><h6>Le {{article.createdAt|date('d-m-y')}} par
+                                        {% if article.user.store %} {{article.user.store.nomStore}}
+                                        {% else %}
+                                            {{article.user.firstName}} {{article.user.lastName}}
+                                        {% endif %}</h6> </li>
                                         <li class="pt-2">
                                             <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
                                             <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
@@ -165,13 +188,20 @@
                                         </li>
                                     </ul>
                                     <p class="text-center mb-0">{{article.price}} </p>
+                                    <div class="d-flex justify-content-center mb-1 text-info">
+                                        <h6><i class="fas fa-map-marker-alt fa-fw"></i>Lieu de vente</span> {{ article.lieuVente}}</h6> 
+                                        
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     {% endfor %}
+                    {% else %}
+                        <p class="text-center h1 mt-4">Sorry, Pas d'annonces de ce type pour l'instant. <a href="{{ path('app_login') }}">Soyez le premier !</a> </p>
+                    {% endif %}
 
-                    <div class="navigation">
-       </div>
+                <div class="navigation">
+                </div>
      
 
                 </div>
@@ -191,7 +221,7 @@
         <div class="container my-4">
             <div class="row text-center py-3">
                 <div class="col-lg-6 m-auto">
-                    <h1 class="h1">Our Brands</h1>
+                    <h1 class="h1">Nos partenaires</h1>
                     <p>
                         Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
                         Lorem ipsum dolor sit amet.
@@ -217,16 +247,16 @@
                                     <div class="carousel-item active">
                                         <div class="row">
                                             <div class="col-3 p-md-5">
-                                                <a href="#"><img class="img-fluid brand-img" src="{{asset('assets/img/brand_01.png')}}" alt="Brand Logo"></a>
+                                                <a href=""><img class="img-fluid brand-img" src="{{asset('assets/img/brand_05.png')|imagine_filter('squared_thumbnail_brand')}}" alt="Brand Logo"></a>
                                             </div>
                                             <div class="col-3 p-md-5">
-                                                <a href="#"><img class="img-fluid brand-img" src="{{asset('assets/img/brand_02.png')}}" alt="Brand Logo"></a>
+                                                <a href=""><img class="img-fluid brand-img" src="{{asset('assets/img/brand_02.png')}}" alt="Brand Logo"></a>
                                             </div>
                                             <div class="col-3 p-md-5">
-                                                <a href="#"><img class="img-fluid brand-img" src="{{asset('assets/img/brand_03.png')}}" alt="Brand Logo"></a>
+                                                <a href=""><img class="img-fluid brand-img" src="{{asset('assets/img/brand_06.png')|imagine_filter('squared_thumbnail_brand')}}" alt="Brand Logo"></a>
                                             </div>
                                             <div class="col-3 p-md-5">
-                                                <a href="#"><img class="img-fluid brand-img" src="{{asset('assets/img/brand_04.png')}}" alt="Brand Logo"></a>
+                                                <a href=""><img class="img-fluid brand-img" src="{{asset('assets/img/brand_04.png')}}" alt="Brand Logo"></a>
                                             </div>
                                         </div>
                                     </div>
@@ -236,16 +266,16 @@
                                     <div class="carousel-item">
                                         <div class="row">
                                             <div class="col-3 p-md-5">
-                                                <a href="#"><img class="img-fluid brand-img" src="{{asset('assets/img/brand_01.png')}}" alt="Brand Logo"></a>
+                                                <a href=""><img class="img-fluid brand-img" src="{{asset('assets/img/brand_01.png')}}" alt="Brand Logo"></a>
                                             </div>
                                             <div class="col-3 p-md-5">
-                                                <a href="#"><img class="img-fluid brand-img" src="{{asset('assets/img/brand_02.png')}}" alt="Brand Logo"></a>
+                                                <a href=""><img class="img-fluid brand-img" src="{{asset('assets/img/brand_02.png')}}" alt="Brand Logo"></a>
                                             </div>
                                             <div class="col-3 p-md-5">
-                                                <a href="#"><img class="img-fluid brand-img" src="{{asset('assets/img/brand_03.png')}}" alt="Brand Logo"></a>
+                                                <a href=""><img class="img-fluid brand-img" src="{{asset('assets/img/brand_03.png')}}" alt="Brand Logo"></a>
                                             </div>
                                             <div class="col-3 p-md-5">
-                                                <a href="#"><img class="img-fluid brand-img"src="{{asset('assets/img/brand_04.png')}}" alt="Brand Logo"></a>
+                                                <a href=""><img class="img-fluid brand-img"src="{{asset('assets/img/brand_04.png')}}" alt="Brand Logo"></a>
                                             </div>
                                         </div>
                                     </div>
@@ -255,16 +285,16 @@
                                     <div class="carousel-item">
                                         <div class="row">
                                             <div class="col-3 p-md-5">
-                                                <a href="#"><img class="img-fluid brand-img" src="{{asset('assets/img/brand_01.png')}}" alt="Brand Logo"></a>
+                                                <a href=""><img class="img-fluid brand-img" src="{{asset('assets/img/brand_01.png')}}" alt="Brand Logo"></a>
                                             </div>
                                             <div class="col-3 p-md-5">
-                                                <a href="#"><img class="img-fluid brand-img" src="{{asset('assets/img/brand_02.png')}}" alt="Brand Logo"></a>
+                                                <a href=""><img class="img-fluid brand-img" src="{{asset('assets/img/brand_02.png')}}" alt="Brand Logo"></a>
                                             </div>
                                             <div class="col-3 p-md-5">
-                                                <a href="#"><img class="img-fluid brand-img" src="{{asset('assets/img/brand_03.png')}}" alt="Brand Logo"></a>
+                                                <a href=""><img class="img-fluid brand-img" src="{{asset('assets/img/brand_03.png')}}" alt="Brand Logo"></a>
                                             </div>
                                             <div class="col-3 p-md-5">
-                                                <a href="#"><img class="img-fluid brand-img" src="{{asset('assets/img/brand_04.png')}}" alt="Brand Logo"></a>
+                                                <a href=""><img class="img-fluid brand-img" src="{{asset('assets/img/brand_04.png')}}" alt="Brand Logo"></a>
                                             </div>
                                         </div>
                                     </div>
