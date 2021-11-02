@@ -32,7 +32,6 @@ class UserEditFormType extends AbstractType
             ->add('lastName',TextType::class,[
                 'label' => 'Nom'
             ])
-            ->add('email')
             ->add('phone',TextType::class,[
                 'label' => 'Téléphone'
             ])

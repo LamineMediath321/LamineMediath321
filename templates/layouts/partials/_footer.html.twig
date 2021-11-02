@@ -22,23 +22,24 @@
                 </div>
 
                 <div class="col-md-4 pt-5">
-                    <h2 class="h2 text-light border-bottom pb-3 border-light">Products</h2>
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Categories</h2>
                     <ul class="list-unstyled text-light footer-link-list">
-                        <li><a class="text-decoration-none" href="#">Luxury</a></li>
-                        <li><a class="text-decoration-none" href="#">Sport Wear</a></li>
-                        <li><a class="text-decoration-none" href="#">Men's Shoes</a></li>
-                        <li><a class="text-decoration-none" href="#">Women's Shoes</a></li>
-                        <li><a class="text-decoration-none" href="#">Popular Dress</a></li>
-                        <li><a class="text-decoration-none" href="#">Gym Accessories</a></li>
-                        <li><a class="text-decoration-none" href="#">Sport Shoes</a></li>
+                        <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':29}) }}">VETEMENTS</a></li>
+                        <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':28}) }}">ELECTRONIQUES</a></li>
+                        <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':27}) }}">IMMOBILIER</a></li>
+                        <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':30}) }}">BEAUTE</a></li>
+                        <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':31}) }}">SPORTS</a></li>
+                        <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':32}) }}">SERVICES</a></li>
+                        <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':33}) }}">ALIMENTATION</a></li>
+                        <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':36}) }}">VOITURES</a></li>
                     </ul>
                 </div>
 
                 <div class="col-md-4 pt-5">
-                    <h2 class="h2 text-light border-bottom pb-3 border-light">Further Info</h2>
+                    <h2 class="h2 text-light border-bottom pb-3 border-light">Plus d'infos</h2>
                     <ul class="list-unstyled text-light footer-link-list">
                         <li><a class="text-decoration-none" href="{{ path('app_home') }}">Acceuil</a></li>
-                        <li><a class="text-decoration-none" href="#">About Us</a></li>
+                        <li><a class="text-decoration-none" href="{{path('app_voir_all_store')}}">Stores</a></li>
                         <li><a class="text-decoration-none" href="{{ path('app_acheter',{'id':100}) }}">Acheter</a></li>
                         <li><a class="text-decoration-none" href="#">Contactez nous</a></li>
                         <li><a class="text-decoration-none" href="{{path('app_login')}}">Vendre</a></li>
@@ -68,10 +69,8 @@
                     </ul>
                 </div>
                 <div class="col-auto">
-                    <label class="sr-only" for="subscribeEmail">Email address</label>
                     <div class="input-group mb-2">
-                        <input type="text" class="form-control bg-dark border-light" id="subscribeEmail" placeholder="Email address">
-                        <div class="input-group-text btn-success text-light">Subscribe</div>
+                        <a href="{{ path('app_register') }}" class="input-group-text btn-success text-light"><small>Devenir vendeur</small></a>
                     </div>
                 </div>
             </div>

@@ -29,22 +29,74 @@
 			</div>
 			
 			<h6>Veillez choisir les photos de votre article</h6>
-			<div class="row">
-				<img class="img-fluid img-thumbnail" src="{{asset('assets/img/lesPhotos.png')|
-				imagine_filter('squared_thumbnail_medium')}}">
+			<div class="row" >
+				<div class="col-lg-12 mt-5">
+                <div class="card mb-3">
+                    <div >
+                    	<div class="text-center">{{ form_errors(form.image_1)}}</div>
+                    	<a id="lienImage" href="#" onclick="event.preventDefault();document.getElementById('form_image_1').click();" class="btn btn-light">
+	                    	<div id="placeImage">
+	                            <img class="card-img img-fluid" id="image" src="{{asset('images/placeholder.jpg')}}" alt="Card image cap" id="product-detail">
+	                        </div>
+	                    </a>
+	                        
+                    </div>
+                </div>
+                <div class="row">  
+                <!--Start Carousel Wrapper-->
+                    <div id="multi-item-example" class="col-10 carousel slide carousel-multi-item" data-bs-ride="carousel">
+                            <!--Start Slides-->
+                        <div class="carousel-inner product-links-wap" role="listbox">
+                            <div class="carousel-item active">
+                                <div class="row">
+                                            <div class="col-4">
+                                                <div>
+                                                    <a id="lienImage_2" href="#" onclick="event.preventDefault();document.getElementById('form_image_2').click();" class="btn btn-light">
+	                    								<div id="placeImage_2">
+	                            							<img class="card-img img-fluid" id="image" src="{{asset('images/placeholder.jpg')}}" alt="Card image cap">
+	                        							</div>
+	                    							</a>
+                                                   
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div>
+                                                     <a id="lienImage_3" href="#" onclick="event.preventDefault();document.getElementById('form_image_3').click();" class="btn btn-light">
+	                    								<div id="placeImage_3">
+	                            							<img class="card-img img-fluid" id="image" src="{{asset('images/placeholder.jpg')}}" alt="Card image cap">
+	                        							</div>
+	                    							</a>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div>
+                                                    <a id="lienImage_4" href="#" onclick="event.preventDefault();document.getElementById('form_image_4').click();" class="btn btn-light">
+	                    								<div id="placeImage_4">
+	                            							<img class="card-img img-fluid" id="image" src="{{asset('images/placeholder.jpg')}}" alt="Card image cap">
+	                        							</div>
+	                    							</a>
+                                                </div>
+                                            </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 				<div class="">
 					<div class="row">
 						<div class="col-6">
-							{{ form_row(form.image_1)}}
+							{{ form_widget(form.image_1)}}
+							
 						</div>
 						<div class="col-6">
-							{{ form_row(form.image_2)}}
+							{{ form_widget(form.image_2)}}
 						</div>
 						<div class="col-6">
-							{{ form_row(form.image_3)}}
+							{{ form_widget(form.image_3)}}
 						</div>
 						<div class="col-6">
-							{{ form_row(form.image_4)}}
+							{{ form_widget(form.image_4)}}
 						</div>
 					</div>
 				</div>

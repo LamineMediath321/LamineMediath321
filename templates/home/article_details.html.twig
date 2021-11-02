@@ -138,52 +138,52 @@
                             </ul>
                             <ul>
                             	<div class="row">
-				                    <div class="col-6">
-                                        <i class="fa fa-envelope mx-2"></i>
-                                        <a class="navbar-sm-brand" href="mailto:{{vendeur.email}}">{{vendeur.email}} </a>            
-                                    </div>
-				                    <div class="col-6">
-                                        <i class="fa fa-phone mx-2"></i>
-                                    <a class="navbar-sm-brand" href="tel:{{vendeur.phone}}">{{vendeur.phone}}</a>            
-                                    </div>
-               					 </div>
+                                    <h4 class="d-flex justify-content-center">Contactez le vendeur</h4>
+                                    <div class="d-flex">
+                                          <div class="col-3"> 
+                                             <a class="navbar-sm-brand" href="https://api.whatsapp.com/send?phone={{article.user.phone}}&text=Je suis intéressé par votre annonce {{article.nomArticle}} du {{article.createdAt|date('d-m-y')}} sur le site ladiastore" style="text-decoration: none;" title="Whatsapp"><i class="fab fa-whatsapp fa-2x text-success "></i></a>
+                                        </div>
+    				                    <div class="col-3">   
+                                            <a class="navbar-sm-brand" href="mailto:{{vendeur.email}}" style="text-decoration: none;" title="Email"><i class="fa fa-envelope fa-2x text-danger"></i></a>            
+                                        </div>
+    				                    <div class="col-3">
+                                            
+                                            <a class="navbar-sm-brand" href="tel:{{vendeur.phone}}" style="text-decoration: none;" title="Appeler"><i class="fa fa-phone fa-2x text-warning"></i></a>
+                                        </div>
+                                        <!--Le modal de messagerie-->
+                                        <div class="col-3">   
+                                            <a href="#" class="navbar-sm-brand" style="text-decoration: none;" title="Ladia Messenger"><i class="fa fa-comments fa-2x text-info" data-bs-toggle="modal" data-bs-target="#messageModal" data-bs-whatever="@mdo"></i></a>
+                                            <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                     <div class="modal-header">
+                                                        <h5 class="modal-title text-success" id="exampleModalLabel">L&part;di&part; message</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        {{form_start(form)}}
+                                                            <div class="mb-1">
+                                                                {{form_row(form.Destinataire)}}
+                                                            </div>
+                                                            <div class="mb-1">
+                                                               {{form_row(form.Message,{'attr':{'placeholder' : 'votre message'}})}}
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                {{form_row(form.Coordonnees,{'label':'Vos coordonnées'})}}
+                                                            </div>
+                                                        
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                                                        <button type="submit" class="btn btn-success">Envoyer</button>
+                                                    </div>
+                                                    {{form_end(form)}}
+                                                </div>
+                                            </div>
+                                        </div>
+                   					 </div>
+                                 </div>
                             </ul>
-
-                            <form action="" method="GET">
-                                <input type="hidden" name="product-title" value="Activewear">
-                                <div class="row">
-                                    <div class="col-auto">
-                                        <ul class="list-inline pb-3">
-                                            <li class="list-inline-item">Size :
-                                                <input type="hidden" name="product-size" id="product-size" value="S">
-                                            </li>
-                                            <li class="list-inline-item"><span class="btn btn-success btn-size">S</span></li>
-                                            <li class="list-inline-item"><span class="btn btn-success btn-size">M</span></li>
-                                            <li class="list-inline-item"><span class="btn btn-success btn-size">L</span></li>
-                                            <li class="list-inline-item"><span class="btn btn-success btn-size">XL</span></li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-auto">
-                                        <ul class="list-inline pb-3">
-                                            <li class="list-inline-item text-right">
-                                                Quantity
-                                                <input type="hidden" name="product-quanity" id="product-quanity" value="1">
-                                            </li>
-                                            <li class="list-inline-item"><span class="btn btn-success" id="btn-minus">-</span></li>
-                                            <li class="list-inline-item"><span class="badge bg-secondary" id="var-value">1</span></li>
-                                            <li class="list-inline-item"><span class="btn btn-success" id="btn-plus">+</span></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="row pb-3">
-                                    <div class="col d-grid">
-                                        <button type="submit" class="btn btn-success btn-lg" name="submit" value="buy">Buy</button>
-                                    </div>
-                                    <div class="col d-grid">
-                                        <button type="submit" class="btn btn-success btn-lg" name="submit" value="addtocard">Add To Cart</button>
-                                    </div>
-                                </div>
-                            </form>
 
                         </div>
                     </div>
@@ -212,6 +212,7 @@
                                     <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                                         <ul class="list-unstyled">
                                             <li><a class="btn btn-success text-white" href=""><i class="fab fa-whatsapp"></i></a></li>
+                                            <li><a class="btn btn-success text-white mt-2" href=""><i class="far fa-heart"></i></a></li>
                                             <li><a class="btn btn-success text-white mt-2" href="{{ path('app_article_details', {'id':similaire.id}) }}"><i class="far fa-eye"></i></a></li>
                                             
                                         </ul>
@@ -270,22 +271,22 @@
             responsive: [{
                     breakpoint: 1024,
                     settings: {
-                        slidesToShow: 3,
-                        slidesToScroll: 3
+                        slidesToShow: 2,
+                        slidesToScroll: 2
                     }
                 },
                 {
                     breakpoint: 600,
                     settings: {
                         slidesToShow: 2,
-                        slidesToScroll: 3
+                        slidesToScroll: 2
                     }
                 },
                 {
                     breakpoint: 480,
                     settings: {
                         slidesToShow: 2,
-                        slidesToScroll: 3
+                        slidesToScroll: 2
                     }
                 }
             ]

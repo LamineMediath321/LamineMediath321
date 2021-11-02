@@ -1,0 +1,22 @@
+{% block title '' %}
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="{{asset('css/bootstrap.min.css')}}	">
+<link rel="apple-touch-icon" href="{{asset('assets/img/apple-icon.png')}}">
+ <link rel="shortcut icon" type="image/x-icon" href="{{asset('assets/img/logo.ico')}}">
+<link rel="apple-touch-icon" href="assets/img/apple-icon.png">
+{% endblock %}
+
+{% block body %}
+
+<p class="text-center m-5">
+	<img class="text-center" src="{{ asset('assets/img/apple-icon.png') }}"></br>
+</p>
+	<h3 class="text-center text-muted m-5">Ladiastore Vendez & Achetez beaucoup plus librement !</h3>
+	<div class="text-muted text-center m-5">
+	Merci d'aller consulter votre boite e-mail, nous vous enverrons immédiatement les instructions pour vous permetrre de se connecter.</br>
+	<p>Veillez verifier votre email pour se connecter</p>
+	</div>
+
+{{ include('compte_user/user_layouts/partials/_footer.html.twig') }}
+{% endblock %}
+

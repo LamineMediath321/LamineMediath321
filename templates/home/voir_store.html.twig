@@ -138,7 +138,7 @@
                                     </li>
                                     <li class="text-muted text-right">{{article.price}}</li>
                                 </ul>
-                                <a href="shop-single.html" class="h2 text-decoration-none text-dark">{{article.nomArticle}} </a>
+                                <a href="{{ path('app_article_details',{'id':article.id}) }}" class="h2 text-decoration-none text-dark">{{article.nomArticle}} </a>
                                 <p class="card-text">
                                     {{article.description|u.truncate(35,'...',false)}}
                                 </p>

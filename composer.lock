@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b69c384db534d39c9f2fb9bb0ed72f4a",
+    "content-hash": "fff507c9e28f5a0331d7a89177088612",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -1508,6 +1508,58 @@
             "time": "2021-04-01T18:37:14+00:00"
         },
         {
+            "name": "eschmar/time-ago-bundle",
+            "version": "v2.0.0",
+            "target-dir": "Eschmar/TimeAgoBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/eschmar/time-ago-bundle.git",
+                "reference": "ca9332e20dd59951422b43c02d0d22757a68ea08"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/eschmar/time-ago-bundle/zipball/ca9332e20dd59951422b43c02d0d22757a68ea08",
+                "reference": "ca9332e20dd59951422b43c02d0d22757a68ea08",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0",
+                "symfony/flex": "*",
+                "twig/twig": "^3.0.0"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "Eschmar\\TimeAgoBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marcel Eschmann",
+                    "homepage": "https://github.com/eschmar",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Provides a simple twig filter for expressing time difference in words.",
+            "homepage": "https://github.com/eschmar/time-ago-bundle",
+            "keywords": [
+                "ago",
+                "bundle",
+                "symfony",
+                "time",
+                "twig"
+            ],
+            "support": {
+                "issues": "https://github.com/eschmar/time-ago-bundle/issues",
+                "source": "https://github.com/eschmar/time-ago-bundle/tree/v2.0.0"
+            },
+            "time": "2020-06-04T12:24:24+00:00"
+        },
+        {
             "name": "friendsofphp/proxy-manager-lts",
             "version": "v1.0.5",
             "source": {
@@ -1870,6 +1922,79 @@
                 "source": "https://github.com/KnpLabs/KnpPaginatorBundle/tree/v5.7.0"
             },
             "time": "2021-09-16T12:21:57+00:00"
+        },
+        {
+            "name": "knplabs/knp-time-bundle",
+            "version": "v1.16.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/KnpLabs/KnpTimeBundle.git",
+                "reference": "cfbef12c504cd656075f056b8158ccb753c0474d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/KnpLabs/KnpTimeBundle/zipball/cfbef12c504cd656075f056b8158ccb753c0474d",
+                "reference": "cfbef12c504cd656075f056b8158ccb753c0474d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5",
+                "symfony/config": "^4.3|^5.0",
+                "symfony/dependency-injection": "^4.3|^5.0",
+                "symfony/translation": "^4.3|^5.0"
+            },
+            "conflict": {
+                "phpunit/phpunit": "<8.0"
+            },
+            "require-dev": {
+                "symfony/framework-bundle": "^4.3|^5.0",
+                "symfony/phpunit-bridge": "^5.2",
+                "symfony/templating": "^4.3|^5.0",
+                "symfony/twig-bundle": "^4.3|^5.0"
+            },
+            "suggest": {
+                "symfony/twig-bundle": "to use the Twig `time_diff()` function or `|ago` filter"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Knp\\Bundle\\TimeBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "KnpLabs Team",
+                    "homepage": "http://knplabs.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://github.com/KnpLabs/KnpTimeBundle/contributors"
+                }
+            ],
+            "description": "Making your dates look sensible and descriptive",
+            "homepage": "http://github.com/KnpLabs/KnpTimeBundle",
+            "keywords": [
+                "bundle",
+                "date",
+                "descriptive time",
+                "knp",
+                "knplabs",
+                "time"
+            ],
+            "support": {
+                "issues": "https://github.com/KnpLabs/KnpTimeBundle/issues",
+                "source": "https://github.com/KnpLabs/KnpTimeBundle/tree/v1.16.1"
+            },
+            "time": "2021-07-13T11:56:11+00:00"
         },
         {
             "name": "laminas/laminas-code",

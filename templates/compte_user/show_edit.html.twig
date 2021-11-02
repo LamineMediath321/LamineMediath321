@@ -37,7 +37,19 @@
                                                 </div>
                                             </div>
                                         {% endif %}
+                                        
                                     {% endfor %}
+                                    {% if taille<4 %}
+                                          <div class="col-4">
+                                                <div>
+                                                     <a id="lienImage" href="#" onclick="event.preventDefault();document.getElementById('form_image_1').click();" class="btn btn-light">
+                                                        <div id="placeImage">
+                                                            <img class="card-img img-fluid" id="image" src="{{asset('images/placeholder.jpg')}}" alt="Card image cap" id="product-detail">
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -72,7 +84,7 @@
         </div>
     </section>
     <div class="col-4">
-        {{form_row(form.image)}}
+        {{form_widget(form.image_1)}}
     </div>
     <div class="text-center">
         <p class="">Si vous venez de modifier les informations du formulaire en haut cliquez sur Mettez à jour? </p>
@@ -105,6 +117,7 @@
 
     {% block javascripts %}
         <script src="{{ asset('assets/js/images.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/img.js') }}" defer></script>
     {% endblock %}
 
 {% endblock %}

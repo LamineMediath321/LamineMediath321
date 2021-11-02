@@ -43,8 +43,8 @@
                     </a>
                 </li>
                 <li>
-                    {% if store %}
-                        <a href="{{path('app_store_edit',{'id':store.id})}}">
+                    {% if app.user.store %}
+                        <a href="{{path('app_store_edit',{'id':app.user.store.id})}}">
                             <i class="fas fa-store"></i> 
                             Editer mon store
                         </a>
@@ -62,15 +62,15 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="{{ path('app_messages') }}">
                         <i class="fas fa-envelope"></i>
                         Messages
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="{{ path('app_tableau_bord') }}">
                         <i class="fas fa-paper-plane"></i>
-                        Contact
+                        Dashboard
                     </a>
                 </li>
             </ul>
@@ -95,13 +95,13 @@
                         <ul class="nav navbar-nav ml-auto">
                            
                             <li class="nav-item ml-1">
-                                 <h2 style="color: #59ab6e">{{user.firstName}}  {{user.lastName}}</h2>
+                                 <h2 style="color: #59ab6e">{{app.user.firstName}}  {{app.user.lastName}}</h2>
                             </li>
                             
                             <li class="nav-item ml-auto">
                                 <a class="nav-link" href="#">
-                                    {% if bank %}
-                                        {{bank.pieces}} 
+                                    {% if app.user.banque %}
+                                        {{app.user.banque.pieces}} 
                                     {% endif %}
                                     <i class="fas fa-coins"></i>
                                 </a>

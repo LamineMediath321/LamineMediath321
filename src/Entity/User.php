@@ -56,13 +56,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface,\Seriali
 
     /**
      * @ORM\Column(type="string", length=255,unique=true)
+     * @Assert\Regex(pattern="#^\+|(00)221( ?[0-9]){7,}$#",message="Veillez entrer un numéro correct")
      */
     private $phone;
 
 
      /**
      * @ORM\Column(type="text", length=255)
-     *@Assert\NotBlank(message="L'adresse ne doit pas être vide")
+     * @Assert\NotBlank(message="L'adresse ne doit pas être vide")
      */
     private $adresse;
 
@@ -114,11 +115,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface,\Seriali
      */
     private $isVerified = false;
 
+    /**
+     * @ORM\OneToMany(targetEntity=LadiaMessage::class, mappedBy="destinataire")
+     */
+    private $ladiaMessages;
+
     
 
     public function __construct()
     {
         $this->articles = new ArrayCollection();
+        $this->ladiaMessages = new ArrayCollection();
     }
 
    
@@ -431,6 +438,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface,\Seriali
     {
         return 'https://www.gravatar.com/avatar/'.md5(strtolower(trim($this->getEmail()))).'/?s='.$size;
     }
+
+   /**
+    * @return Collection|LadiaMessage[]
+    */
+   public function getLadiaMessages(): Collection
+   {
+       return $this->ladiaMessages;
+   }
+
+   public function addLadiaMessage(LadiaMessage $ladiaMessage): self
+   {
+       if (!$this->ladiaMessages->contains($ladiaMessage)) {
+           $this->ladiaMessages[] = $ladiaMessage;
+           $ladiaMessage->setDestinataire($this);
+       }
+
+       return $this;
+   }
+
+   public function removeLadiaMessage(LadiaMessage $ladiaMessage): self
+   {
+       if ($this->ladiaMessages->removeElement($ladiaMessage)) {
+           // set the owning side to null (unless already changed)
+           if ($ladiaMessage->getDestinataire() === $this) {
+               $ladiaMessage->setDestinataire(null);
+           }
+       }
+
+       return $this;
+   }
 
 
 

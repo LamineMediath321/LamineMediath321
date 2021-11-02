@@ -1,4 +1,4 @@
-      {% extends 'compte_user/user_layouts/base.html.twig' %}
+{% extends 'compte_user/user_layouts/base.html.twig' %}
 
 {% block title %}Ladiastore Vendez & Achetez !{% endblock %}
 
@@ -10,7 +10,7 @@
 
            <div class="mw-100 rounded-top overflow-hidden">
                <div class="text-center">
-                   <img src="{{(user.imageName ? vich_uploader_asset(user):app.user.gravatar(200))|imagine_filter('squared_thumbnail_small')}} " alt="{{ user.firstName }}" class="rounded-circle shadow">
+                   <img src="{{(user.imageName ? vich_uploader_asset(user): asset('images/gravatar.png'))|imagine_filter('squared_thumbnail_small')}} " alt="{{ user.firstName }}" class="rounded-circle shadow">
                </div>                             
             <div class="text-center mt-5 text-muted">
                 {{user.email}}

@@ -1,0 +1,495 @@
+{% extends 'layouts/base.html.twig' %}
+
+
+
+{% block title 'Voir tous les stores' %}
+
+{% block body %}
+<div>
+	<!-- Section des stores -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row text-center p-2 pb-3">
+                <h3>Stores</h3>
+                <p>Les boutiques </p>
+            </div>
+
+            <!--Start Carousel Wrapper-->
+
+            <div class="title">
+            	<h5 class="text-muted">IMMOBILIER & ELECTRONIQUES</h5>
+            </div>
+
+            <div id="carousel-related-product">
+
+                {% for immobilier in immobiliers %}
+                 <div class="col-md-4 p-2 pb-3">
+                                <div class="product-wap card h-100 rounded-0">
+                                    <div class="card rounded-0">
+                                        <div class="mw-100 rounded-top overflow-hidden">
+                                            <div class="mw-100 rounded-top overflow-hidden">
+                                        <img src="{{ (immobilier.imageName ? vich_uploader_asset(immobilier) : asset('images/placeholder.jpg')) | imagine_filter('squared_thumbnail_medium')}}" alt="{{ immobilier.nomStore }}" class="w-100 rounded-top">
+                                    </div>
+                                        </div>
+                                        <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                        <ul class="list-unstyled">
+                 
+                                            <li><a class="btn btn-success text-white mt-2" href="{{ path('app_article_details', {'id':immobilier.id}) }}"><i class="far fa-eye"></i></a></li>
+                                        </ul>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <a href="shop-single.html" class="h3 text-decoration-none">{{immobilier.nomStore}}</a>
+                                        <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                                             <li><h6> </h6> </li>
+                                            <li class="pt-2">
+                                                <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
+                                            </li>
+                                        </ul>
+                                   
+                                        <p class="text-center mb-0"></p>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                
+                {% endfor %}
+                {% for electro in electros %}
+                 <div class="col-md-4 p-2 pb-3">
+                                <div class="product-wap card h-100 rounded-0">
+                                    <div class="card rounded-0">
+                                        <div class="mw-100 rounded-top overflow-hidden">
+                                            <div class="mw-100 rounded-top overflow-hidden">
+                                        <img src="{{ (electro.imageName ? vich_uploader_asset(electro) : asset('images/placeholder.jpg')) | imagine_filter('squared_thumbnail_medium')}}" alt="{{ electro.nomStore }}" class="w-100 rounded-top">
+                                    </div>
+                                        </div>
+                                        <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                        <ul class="list-unstyled">
+                 
+                                            <li><a class="btn btn-success text-white mt-2" href="{{ path('app_article_details', {'id':electro.id}) }}"><i class="far fa-eye"></i></a></li>
+                                        </ul>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <a href="shop-single.html" class="h3 text-decoration-none">{{electro.nomStore}}</a>
+                                        <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                                             <li><h6> </h6> </li>
+                                            <li class="pt-2">
+                                                <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
+                                            </li>
+                                        </ul>
+                                   
+                                        <p class="text-center mb-0"></p>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                
+                
+                {% endfor %}
+        </div>    
+    </section>
+    <!-- End Article -->
+     <script>
+        $('#carousel-related-product').slick({
+            infinite: true,
+            arrows: false,
+            slidesToShow: 4,
+            slidesToScroll: 3,
+            dots: true,
+            responsive: [{
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    }
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    }
+                }
+            ]
+        });
+    </script>
+    <!-- End Slider Script -->
+</div>
+
+<div>
+	<!-- Section des stores -->
+    <section class="py-5">
+        <div class="container">
+
+            <div class="title">
+            	<h5 class="text-muted">VETEMENTS & BEAUTE</h5>
+            </div>
+
+            <div id="carousel-related-product_2">
+
+                {% for vetement in vetements %}
+                 <div class="col-md-4 p-2 pb-3">
+                                <div class="product-wap card h-100 rounded-0">
+                                    <div class="card rounded-0">
+                                        <div class="mw-100 rounded-top overflow-hidden">
+                                            <div class="mw-100 rounded-top overflow-hidden">
+                                        <img src="{{ (vetement.imageName ? vich_uploader_asset(vetement) : asset('images/placeholder.jpg')) | imagine_filter('squared_thumbnail_medium')}}" alt="{{ vetement.nomStore }}" class="w-100 rounded-top">
+                                    </div>
+                                        </div>
+                                        <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                        <ul class="list-unstyled">
+                 
+                                            <li><a class="btn btn-success text-white mt-2" href="{{ path('app_article_details', {'id':vetement.id}) }}"><i class="far fa-eye"></i></a></li>
+                                        </ul>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <a href="shop-single.html" class="h3 text-decoration-none">{{vetement.nomStore}}</a>
+                                        <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                                             <li><h6> </h6> </li>
+                                            <li class="pt-2">
+                                                <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
+                                            </li>
+                                        </ul>
+                                   
+                                        <p class="text-center mb-0"></p>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                
+                {% endfor %}
+                {% for beaute in beautes %}
+                 <div class="col-md-4 p-2 pb-3">
+                                <div class="product-wap card h-100 rounded-0">
+                                    <div class="card rounded-0">
+                                        <div class="mw-100 rounded-top overflow-hidden">
+                                            <div class="mw-100 rounded-top overflow-hidden">
+                                        <img src="{{ (beaute.imageName ? vich_uploader_asset(beaute) : asset('images/placeholder.jpg')) | imagine_filter('squared_thumbnail_medium')}}" alt="{{ beaute.nomStore }}" class="w-100 rounded-top">
+                                    </div>
+                                        </div>
+                                        <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                        <ul class="list-unstyled">
+                 
+                                            <li><a class="btn btn-success text-white mt-2" href="{{ path('app_article_details', {'id':beaute.id}) }}"><i class="far fa-eye"></i></a></li>
+                                        </ul>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <a href="shop-single.html" class="h3 text-decoration-none">{{beaute.nomStore}}</a>
+                                        <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                                             <li><h6> </h6> </li>
+                                            <li class="pt-2">
+                                                <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
+                                            </li>
+                                        </ul>
+                                   
+                                        <p class="text-center mb-0"></p>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                
+                
+                {% endfor %}
+        </div>    
+    </section>
+    <!-- End Article -->
+     <script>
+        $('#carousel-related-product_2').slick({
+            infinite: true,
+            arrows: false,
+            slidesToShow: 4,
+            slidesToScroll: 3,
+            dots: true,
+            responsive: [{
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    }
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    }
+                }
+            ]
+        });
+    </script>
+    <!-- End Slider Script -->
+</div>
+<div>
+	<!-- Section des stores -->
+    <section class="py-5">
+        <div class="container">
+
+            <div class="title">
+            	<h5 class="text-muted">SPORTS & SERVICES</h5>
+            </div>
+
+            <div id="carousel-related-product_3">
+
+                {% for sport in sports %}
+                 <div class="col-md-4 p-2 pb-3">
+                                <div class="product-wap card h-100 rounded-0">
+                                    <div class="card rounded-0">
+                                        <div class="mw-100 rounded-top overflow-hidden">
+                                            <div class="mw-100 rounded-top overflow-hidden">
+                                        <img src="{{ (sport.imageName ? vich_uploader_asset(sport) : asset('images/placeholder.jpg')) | imagine_filter('squared_thumbnail_medium')}}" alt="{{ sport.nomStore }}" class="w-100 rounded-top">
+                                    </div>
+                                        </div>
+                                        <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                        <ul class="list-unstyled">
+                 
+                                            <li><a class="btn btn-success text-white mt-2" href="{{ path('app_article_details', {'id':sport.id}) }}"><i class="far fa-eye"></i></a></li>
+                                        </ul>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <a href="shop-single.html" class="h3 text-decoration-none">{{sport.nomStore}}</a>
+                                        <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                                             <li><h6> </h6> </li>
+                                            <li class="pt-2">
+                                                <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
+                                            </li>
+                                        </ul>
+                                   
+                                        <p class="text-center mb-0"></p>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                
+                {% endfor %}
+                {% for service in services %}
+                 <div class="col-md-4 p-2 pb-3">
+                                <div class="product-wap card h-100 rounded-0">
+                                    <div class="card rounded-0">
+                                        <div class="mw-100 rounded-top overflow-hidden">
+                                            <div class="mw-100 rounded-top overflow-hidden">
+                                        <img src="{{ (service.imageName ? vich_uploader_asset(service) : asset('images/placeholder.jpg')) | imagine_filter('squared_thumbnail_medium')}}" alt="{{ service.nomStore }}" class="w-100 rounded-top">
+                                    </div>
+                                        </div>
+                                        <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                        <ul class="list-unstyled">
+                 
+                                            <li><a class="btn btn-success text-white mt-2" href="{{ path('app_article_details', {'id':service.id}) }}"><i class="far fa-eye"></i></a></li>
+                                        </ul>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <a href="shop-single.html" class="h3 text-decoration-none">{{service.nomStore}}</a>
+                                        <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                                             <li><h6> </h6> </li>
+                                            <li class="pt-2">
+                                                <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
+                                            </li>
+                                        </ul>
+                                   
+                                        <p class="text-center mb-0"></p>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                
+                
+                {% endfor %}
+        </div>    
+    </section>
+    <!-- End Article -->
+     <script>
+        $('#carousel-related-product_3').slick({
+            infinite: true,
+            arrows: false,
+            slidesToShow: 4,
+            slidesToScroll: 3,
+            dots: true,
+            responsive: [{
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    }
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    }
+                }
+            ]
+        });
+    </script>
+    <!-- End Slider Script -->
+</div>
+<div>
+	<!-- Section des stores -->
+    <section class="py-5">
+        <div class="container">
+
+            <div class="title">
+            	<h5 class="text-muted">ALIMENTATION & VOITURES</h5>
+            </div>
+
+            <div id="carousel-related-product_4">
+
+                {% for alimentation in alimentations %}
+                 <div class="col-md-4 p-2 pb-3">
+                                <div class="product-wap card h-100 rounded-0">
+                                    <div class="card rounded-0">
+                                        <div class="mw-100 rounded-top overflow-hidden">
+                                            <div class="mw-100 rounded-top overflow-hidden">
+                                        <img src="{{ (alimentation.imageName ? vich_uploader_asset(alimentation) : asset('images/placeholder.jpg')) | imagine_filter('squared_thumbnail_medium')}}" alt="{{ alimentation.nomStore }}" class="w-100 rounded-top">
+                                    </div>
+                                        </div>
+                                        <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                        <ul class="list-unstyled">
+                 
+                                            <li><a class="btn btn-success text-white mt-2" href="{{ path('app_article_details', {'id':alimentation.id}) }}"><i class="far fa-eye"></i></a></li>
+                                        </ul>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <a href="shop-single.html" class="h3 text-decoration-none">{{alimentation.nomStore}}</a>
+                                        <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                                             <li><h6> </h6> </li>
+                                            <li class="pt-2">
+                                                <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
+                                            </li>
+                                        </ul>
+                                   
+                                        <p class="text-center mb-0"></p>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                
+                {% endfor %}
+                {% for voiture in voitures %}
+                 <div class="col-md-4 p-2 pb-3">
+                                <div class="product-wap card h-100 rounded-0">
+                                    <div class="card rounded-0">
+                                        <div class="mw-100 rounded-top overflow-hidden">
+                                            <div class="mw-100 rounded-top overflow-hidden">
+                                        <img src="{{ (voiture.imageName ? vich_uploader_asset(voiture) : asset('images/placeholder.jpg')) | imagine_filter('squared_thumbnail_medium')}}" alt="{{ voiture.nomStore }}" class="w-100 rounded-top">
+                                    </div>
+                                        </div>
+                                        <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                        <ul class="list-unstyled">
+                 
+                                            <li><a class="btn btn-success text-white mt-2" href="{{ path('app_article_details', {'id':voiture.id}) }}"><i class="far fa-eye"></i></a></li>
+                                        </ul>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <a href="shop-single.html" class="h3 text-decoration-none">{{voiture.nomStore}}</a>
+                                        <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                                             <li><h6> </h6> </li>
+                                            <li class="pt-2">
+                                                <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
+                                                <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
+                                            </li>
+                                        </ul>
+                                   
+                                        <p class="text-center mb-0"></p>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                
+                
+                {% endfor %}
+        </div>    
+    </section>
+    <!-- End Article -->
+     <script>
+        $('#carousel-related-product_4').slick({
+            infinite: true,
+            arrows: false,
+            slidesToShow: 4,
+            slidesToScroll: 3,
+            dots: true,
+            responsive: [{
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    }
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    }
+                }
+            ]
+        });
+    </script>
+    <!-- End Slider Script -->
+</div>
+{% endblock %}

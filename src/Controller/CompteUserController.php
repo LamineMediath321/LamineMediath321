@@ -36,6 +36,8 @@ use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\LessThan;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use App\Repository\LadiaMessageRepository;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 //Pour les acces on peut aussi utiliser des voters
 
@@ -46,8 +48,22 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class CompteUserController extends AbstractController
 {
+
+
+     /**
+     * @Route("/compte_user/", name="app_tableau_bord")
+     */
+    public function tableauBord(BanqueRepository $bankRepo,StoreRepository $storeRepo): Response
+    {
+
+      return $this->render('compte_user/tableau_bord.html.twig');
+    }
+
+
+
+
     /**
-     * @Route("/compte_user/", name="app_admin_user")
+     * @Route("/compte_user/admin_user", name="app_admin_user")
      */
     public function profil(BanqueRepository $bankRepo,StoreRepository $storeRepo): Response
     {
@@ -75,7 +91,6 @@ class CompteUserController extends AbstractController
     /**
     *@Route("/compte_user/edit_user", name="app_user_edit",methods={"GET","POST","PUT"})
     *@Security("user.isVerified()",message="Veillez verifier votre email",)
-    *@IsGranted("IS_AUTHENTICATED_FULLY")
     */
     public function edit_user(Request $request,EntityManagerInterface $em,BanqueRepository $bankRepo,StoreRepository $storeRepo):Response
     {
@@ -115,7 +130,6 @@ class CompteUserController extends AbstractController
     /**
     *@Route("/compte_user/creer_article", name="app_article",methods={"GET","POST","PUT"})
     *@Security("user.isVerified()",message="Veillez verifier votre email")
-    *@IsGranted("IS_AUTHENTICATED_FULLY")
     */
     public function creer_article(Request $request,EntityManagerInterface $em,BanqueRepository $bankRepo,StoreRepository $storeRepo):Response
     {
@@ -181,25 +195,36 @@ class CompteUserController extends AbstractController
             ])
 
             ->add('image_1', FileType::class,[
-                'multiple' => false,
                 'mapped' => false,
                 'required' => true,
-                'constraints' => new NotBlank(['message' => 'Veillez soummettre La photo principale'])
+                'constraints' => new NotBlank(['message' => 'Veillez soummettre La photo principale']),
+                'attr' => [
+                    'hidden' => true
+                ]
             ])
             ->add('image_2', FileType::class,[
                 'multiple' => false,
                 'mapped' => false,
-                'required' => false
+                'required' => false,
+                'attr' => [
+                    'hidden' => true
+                ]
             ])
             ->add('image_3', FileType::class,[
                 'multiple' => false,
                 'mapped' => false,
-                'required' => false
+                'required' => false,
+                'attr' => [
+                    'hidden' => true
+                ]
             ])
             ->add('image_4', FileType::class,[
                 'multiple' => false,
                 'mapped' => false,
-                'required' => false
+                'required' => false,
+                'attr' => [
+                    'hidden' => true
+                ]
             ])
 
              ->getForm()
@@ -263,7 +288,6 @@ class CompteUserController extends AbstractController
     /**
      * @Route("/compte_user/creer_article_2/{id<[0-9]+>}", name="app_article_2")
      * @Security("is_granted('ARTICLE_MANAGE',article)")
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function creer_article2(Request $request,Article $article,BanqueRepository $bankRepo,EntityManagerInterface $em,StoreRepository $storeRepo): Response
     {
@@ -354,7 +378,6 @@ class CompteUserController extends AbstractController
     /**
      * @Route("/compte_user/show_edit/{id<[0-9]+>}", name="app_article_show")
      * @Security("is_granted('ARTICLE_MANAGE',article)")
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function show_edit(Request $request,Article $article,BanqueRepository $bankRepo,EntityManagerInterface $em,StoreRepository $storeRepo): Response
     { 
@@ -400,11 +423,13 @@ class CompteUserController extends AbstractController
                     ]
             ])
 
-            ->add('image', FileType::class,[
+            ->add('image_1', FileType::class,[
                     'label' => 'Ajouter une image si vous avez moins de 4 images',
-                    'multiple' => false,
                     'mapped' => false,
-                    'required' => false
+                    'required' => false,
+                    'attr' => [
+                        'hidden' => true
+                    ]
                 ])
             ->getForm()
         ;
@@ -421,7 +446,7 @@ class CompteUserController extends AbstractController
             //Par default l'article n'est pas paye, il sera true lorsqu'on retire la somme de son compte 
                 
             // On récupère l'image transmise
-            $image = $form->get('image')->getData();
+            $image = $form->get('image_1')->getData();
                 
               
             if ($image!=null) {
@@ -447,23 +472,29 @@ class CompteUserController extends AbstractController
                 'id' => $article->getId()
             ]);
         }
-
+        $taille=0;
         $images=$article->getImageArticles();
+        foreach ($images as $imag) {
+            $taille++;
+        }
+
         $img=$images[0];
+        
        
         return $this->render('compte_user/show_edit.html.twig',[
             'user' => $user,
             'article' => $article,
             'img' => $img,
+            'taille' => $taille,
             'form' => $form->createView()
         ]);
     }
 
 
+
 /**
  * @Route("/compte_user/delete/{id<[0-9]+>}", name="app_delete_image", methods={"DELETE"})
  * @Security("user.isVerified()",message="Veillez verifier votre email")
- *@IsGranted("IS_AUTHENTICATED_FULLY")
  */
 public function delete_image(ImageArticle $image, Request $request,EntityManagerInterface $em){
 
@@ -595,7 +626,7 @@ public function delete_image(ImageArticle $image, Request $request,EntityManager
             $em->flush();
 
             $this->addFlash('info','Vous avez creer un store !');
-            return $this->redirectToRoute('app_store_edit');
+            return $this->redirectToRoute('app_store_edit',['id' => $store->getId()]);
         }
 
           return $this->render('compte_user/store.html.twig',[
@@ -632,8 +663,6 @@ public function delete_image(ImageArticle $image, Request $request,EntityManager
         }
 
           return $this->render('compte_user/edit_store.html.twig',[
-                                'user' => $user,
-                                'bank' => $bank,
                                 'store' => $store,
                                 'form' => $form->createView()
                             ]);
@@ -666,9 +695,33 @@ public function delete_image(ImageArticle $image, Request $request,EntityManager
 
 
         return $this->render('compte_user/voir_article.html.twig',[
-                                'user' => $user,
                                 'articles' => $articles
                             ]);
+    }
+
+    /**
+    *@Route("/compte_user/messages",name="app_messages")
+    */
+    public function messages(EntityManagerInterface $em,LadiaMessageRepository $messageRepo,PaginatorInterface $paginator,Request $request):Response
+    {
+        $user = $this->getUser();
+
+        $donnees=$messageRepo->findBy([
+            'destinataire' => $user->getId(),
+        ],['createdAt' => 'DESC']);
+
+         //La pagination
+        $messages = $paginator->paginate(
+            $donnees, //Les donnees
+            $request->query->getInt('page',1), //Current page or default page 1
+            9 //Le nombre d'articles / page 
+        );
+
+
+        return $this->render('compte_user/messages.html.twig',[
+            'messages' => $messages
+        ]);
+        
     }
 
 

@@ -19,23 +19,18 @@ class StoreRepository extends ServiceEntityRepository
         parent::__construct($registry, Store::class);
     }
 
-    // /**
-    //  * @return Store[] Returns an array of Store objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findStoreByCategorie(int $id)
     {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $query = $this->createQueryBuilder('s');
+            $query->leftJoin('s.domaine', 'sc');
+            $query->leftJoin('sc.categorie','c');
+            $query->andWhere('c.id = :id');
+            $query->setParameter('id', $id);
 
+
+          return $query->getQuery()->getResult();
+
+    }
     /*
     public function findOneBySomeField($value): ?Store
     {

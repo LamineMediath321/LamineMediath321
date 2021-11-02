@@ -18,6 +18,10 @@ use App\Entity\Article;
 use App\Entity\Store;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Form\ChercherArticleType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use App\Entity\LadiaMessage;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 
 class HomeController extends AbstractController
@@ -147,7 +151,7 @@ class HomeController extends AbstractController
      /**
     *@Route("/home/{id<[0-9]+>}/article_details", name="app_article_details")
     */
-    public function article_details(Article $article,ArticleRepository $articleRepo,EntityManagerInterface $em):Response
+    public function article_details(Article $article,ArticleRepository $articleRepo,EntityManagerInterface $em,Request $request):Response
     {
 
         $imageArticles=$article->getImageArticles();
@@ -157,16 +161,94 @@ class HomeController extends AbstractController
         $similaires=$articleRepo->findBySimilaire($article->getSousCategorie(),$article->getId());
 
         $vendeur=$article->getUser();
+
+        //Le formulaire de LadiaMessage
+        $form=$this->createFormBuilder([
+            'Destinataire' => $vendeur->getFirstName().' '.$vendeur->getLastName(),
+        ])
+            ->add('Destinataire',TextType::class,[
+                'disabled' => true,
+                'attr' => [
+                    'class' => 'form-control'
+                ]
+            ])
+            ->add('Message',TextareaType::class,[
+                'attr' => [
+                    'class' => 'form-control'
+                ]
+            ])
+            ->add('Coordonnees',TextareaType::class,[
+                'constraints' => new NotBlank(['message' => 'Veillez mettre vos coordonnées']) 
+            ])
+            ->getForm()
+        ;
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $message = new LadiaMessage();
+            $message->setDestinataire($vendeur);
+            $message->setMessage($form->get('Message')->getData());
+            $message->setCoordonnees($form->get('Coordonnees')->getData());
+            $message->setEstLu(false);
+            $vendeur->addLadiaMessage($message);
+            $em->persist($message);
+            $em->flush();
+
+
+            $this->addFlash('info' , 'Vous avez envoyé un message à '.$vendeur->getFirstName());
+            return $this->render('home/article_details.html.twig',[
+            'article' => $article,
+            'imageArticles' => $imageArticles,
+            'vendeur' => $vendeur,
+            'store' => $store,
+            'similaires' => $similaires,
+            'form' => $form->createView()
+        ]);
+            
+        }
         
         return $this->render('home/article_details.html.twig',[
             'article' => $article,
             'imageArticles' => $imageArticles,
             'vendeur' => $vendeur,
             'store' => $store,
-            'similaires' => $similaires
+            'similaires' => $similaires,
+            'form' => $form->createView()
         ]);
 
     }
+
+/**
+*@Route("/home/aime/{id<[0-9]+>}",name="app_aime_article")
+*/
+public function article_aime(Article $article,EntityManagerInterface $em):Response
+{
+    $nb = $article->getNbAimes();
+    $nb++;
+    $article->setNbAimes($nb);
+    if ($nb>=1 && $nb<5) {
+        $article->setEtoiles(1);
+    }
+    if ($nb>=5 && $nb<10) {
+        $article->setEtoiles(2);
+    }
+    if ($nb>=10 && $nb<15) {
+        $article->setEtoiles(3);
+    }
+    if ($nb>=15 && $nb<20) {
+        $article->setEtoiles(4);
+    }
+    if ($nb>=20) {
+        $article->setEtoiles(5);
+    }
+    $em->flush();
+
+    return $this->redirectToRoute('app_home');
+
+
+}
+
 
 
      /**
@@ -247,6 +329,42 @@ class HomeController extends AbstractController
         ]);
     }
 
+
+    /**
+    *@Route("/home/voir_all_store",name="app_voir_all_store")
+    */
+    public function voir_all_store(Request $request,EntityManagerInterface $em,StoreRepository $storeRepo,PaginatorInterface $paginator):Response
+    {
+        //Les stores en immobilier
+        $immobiliers=$storeRepo->findStoreByCategorie(1);
+        //Les stores en electroniques
+        $electros=$storeRepo->findStoreByCategorie(2);
+           //Les stores en vetements
+        $vetements=$storeRepo->findStoreByCategorie(3);
+           //Les stores en beaute
+        $beautes=$storeRepo->findStoreByCategorie(4);
+           //Les stores en sports
+        $sports=$storeRepo->findStoreByCategorie(5);
+          //Les stores en services
+        $services=$storeRepo->findStoreByCategorie(6);
+          //Les stores en alimantation
+        $alimentations=$storeRepo->findStoreByCategorie(7);
+          //Les stores en voitures
+        $voitures=$storeRepo->findStoreByCategorie(8);
+
+
+
+        return $this->render('home/voir_all_store.html.twig',[
+            'immobiliers' => $immobiliers,
+            'electros' => $electros,
+            'vetements' => $vetements,
+            'beautes' => $beautes,
+            'sports' => $sports,
+            'services' => $services,
+            'alimentations' => $alimentations,
+            'voitures' => $voitures
+        ]);
+    }
 
      /**
     *@Route("/home/{id<[0-9]+>}/voir_store", name="app_voir_store")

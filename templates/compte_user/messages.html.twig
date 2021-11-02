@@ -1,0 +1,99 @@
+{% extends 'compte_user/user_layouts/base.html.twig' %}
+
+{% block title %}Ladiastore Vendez & Achetez !{% endblock %}
+
+{% block body %}
+    
+
+     {{ include('compte_user/user_layouts/partials/_sidebar.html.twig') }}
+
+     <div class="Header text-center text-muted">
+     	<h4 class="mb-3">Mes messages</h4>
+     </div>
+
+     {% if messages|length <= 0 %}
+     	<div class="text-center text-info">
+     		<h3>Sorry, Vous n'avez pas encore de messages 🤐</h3>
+     	</div>
+     {% else %}
+     <div class="container-fluid mt-100">
+    	<div class="card mb-3">
+        	<div class="card-header pl-0 pr-0">
+            	<div class="row no-gutters w-100 align-items-center">
+                	<div class="col ml-3">messages</div>
+                	<div class="col-4 text-muted">
+                    	<div class="row no-gutters align-items-center">
+                        	<div class="col-8">soumis</div>
+                    	</div>
+                	</div>
+            	</div>
+        	</div>
+     		{% for message in messages %}
+     	    <div class="card-body py-3" data-toggle="modal" data-target="#myModal_{{message.id}}">
+            	<div class="row no-gutters align-items-center">
+                	<div class="col"> <a href="javascript:void(0)" class="text-big" data-abc="true">{{message.message|u.truncate(20,'...',false)}}</a> <span class="badge badge-success align-text-bottom ml-1">new</span>
+                    <div class="text-muted small mt-1"> {{message.coordonnees|u.truncate(20,'...',false)}}</div>
+                	</div>
+                	<div class="d-none d-md-block col-4">
+                    	<div class="row no-gutters align-items-center">
+                        	
+                        		<div class="media col-8 align-items-center"> <img src="{{asset('images/avatar.png')}}" alt="" class="d-block ui-w-30 rounded-circle">
+                            		<div class="media-body flex-truncate ml-2">
+                                		<div class="line-height-1 text-truncate">{{ message.createdAt|ago }}</div> <a href="	javascript:void(0)" class="text-muted small text-truncate" data-abc="true">à {{ message.createdAt|date("h:i:s", "Europe/Paris") }}</a>
+                            		</div>
+                        		</div>
+                    		</div>
+                		</div>
+            		</div>
+        	</div>
+        <hr class="m-0">
+		<!-- The Modal -->
+		<div class="modal fade" id="myModal_{{message.id}}">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+
+		      <!-- Modal Header -->
+		      <div class="modal-header">
+		        <h4 class="modal-title">Message</h4>
+		        <button type="button" class="close" data-dismiss="modal">&times;</button>
+		      </div>
+
+		      <!-- Modal body -->
+		      <div class="modal-body">
+		      	<div class="mb-1">
+		      		<div class="text-muted">Coordonnées</div>
+		      		<div class="text-center">{{message.coordonnees}} </div>
+		      	</div>
+		        <div>
+		        	<div class="text-muted">Message</div>
+		        	<div class="text-center">{{message.message}} </div>
+		        </div>
+		      </div>
+		      <div class="modal-body">
+		      	Soumis {{ message.createdAt|ago }}
+		      </div>
+
+		      <!-- Modal footer -->
+		      <div class="modal-footer">
+		        <button type="submit" class="btn btn-success" data-dismiss="modal">Fermer</button>
+		      </div>
+
+		    </div>
+		  </div>
+		</div>
+     	{% endfor %}
+
+     </div>
+     </div>
+      <div class="d-flex justify-content-center mt-5">
+        {% do messages.setPageRange(2) %}
+        {{knp_pagination_render(messages,'/layouts/partials/_pagination.html.twig')}}
+                    
+    </div>
+     {% endif %}
+    
+         
+    
+                           
+
+{% endblock %}
