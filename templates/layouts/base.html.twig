@@ -24,6 +24,11 @@
 
                 <link rel="stylesheet" href="{{asset('css/owl.carousel.min.css')}}">
 
+
+                <link rel="stylesheet" href="{{asset('bundles/mercuryseriesflashy/css/flashy.css')}} ">
+
+               
+
                 
 
         {% endblock %}
@@ -38,7 +43,12 @@
             <script src="{{asset('build/app.js')}}"></script>
             <script src="{{asset('build/runtime.js')}}"></script>
             <!-- Start Slider Script -->
-         <script src="{{asset('assets/js/slick.min.js')}}"></script>
+            <script src="{{asset('assets/js/slick.min.js')}}"></script>
+
+            <script src="{{asset('bundles/mercuryseriesflashy/js/flashy.js')}} "></script>
+
+
+         
     
         
             <!-- End Script -->
@@ -52,5 +62,6 @@
         </main>
 
         {{ include('layouts/partials/_footer.html.twig') }}
+        {{ include('@MercurySeriesFlashy/flashy.html.twig') }}
     </body>
 </html>

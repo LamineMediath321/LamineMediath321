@@ -25,6 +25,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ path('app_tableau_bord') }}">
+                        <i class="fas fa-table"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
                     <a href="{{path('app_admin_user')}}">
                         <i class="fas fa-image"></i>
                         Profil
@@ -64,15 +70,10 @@
                 <li>
                     <a href="{{ path('app_messages') }}">
                         <i class="fas fa-envelope"></i>
-                        Messages
+                         Messages {% if app.user.messageNoLus()!=0%} <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark"><img src="{{asset('images/icons8-bell.gif')}}" width="17" height="20" /> {{app.user.messageNoLus()}} </span> {% endif %}
                     </a>
                 </li>
-                <li>
-                    <a href="{{ path('app_tableau_bord') }}">
-                        <i class="fas fa-paper-plane"></i>
-                        Dashboard
-                    </a>
-                </li>
+                
             </ul>
 
                  

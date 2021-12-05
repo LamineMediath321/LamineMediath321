@@ -50,14 +50,17 @@
                          <li class="nav-item">
                             <a class="btn btn-success btn-lg" href="{{path('app_login')}}">Vendre</a>
                         </li>
+                       
                     </ul>
                 </div>
                 <div class="navbar align-self-center d-flex">
                    {% if app.user %}
-                    <a class="nav-icon position-relative text-decoration-none" href="#">
-                        <i class="fa fa-fw fa-user text-dark mr-3"></i>
-                        <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">+99</span>
-                    </a>
+
+                    <a class="btn text-success" href="#" onclick="event.preventDefault();document.getElementById('js-logout-form').submit();"><small>Déconnexion</small></a>
+
+                    <form id="js-logout-form" action="{{path('app_logout')}}" method="POST" style="display: none"> 
+                        <input type="hidden" name="_csrf_token" value="{{csrf_token('logout')}}">
+                    </form>
                     {% endif %}
                 </div>
             </div>
@@ -67,10 +70,3 @@
     <!-- Close Header -->
    
     </div>
-    {% for type, messages in app.flashes %}
-            {% for message in messages %}
-                <div class="alert alert-{{ type }}" role="alert">
-                    {{ message }}
-                </div>
-            {% endfor %}
-{% endfor %}

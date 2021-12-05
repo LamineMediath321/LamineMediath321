@@ -66,6 +66,11 @@ class Store
      */
     private $adresseStore;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $visites;
+
     
 
 
@@ -172,8 +177,22 @@ class Store
         return $this;
     }
 
-    
+    public function getVisites(): ?int
+    {
+        return $this->visites;
+    }
 
+    public function setVisites(int $visites): self
+    {
+        $this->visites = $visites;
+
+        return $this;
+    }
+
+    public function __toString(): String
+    {
+        return $this->domaine;
+    }
     
 
 }

@@ -156,7 +156,7 @@
                                         <ul class="list-unstyled">
 
                                             <li><a class="btn btn-success text-white" href="https://api.whatsapp.com/send?phone={{article.user.phone}}&text=Je suis intéressé par votre annonce {{article.nomArticle}} du {{article.createdAt|date('d-m-y')}} sur le site ladiastore"><i class="fab fa-whatsapp"></i></a></li>
-                                            <li><a class="btn btn-success text-white mt-2" href=""><i class="far fa-heart"></i></a></li>
+                                           
                                             <li><a class="btn btn-success text-white mt-2" href="{{ path('app_article_details', {'id':article.id}) }}"><i class="far fa-eye"></i></a></li>
                                             
                                         </ul>
@@ -194,6 +194,19 @@
                                         <h6><i class="fas fa-map-marker-alt fa-fw"></i>Lieu de vente</span> {{ article.lieuVente}}</h6> 
                                         
                                     </div>
+                                     {% if app.user %}
+                                            <div class="text-center ">
+                                             <a href="{{path('app_aime_article',{'id':article.id})}} " class="js-like btn btn-link text-danger" style="text-decoration: none;">
+                                                {% if article.isLikedByUser(app.user) %}
+                                                    <i class="fas fa-heart"></i>
+                                                {% else %}
+                                                    <i class="far fa-heart"></i>
+                                                {% endif %}
+                                                    <span class="js-likes">{{article.likes | length}} </span>
+                                                    <span class="js-label">J'aime</span>
+                                            </a>
+                                            </div>
+                                        {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -219,7 +232,7 @@
     <!-- End Content -->
 
     <!-- Start Brands -->
-    <section class="bg-light py-5">
+    <!--section class="bg-light py-5">
         <div class="container my-4">
             <div class="row text-center py-3">
                 <div class="col-lg-6 m-auto">
@@ -231,21 +244,16 @@
                 </div>
                 <div class="col-lg-9 m-auto tempaltemo-carousel">
                     <div class="row d-flex flex-row">
-                        <!--Controls-->
                         <div class="col-1 align-self-center">
                             <a class="h1" href="#multi-item-example" role="button" data-bs-slide="prev">
                                 <i class="text-light fas fa-chevron-left"></i>
                             </a>
                         </div>
-                        <!--End Controls-->
-
-                        <!--Carousel Wrapper-->
+               
                         <div class="col">
                             <div class="carousel slide carousel-multi-item pt-2 pt-md-0" id="multi-item-example" data-bs-ride="carousel">
-                                <!--Slides-->
                                 <div class="carousel-inner product-links-wap" role="listbox">
 
-                                    <!--First slide-->
                                     <div class="carousel-item active">
                                         <div class="row">
                                             <div class="col-3 p-md-5">
@@ -262,9 +270,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!--End First slide-->
-
-                                    <!--Second slide-->
                                     <div class="carousel-item">
                                         <div class="row">
                                             <div class="col-3 p-md-5">
@@ -281,9 +286,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!--End Second slide-->
-
-                                    <!--Third slide-->
                                     <div class="carousel-item">
                                         <div class="row">
                                             <div class="col-3 p-md-5">
@@ -300,25 +302,24 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!--End Third slide-->
 
                                 </div>
-                                <!--End Slides-->
                             </div>
                         </div>
-                        <!--End Carousel Wrapper-->
 
-                        <!--Controls-->
                         <div class="col-1 align-self-center">
                             <a class="h1" href="#multi-item-example" role="button" data-bs-slide="next">
                                 <i class="text-light fas fa-chevron-right"></i>
                             </a>
                         </div>
-                        <!--End Controls-->
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </section-->
     <!--End Brands-->
+    {% block javascript%}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="{{ asset('assets/js/like/app.js') }}"></script>
+{% endblock %}
 {% endblock %}

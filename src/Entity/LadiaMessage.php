@@ -42,6 +42,11 @@ class LadiaMessage
      */
     private $estLu;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Article::class, inversedBy="messages")
+     */
+    private $article;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -94,4 +99,17 @@ class LadiaMessage
 
         return $this;
     }
-}
+
+    public function getArticle(): ?Article
+    {
+        return $this->article;
+    }
+
+    public function setArticle(?Article $article): self
+    {
+        $this->article = $article;
+
+        return $this;
+    }
+
+  }

@@ -120,12 +120,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface,\Seriali
      */
     private $ladiaMessages;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ArticleLike::class, mappedBy="user")
+     */
+    private $likes;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $aboutMe;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Commentaire::class, mappedBy="user")
+     */
+    private $commentaires;
+
     
 
     public function __construct()
     {
         $this->articles = new ArrayCollection();
         $this->ladiaMessages = new ArrayCollection();
+        $this->likes = new ArrayCollection();
+        $this->commentaires = new ArrayCollection();
     }
 
    
@@ -202,6 +219,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface,\Seriali
         return $this;
     }
 
+
+    /**
+    *Permet de savoir si le user a des messages
+    */
+    public function messageNoLus() :int
+    {
+        $i = 0;
+        foreach ($this->ladiaMessages as $message) {
+            if ($message->getDestinataire() === $this && $message->getEstLu()===false) $i++;
+        }
+        return $i;
+    }
 
 
     /**
@@ -463,6 +492,90 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface,\Seriali
            // set the owning side to null (unless already changed)
            if ($ladiaMessage->getDestinataire() === $this) {
                $ladiaMessage->setDestinataire(null);
+           }
+       }
+
+       return $this;
+   }
+
+   /**
+    * @return Collection|ArticleLike[]
+    */
+   public function getLikes(): Collection
+   {
+       return $this->likes;
+   }
+
+   public function addLike(ArticleLike $like): self
+   {
+       if (!$this->likes->contains($like)) {
+           $this->likes[] = $like;
+           $like->setUser($this);
+       }
+
+       return $this;
+   }
+
+   public function removeLike(ArticleLike $like): self
+   {
+       if ($this->likes->removeElement($like)) {
+           // set the owning side to null (unless already changed)
+           if ($like->getUser() === $this) {
+               $like->setUser(null);
+           }
+       }
+
+       return $this;
+   }
+
+   public function getAboutMe(): ?string
+   {
+       return $this->aboutMe;
+   }
+
+   public function setAboutMe(?string $aboutMe): self
+   {
+       $this->aboutMe = $aboutMe;
+
+       return $this;
+   }
+
+   /*
+   Permet de compter le nombre like
+    */
+   public function counLikesArticlesUser(): int 
+   {
+        $count = 0;
+        foreach ($this->articles as $article) {
+            $count += $article->getLikes()->count();
+        }
+        return $count;
+   }
+
+   /**
+    * @return Collection|Commentaire[]
+    */
+   public function getCommentaires(): Collection
+   {
+       return $this->commentaires;
+   }
+
+   public function addCommentaire(Commentaire $commentaire): self
+   {
+       if (!$this->commentaires->contains($commentaire)) {
+           $this->commentaires[] = $commentaire;
+           $commentaire->setUser($this);
+       }
+
+       return $this;
+   }
+
+   public function removeCommentaire(Commentaire $commentaire): self
+   {
+       if ($this->commentaires->removeElement($commentaire)) {
+           // set the owning side to null (unless already changed)
+           if ($commentaire->getUser() === $this) {
+               $commentaire->setUser(null);
            }
        }
 

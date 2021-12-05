@@ -6,25 +6,92 @@
 
 {% block body %}
 	{{ include('compte_user/user_layouts/partials/_sidebar.html.twig') }}
-	<h1 class="text-center display-4">Editer mon <span class="text-success">Store</span></h1>
+  
 	<div class="text-center mt-3">
 		<p>
          {{ store.nomStore }}.</br>
          {{store.description}}
      </p>
 	</div>
-	<div class="row">
-		<div class="col-6 mx-auto m-5">
-			{{ form_start(form)}}
-				{{form_row(form.domaine)}}
-				{{form_row(form.nomStore)}}
-				{{form_row(form.description)}}
-				{{form_row(form.adresseStore)}}
-				{{form_row(form.imageFile)}}
-				<input class="btn btn-success btn-block mt-5" type="submit" value="Mettez à jour" formnovalidate >
+	<div class="content">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card card-user shadow-lg p-3 m-1 bg-white rounded">
+              <div class="image">
+                <img class="card-img img-fluid" src="{{asset('images/background.jpg')| imagine_filter('squared_thumbnail_profil')}}" alt="...">
+              </div>
+              <div class="card-body">
+                <div class=" text-center">
+                
+                    <img src="{{(app.user.store.imageName ? vich_uploader_asset(app.user.store): asset('images/gravatar.png'))|imagine_filter('squared_thumbnail_min')}} " alt="..." class="rounded-circle shadow avatar " style="margin-top:-60px ">
 
-			{{ form_end(form) }}
-			
-		</div>
-	</div>
+                    <h5 class="title mt-3">{{app.user.store.nomStore}}</h5>
+                
+                  <p class="text-info">
+                    {{ app.user.store.description }}
+                  </p>
+                </div>
+                <p class="description text-center mt-2">	
+                	<i class="fas fa-map-marker-alt fa-fw"></i><small>{{ app.user.store.adresseStore }}</small>
+                </p>
+              </div>
+        
+            </div>
+      
+          </div>
+          <div class="col-md-8">
+            <div class="card card-user shadow-lg p-3 m-1 bg-white rounded">
+              <div class="card-header">
+                <h5 class="card-title">Editer mon Store</h5>
+              </div>
+              <div class="card-body">
+                {{ form_start(form)}}
+         
+                  <div class="row">
+                    <div class="col-md-6 pr-1">
+                      <div class="form-group">
+                       {{form_row(form.domaine)}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                  	<div class="col-md-6 pr-1">
+                      <div class="form-group">
+                       {{form_row(form.nomStore)}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                       {{form_row(form.description)}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12 pr-1">
+                      <div class="form-group">
+                        {{form_row(form.adresseStore)}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                  	<div class="col-md-8 px-1">
+                       <div class="form-group">
+                        {{form_row(form.imageFile)}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="update ml-auto mr-auto">
+                      <input class="btn btn-primary btn-block" type="submit" value="Mettez à jour" formnovalidate>
+                    </div>
+                  </div>
+                {{ form_end(form) }}
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 {% endblock %}

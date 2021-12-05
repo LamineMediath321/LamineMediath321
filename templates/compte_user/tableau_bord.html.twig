@@ -6,15 +6,227 @@
     
 
      {{ include('compte_user/user_layouts/partials/_sidebar.html.twig') }}
-     <div class="col-6 mx-auto">
-        <div class="row">
-            <div class="col-6 alert-info">
-                <span class="display-3">44 </span>utilisateurs
-            </div>
-            <div class="col-6 alert-success">
-                <span class="display-3">44 </span>utilisateurs
-            </div>
-        </div>
+     <div class="container">
+        <h1 class="text-center text-info">Mes Statistiques</h1>
+        <canvas id="categories" width="200" height="100"></canvas>
     </div>
 
+    <div class="content">
+        <div class="row">
+          <div class="col-lg-4 col-12">
+            <div class="card card-stats">
+              <div class="card-body text-info">
+                <div class="row">
+                  <div class="col-5 col-md-4 ">
+                    <div class="icon-big text-center icon-warning" >
+                      <img src="{{asset('images/icons8-eye.gif')}}" width="50" height="60" />
+                    </div>
+                  </div>
+                  <div class="col-7 col-md-8 ">
+                    <div class="numbers">
+                      <p class="card-category text-info">Vues </p>
+                      <p class="card-title text-info">{{nombreVues }} <i class="fas fa-eye"></i><p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-12">
+            <div class="card card-stats">
+              <div class="card-body ">
+                <div class="row">
+                  <div class="col-5 col-md-4">
+                    <div class="icon-big text-center icon-warning">
+                      <img src="https://img.icons8.com/doodle/48/000000/coins--v1.png"/>
+                    </div>
+                  </div>
+                  <div class="col-7 col-md-8 ">
+                    <div class="numbers text-primary">
+                      <p class="card-category text-warning">Revenue</p>
+                      <p class="card-title text-warning"> {{app.user.banque.pieces}} <i class="fas fa-coins"></i> <p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+             
+            </div>
+          </div>
+          
+          <div class="col-lg-4 col-12">
+            <div class="card card-stats">
+              <div class="card-body ">
+                <div class="row">
+                  <div class="col-5 col-md-4">
+                    <div class="icon-big text-center icon-warning">
+                      <img src="{{asset('images/icons8-heart.gif')}}" width="50" height="60" />
+                    </div>
+                  </div>
+                  <div class="col-7 col-md-8">
+                    <div class="numbers">
+                      <p class="card-category text-danger">Aimes</p>
+                      <p class="card-title text-danger">{{ app.user.counLikesArticlesUser() }} <i class="fas fa-heart"></i> <p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card ">
+              <div class="card-header ">
+                <h5 class="card-title">Mes annonces</h5>
+              </div>
+              <div class="card-body ">
+                <canvas id=chartAnnonces width="400" height="100"></canvas>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        
+        <div class="row mt-3">
+          <div class="col-md-4">
+            <div class="card ">
+              <div class="card-header ">
+                <h5 class="card-title">Mes 5 annonces les plus populaires </h5>
+              </div>
+              <div class="card-body ">
+                <canvas id="chartStore"></canvas>
+              </div>
+              <div class="card-footer ">
+                <div class="legend">
+                  <i class="fa fa-circle text-primary"></i> Opened
+                  <i class="fa fa-circle text-warning"></i> Read
+                  <i class="fa fa-circle text-danger"></i> Deleted
+                  <i class="fa fa-circle text-gray"></i> Unopened
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="card card-chart">
+              <div class="card-header">
+                <h5 class="card-title">Le nombre de vues de mes annonces par mois</h5>
+              </div>
+              <div class="card-body">
+                <canvas id="speedChart" width="400" height="100"></canvas>
+              </div>
+              <div class="card-footer">
+                <div class="chart-legend">
+                  <i class="fa fa-circle text-success"></i> Vues/mois
+                </div>
+                <hr />
+              </div>
+            </div>
+          </div>
+        </div>
+     
+      {% if app.user.store %}
+       <div class="row">
+          <div class="col-md-12">
+            <div class="card ">
+              <div class="card-header ">
+                <h5 class="card-title">nombre de visites du store par mois</h5>
+              </div>
+              <div class="card-body ">
+                <canvas id="chartVueStore" width="400" height="100"></canvas>
+              </div>
+              <div class="card-footer ">
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+
+ <!-- End Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js" integrity="sha512-GMGzUEevhWh8Tc/njS0bDpwgxdCJLQBWG3Z2Ct+JGOpVnEmjvNx6ts4v6A2XJf1HOrtOsfhv3hBKpK9kE5z8AQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        let categories = document.querySelector("#chartAnnonces");
+        let categGraph = new Chart(categories,{
+            type: "line",
+            data: {
+                labels: {{mois|raw}} ,
+                datasets: [{
+                label: 'annonces crées par mois',
+                borderColor: "#6bd098",
+                backgroundColor: "#6bd098",
+                pointRadius: 3,
+                pointHoverRadius: 0,
+                borderWidth: 3,
+                data: {{ nb_articles|raw }}
+            },
+          {
+            label: 'aimes par mois',
+            borderColor: "yellow",
+            backgroundColor: "yellow",
+            pointRadius: 3,
+            pointHoverRadius: 0,
+            borderWidth: 3,
+            data: {{ likes|raw }}
+          }
+        ]
+      }
+        })
+
+
+        let email = document.querySelector("#chartStore");
+        let emailGraph = new Chart(email,{
+            type: "pie",
+            data: {
+        labels: {{ mois|raw }} ,
+        datasets: [{
+            borderColor: "#6bd098",
+            backgroundColor: ["#6bd098","#fcc468"],
+            pointRadius: 0,
+            pointHoverRadius: 0,
+            borderWidth: 3,
+            data: {{ vues|raw }}
+          }
+        ]
+      }
+      })
+
+        let speeds = document.querySelector("#speedChart");
+        let speedGraph = new Chart(speeds,{
+            type: "bar",
+            data: {
+        labels: {{mois|raw}} ,
+        datasets: [{
+            label: 'vues par mois',
+            borderColor: "#6bd098",
+            backgroundColor: "#6bd098",
+            pointRadius: 0,
+            pointHoverRadius: 0,
+            borderWidth: 3,
+            data: {{ vues|raw }}
+          }
+        ]
+      }
+        })
+
+        let storeVues = document.querySelector("#chartVueStore");
+        let storeVueGraph = new Chart(storeVues,{
+            type: "line",
+            data: {
+        labels: {{ mois|raw }} ,
+        datasets: [{
+            label: 'visites',
+            borderColor: "red",
+            backgroundColor:"red",
+            pointRadius: 1,
+            pointHoverRadius: 1,
+            borderWidth: 3,
+            data: {{ storeVues|raw }}
+          }
+        ]
+      }
+      })
+
+        
+    </script>
 {% endblock %}

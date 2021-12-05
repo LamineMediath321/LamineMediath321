@@ -17,6 +17,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
+use MercurySeries\FlashyBundle\FlashyNotifier;
 
 /**
  * @Route("/reset-password")
@@ -37,10 +38,10 @@ class ResetPasswordController extends AbstractController
      *
      * @Route("", name="app_forgot_password_request")
      */
-    public function request(Request $request, MailerInterface $mailer): Response
+    public function request(Request $request, MailerInterface $mailer,FlashyNotifier $flashy): Response
     {
         if ($this->getUser()) {
-            $this->addFlash('success', 'Vous vous êtes dèjà connecté.');
+            $flashy->success('Vous vous êtes dèjà connecté.', 'Vous vous êtes dèjà connecté.');
              return $this->redirectToRoute('app_admin_user');
          }
         $form = $this->createForm(ResetPasswordRequestFormType::class);

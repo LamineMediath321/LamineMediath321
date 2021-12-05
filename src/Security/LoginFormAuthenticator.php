@@ -49,7 +49,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
             $request->getSession()->getFlashBag()->add('success','Connecté avec success');
-            return new RedirectResponse($this->urlGenerator->generate('app_admin_user'));
+            return new RedirectResponse($this->urlGenerator->generate('app_tableau_bord'));
 
     }
 

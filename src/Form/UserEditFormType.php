@@ -36,6 +36,9 @@ class UserEditFormType extends AbstractType
                 'label' => 'Téléphone'
             ])
             ->add('adresse')
+            ->add('aboutMe',TextType::class,[
+                'label' => 'A propos de moi'
+            ])
         ;
     }
 

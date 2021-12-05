@@ -20,3 +20,6 @@ doctrine:
         dql: 
             string_functions:
                 MATCH_AGAINST: App\Extensions\Doctrine\MatchAgainst
+            datetime_functions:
+                extract: DoctrineExtensions\Query\Mysql\Extract
+                monthname: DoctrineExtensions\Query\Mysql\MonthName

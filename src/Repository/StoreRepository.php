@@ -31,6 +31,24 @@ class StoreRepository extends ServiceEntityRepository
           return $query->getQuery()->getResult();
 
     }
+
+    
+    
+    /**
+     * Permet de retouner le nombre de visites du store par mois par user d 
+     */
+    public function findByVueStoreByUser($user)
+    {
+        $query = $this->createQueryBuilder('s');
+            $query->select("s.visites as VISITES, MONTHNAME(s.createdAt) AS MOIS ");
+            $query->where('s.user = :id');
+            $query->setParameter('id',$user);
+            $query->groupBy('MOIS');
+            $query->orderBy('s.createdAt', 'ASC');
+        
+        return $query->getQuery()->getResult();
+    }
+
     /*
     public function findOneBySomeField($value): ?Store
     {

@@ -3,13 +3,13 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-{% for type, messages in app.flashes %}
+{#% for type, messages in app.flashes %}
             {% for message in messages %}
                 <div class="alert alert-{{ type }}" role="alert">
                     {{ message }}
                 </div>
             {% endfor %}
-{% endfor %}
+{% endfor %#}
     <div class="">
         <div class="col-md-6 mx-auto m-5">
             <h1 class="text-center mt-5 mb-3">Veillez vous connecter</h1>

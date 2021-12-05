@@ -32,13 +32,12 @@
                                         <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                                         <ul class="list-unstyled">
                                             <li><a class="btn btn-success text-white" href="https://api.whatsapp.com/send?phone={{article.user.phone}}&text=Je suis intéressé par votre annonce {{article.nomArticle}} du {{article.createdAt|date('d-m-y')}} sur le site ladiastore"><i class="fab fa-whatsapp"></i></a></li>
-                                            <li><a class="btn btn-success text-white mt-2" href="{{path('app_aime_article',{'id':article.id})}} "><i class="far fa-heart"></i></a></li>
                                             <li><a class="btn btn-success text-white mt-2" href="{{ path('app_article_details', {'id':article.id}) }}"><i class="far fa-eye"></i></a></li>
                                         </ul>
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <a href="{{ path('app_article_details', {'id':article.id}) }}" class="h3 text-decoration-none">{{article.nomArticle}}</a>
+                                            <a href="{{ path('app_article_details', {'id':article.id}) }}" class="h3 text-decoration-none">{{article.nomArticle}}</a>
                                         <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
                                              <li><h6>{{ article.lieuVente|u.truncate(10,'...',false) }}</h6> </li>
                                             <li class="pt-2">
@@ -60,7 +59,19 @@
                                             </li>
                                         </ul>
                                         <p class="text-center mb-0">{{ article.price }}</p>
-                                        
+                                        {% if app.user %}
+                                            <div class="text-center ">
+                                             <a href="{{path('app_aime_article',{'id':article.id})}} " class="js-like btn btn-link text-danger" style="text-decoration: none;">
+                                                {% if article.isLikedByUser(app.user) %}
+                                                    <i class="fas fa-heart"></i>
+                                                {% else %}
+                                                    <i class="far fa-heart"></i>
+                                                {% endif %}
+                                                    <span class="js-likes">{{article.likes | length}} </span>
+                                                    <span class="js-label">J'aime</span>
+                                            </a>
+                                            </div>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -93,3 +104,7 @@
       <script src="{{ asset('assets/js/texte/library.js') }}"></script>
       <script src="{{ asset('assets/js/texte/app.js') }}"></script>
 </section>
+{% block javascript%}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="{{ asset('assets/js/like/app.js') }}"></script>
+{% endblock %}

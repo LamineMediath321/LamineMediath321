@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 use App\Entity\Traits\Timestampable;
+use App\Entity\User;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
@@ -78,6 +79,27 @@ class Article
      */
     private $estPaye;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ArticleLike::class, mappedBy="article")
+     */
+    private $likes;
+
+    /**
+     * @ORM\OneToMany(targetEntity=LadiaMessage::class, mappedBy="article")
+     */
+    private $messages;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $nbVues;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Commentaire::class, mappedBy="article")
+     */
+    private $commentaires;
+
+    
 
 
 
@@ -85,6 +107,9 @@ class Article
     public function __construct()
     {
         $this->imageArticles = new ArrayCollection();
+        $this->likes = new ArrayCollection();
+        $this->messages = new ArrayCollection();
+        $this->commentaires = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -230,8 +255,119 @@ class Article
         return $this;
     }
 
+    /**
+     * @return Collection|ArticleLike[]
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
 
+    public function addLike(ArticleLike $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes[] = $like;
+            $like->setArticle($this);
+        }
 
+        return $this;
+    }
+
+    public function removeLike(ArticleLike $like): self
+    {
+        if ($this->likes->removeElement($like)) {
+            // set the owning side to null (unless already changed)
+            if ($like->getArticle() === $this) {
+                $like->setArticle(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+    *Permet de savoir si cette article est like par un user
+    */
+    public function isLikedByUser(?User $user) :bool
+    {
+        foreach ($this->likes as $like) {
+            if ($like->getUser() === $user) return true;
+        }
+        
+        return false;
+    }
+
+    public function getNbVues(): ?int
+    {
+        return $this->nbVues;
+    }
+
+    public function setNbVues(int $nbVues): self
+    {
+        $this->nbVues = $nbVues;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LadiaMessage[]
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(LadiaMessage $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+            $message->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(LadiaMessage $message): self
+    {
+        if ($this->messages->removeElement($message)) {
+            // set the owning side to null (unless already changed)
+            if ($message->getArticle() === $this) {
+                $message->setArticle(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Commentaire[]
+     */
+    public function getCommentaires(): Collection
+    {
+        return $this->commentaires;
+    }
+
+    public function addCommentaire(Commentaire $commentaire): self
+    {
+        if (!$this->commentaires->contains($commentaire)) {
+            $this->commentaires[] = $commentaire;
+            $commentaire->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentaire(Commentaire $commentaire): self
+    {
+        if ($this->commentaires->removeElement($commentaire)) {
+            // set the owning side to null (unless already changed)
+            if ($commentaire->getArticle() === $this) {
+                $commentaire->setArticle(null);
+            }
+        }
+
+        return $this;
+    }
 
 
     

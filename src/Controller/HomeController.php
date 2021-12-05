@@ -22,6 +22,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use App\Entity\LadiaMessage;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use App\Repository\ArticleLikeRepository;
+use App\Entity\ArticleLike;
+use MercurySeries\FlashyBundle\FlashyNotifier;
 
 
 class HomeController extends AbstractController
@@ -107,7 +110,7 @@ class HomeController extends AbstractController
     /**
     *@Route("/home/{id<[0-9]+>}/edit", name="app_carousel_edit",methods={"GET","POST","PUT"})
     */
-    public function edit(Request $request,Carousel $carousel,EntityManagerInterface $em):Response
+    public function edit(Request $request,Carousel $carousel,EntityManagerInterface $em,FlashyNotifier $flashy):Response
     {
         $form=$this->createForm(CarouselType::class,$carousel,[
             ]);
@@ -118,7 +121,7 @@ class HomeController extends AbstractController
 
             $em->flush();
 
-            $this->addFlash('success','carousel Successfully updated !');
+            $flashy->success('carousel Successfully updated !','carousel Successfully updated !');
 
 
             return $this->redirectToRoute('app_home');
@@ -151,9 +154,34 @@ class HomeController extends AbstractController
      /**
     *@Route("/home/{id<[0-9]+>}/article_details", name="app_article_details")
     */
-    public function article_details(Article $article,ArticleRepository $articleRepo,EntityManagerInterface $em,Request $request):Response
+    public function article_details(Article $article,ArticleRepository $articleRepo,EntityManagerInterface $em,Request $request,ArticleLikeRepository $likeRepo):Response
     {
 
+        /*On gere le nombre de vues*/
+        $nbVues = $article->getNbVues();
+        $nbVues++;
+        $article->setNbVues($nbVues);
+        /*On gere le nombre d'etoiles*/
+        $nbLikes = $likeRepo->count([
+            'article' => $article
+        ]);
+        if (($nbVues>=5 && $nbVues<=10)||($nbLikes>2 && $nbLikes<=5)) {
+            $article->setEtoiles(2);   
+        }
+        if (($nbVues>10 && $nbVues<=15)||($nbLikes>5 && $nbLikes<=10)||($nbVues>=5 && $nbLikes==3)) {
+            $article->setEtoiles(3);   
+        }
+        if (($nbVues>15 && $nbVues<=20)||($nbLikes>10 && $nbLikes<=15)||($nbVues>5 && $nbLikes==5)) {
+            $article->setEtoiles(4);   
+        }
+        if (($nbVues>20)||($nbLikes>15)||($nbVues>10 && $nbLikes>=10)) {
+            $article->setEtoiles(5);   
+        }
+       
+
+        /*Fin*/
+        $em->flush();
+        /*Fin pour les vues*/
         $imageArticles=$article->getImageArticles();
 
         //On recupere les articles similaires
@@ -191,9 +219,15 @@ class HomeController extends AbstractController
             $message->setMessage($form->get('Message')->getData());
             $message->setCoordonnees($form->get('Coordonnees')->getData());
             $message->setEstLu(false);
+            $message->setArticle($article);
             $vendeur->addLadiaMessage($message);
             $em->persist($message);
             $em->flush();
+
+            $taille = 0;
+            foreach ($imageArticles as $image) {
+                $taille++;
+            }
 
 
             $this->addFlash('info' , 'Vous avez envoyé un message à '.$vendeur->getFirstName());
@@ -202,17 +236,24 @@ class HomeController extends AbstractController
             'imageArticles' => $imageArticles,
             'vendeur' => $vendeur,
             'store' => $store,
+            'taille' => $taille,
             'similaires' => $similaires,
             'form' => $form->createView()
         ]);
             
         }
+        $taille = 0;
+        foreach ($imageArticles as $image) {
+            $taille++;
+        }
+
         
         return $this->render('home/article_details.html.twig',[
             'article' => $article,
             'imageArticles' => $imageArticles,
             'vendeur' => $vendeur,
             'store' => $store,
+            'taille' => $taille,
             'similaires' => $similaires,
             'form' => $form->createView()
         ]);
@@ -220,31 +261,47 @@ class HomeController extends AbstractController
     }
 
 /**
-*@Route("/home/aime/{id<[0-9]+>}",name="app_aime_article")
+*@Route("/home/like/{id<[0-9]+>}",name="app_aime_article")
 */
-public function article_aime(Article $article,EntityManagerInterface $em):Response
+public function article_like(Article $article,EntityManagerInterface $em,ArticleLikeRepository $likeRepo,FlashyNotifier $flashy):Response
 {
-    $nb = $article->getNbAimes();
-    $nb++;
-    $article->setNbAimes($nb);
-    if ($nb>=1 && $nb<5) {
-        $article->setEtoiles(1);
+
+    $user = $this->getUser();
+
+    if (!$user) {
+        return $this->json([
+            'code' => 403, 
+            'message' => 'Unauthorized'
+        ], 403);
     }
-    if ($nb>=5 && $nb<10) {
-        $article->setEtoiles(2);
+    if ($article->isLikedByUser($user)) {
+        $like = $likeRepo->findOneBy([
+            'article' => $article,
+            'user' => $user
+        ]);
+        $em->remove($like);
+        $em->flush();
+
+        return $this->json([
+            'code' => 200, 
+            'message' => 'Like bien supprimé',
+            'likes' => $likeRepo->count(['article' => $article])
+        ], 200);
     }
-    if ($nb>=10 && $nb<15) {
-        $article->setEtoiles(3);
-    }
-    if ($nb>=15 && $nb<20) {
-        $article->setEtoiles(4);
-    }
-    if ($nb>=20) {
-        $article->setEtoiles(5);
-    }
+
+    $like = new ArticleLike();
+    $like->setArticle($article);
+    $like->setUser($user);
+
+    $em->persist($like);
     $em->flush();
 
-    return $this->redirectToRoute('app_home');
+    return $this->json([
+        'code' => 200, 
+        'message' => 'like bien ajouté',
+        'likes' => $likeRepo->count(['article' => $article])
+        ], 200);
+
 
 
 }
@@ -369,9 +426,14 @@ public function article_aime(Article $article,EntityManagerInterface $em):Respon
      /**
     *@Route("/home/{id<[0-9]+>}/voir_store", name="app_voir_store")
     */
-    public function voir_store(Store $store,UserRepository $userRepo,ArticleRepository $articleRepo,SousCategorieRepository $sousCatRepo,PaginatorInterface $paginator,Request $request):Response
+    public function voir_store(Store $store,UserRepository $userRepo,ArticleRepository $articleRepo,SousCategorieRepository $sousCatRepo,PaginatorInterface $paginator,Request $request,EntityManagerInterface $em):Response
     {
-
+        /*On gere les visites*/
+        $visites = $store->getVisites();
+        $visites++;
+        $store->setVisites($visites);
+        $em->flush();
+        /*Fin*/
         //On recupere le proprietaire du store
         $storien=$userRepo->findOneBy([
             'id' => $store->getUser()

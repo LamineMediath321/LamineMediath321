@@ -19,8 +19,10 @@
                  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
 
                  <!-- Slick -->
-                 <link rel="stylesheet" type="text/css" href="assets/css/slick.min.css">
-                <link rel="stylesheet" type="text/css" href="assets/css/slick-theme.css">
+                 <link rel="stylesheet" type="text/css" href="{{asset('assets/css/slick.min.css')}}">
+                <link rel="stylesheet" type="text/css" href="{{asset('assets/css/slick-theme.css')}}">
+
+                <link rel="stylesheet" href="{{ asset('bundles/mercuryseriesflashy/css/flashy.css') }}">
 
         {% endblock %}
 
@@ -44,7 +46,8 @@
             </script>
             <script src="{{ asset('js/script.js') }}">
             </script>
-            <script type="text/javascript" src="{{ asset('assets/js/img.js') }}" defer></script>
+            <script src="{{ asset('assets/js/img.js') }}" defer></script>
+            <script src="{{ asset('bundles/mercuryseriesflashy/js/flashy.js') }}"></script>
 
             <script type="text/javascript">
                 $(document).ready(function () {
@@ -54,16 +57,16 @@
                 });
             </script>
 
-            <!-- End Script -->
+
         {% endblock %}
     </head>
     <body>
-        {{ include('compte_user/user_layouts/partials/_flash_message.html.twig') }}
+        {#{ include('compte_user/user_layouts/partials/_flash_message.html.twig') }#}
     
         <main role="main">  
              {% block body %}{% endblock %}
         </main>
-
-
+            {{ include('@MercurySeriesFlashy/flashy.html.twig') }}
        </body>
+
 </html>

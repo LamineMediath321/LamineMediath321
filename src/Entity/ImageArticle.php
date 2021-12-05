@@ -115,4 +115,5 @@ class ImageArticle
     {
         return $this->imageFile;
     }
+
 }

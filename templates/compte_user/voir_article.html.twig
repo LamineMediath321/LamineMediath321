@@ -23,10 +23,10 @@
             <div class="row">
                 {% for article in articles %}
                     <div class="col-12 col-md-4 mb-4">
-                        <div class="card h-100">
+                        <div class="card h-100 ">
                             <a href="{{ path('app_article_show',{'id':article.id}) }}">
                                 {% if article.imageArticles %}
-                                    <div class="mw-100 rounded-top overflow-hidden">
+                                    <div class="mw-100 rounded-circle overflow-hidden">
                                          <img src="{{asset('/uploads/articles/'~article.imageArticles[0].imageName) | imagine_filter('squared_thumbnail_medium')}}" alt="{{article.nomArticle}}" class="w-100 rounded-top" id="product-detail">
                                    </div>
                                 {% endif %}
@@ -44,12 +44,17 @@
                                     </li>
                                     <li class="text-muted text-right">{{article.price}}</li>
                                 </ul>
-                                <a href="shop-single.html" class="h2 text-decoration-none text-dark">{{article.nomArticle}} </a>
+                                <a href="{{ path('app_article_show',{'id':article.id}) }}" class="h2 text-decoration-none text-dark">{{article.nomArticle}} </a>
                                 <p class="card-text">
                                     {{article.description}}
                                 </p>
                                 <p class="text-muted"> {{article.choixVisbilite}} </p>
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-danger">{{article.likes|length}} <i class="fa fa-heart"></i></span>
+                                    <span class="text-info">{{article.nbVues}} <i class="fa fa-eye"></i></span>
+                                </div>
                             </div>
+                            
                         </div>
                     </div>
 

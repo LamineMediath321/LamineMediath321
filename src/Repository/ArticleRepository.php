@@ -7,6 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\SousCategorie;
 
+
 /**
  * @method Article|null find($id, $lockMode = null, $lockVersion = null)
  * @method Article|null findOneBy(array $criteria, array $orderBy = null)
@@ -40,10 +41,11 @@ class ArticleRepository extends ServiceEntityRepository
     {
         $query=$this->createQueryBuilder('a');
             $query->where('a.estPaye = true');
-            if ($mots!=null) {
+            if ($mots != null) {
                 $query->andWhere('MATCH_AGAINST(a.nomArticle,a.description) AGAINST(:mots boolean)>0')
                     ->setParameter('mots',$mots);
             }
+           
         return $query->getQuery()->getResult();
     }
 
@@ -73,6 +75,51 @@ class ArticleRepository extends ServiceEntityRepository
         return $query->getQuery()->getResult();
 
     }
+    /**
+     * Permet de retouner le nombre d'article creer par mois par user
+     */
+    public function findByArticlesByUser($user)
+    {
+        $query = $this->createQueryBuilder('a');
+            $query->select("COUNT(a) as COUNT, MONTHNAME(a.createdAt) AS MOIS");
+            $query->where('a.user = :id');
+            $query->setParameter('id',$user);
+            $query->groupBy('MOIS');
+            $query->orderBy('a.createdAt', 'ASC');
+        
+        return $query->getQuery()->getResult();
+    }
+
+    /**
+     * Permet de retouner le nombre de vues par mois par user
+     */
+    public function findByVuesByUser($user)
+    {
+        $query = $this->createQueryBuilder('a');
+            $query->select("SUM(a.nbVues) as VUES, MONTHNAME(a.createdAt) AS MOIS ");
+            $query->where('a.user = :id');
+            $query->setParameter('id',$user);
+            $query->groupBy('MOIS');
+            $query->orderBy('a.createdAt', 'ASC');
+        
+        return $query->getQuery()->getResult();
+    }
+    /*
+    Permet de retourner le nolbre de vues des annonces existant
+     */
+
+    public function findByVuesTotalByUser($user)
+    {
+        $query = $this->createQueryBuilder('a');
+            $query->select("SUM(a.nbVues) as VUES");
+            $query->where('a.user = :id');
+            $query->setParameter('id',$user);
+            $query->orderBy('a.createdAt', 'ASC');
+        
+        return $query->getQuery()->getResult();
+    }
+
+    
 
 
 }

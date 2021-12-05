@@ -47,9 +47,11 @@ class RegistrationController extends AbstractController
                 )
             );
 
+            $user->setAboutMe("Hi 👋 j'utilise ladiastore");
             //On set les le compte A default
             $bank->setPieces(0);
             $bank->setUser($user); 
+
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($bank);

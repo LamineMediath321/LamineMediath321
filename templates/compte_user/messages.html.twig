@@ -31,7 +31,18 @@
      		{% for message in messages %}
      	    <div class="card-body py-3" data-toggle="modal" data-target="#myModal_{{message.id}}">
             	<div class="row no-gutters align-items-center">
-                	<div class="col"> <a href="javascript:void(0)" class="text-big" data-abc="true">{{message.message|u.truncate(20,'...',false)}}</a> <span class="badge badge-success align-text-bottom ml-1">new</span>
+                	<div class="col"> 
+                    <a href="{{ path('app_messages_vue',{'id':message.id}) }} " class="js-message" data-abc="true">{{message.message|u.truncate(20,'...',false)}}
+                        {% if message.estLu %}
+                            <span class="badge badge-info align-text-bottom ml-1">
+                                lu
+                            </span>
+                        {% else %}
+                             <span class="js-message badge badge-danger align-text-bottom ml-1">
+                                new
+                            </span>
+                        {% endif %}
+                        </a> 
                     <div class="text-muted small mt-1"> {{message.coordonnees|u.truncate(20,'...',false)}}</div>
                 	</div>
                 	<div class="d-none d-md-block col-4">
@@ -60,18 +71,31 @@
 
 		      <!-- Modal body -->
 		      <div class="modal-body">
-		      	<div class="mb-1">
-		      		<div class="text-muted">Coordonnées</div>
+		      	<div class="mb-1 badge-info">
+		      		<div>Coordonnées</div>
 		      		<div class="text-center">{{message.coordonnees}} </div>
 		      	</div>
-		        <div>
-		        	<div class="text-muted">Message</div>
+		        <div class="bg-warning">
+		        	<div>Message</div>
 		        	<div class="text-center">{{message.message}} </div>
 		        </div>
 		      </div>
-		      <div class="modal-body">
-		      	Soumis {{ message.createdAt|ago }}
-		      </div>
+               <div class="row d-flex justify-content-between">
+                    <div class="col-4 ml-3">
+                        {% if message.article %}
+                            <img class="card-img img-fluid"  src="{{asset('/uploads/articles/'~message.article.imageArticles[0].imageName)| imagine_filter('squared_thumbnail_small')}}">
+                    </div>
+                    <div class="modal-body col-4">
+                         {{ message.article.nomArticle }}
+                         <div>Publié le {{message.article.createdAt|date('d-m-y')}} </div>
+                    </div>
+
+                    {% endif %}
+               </div>
+                <div class="modal-body col-4">
+                         Soumis {{ message.createdAt|ago }}
+                    </div>
+		      
 
 		      <!-- Modal footer -->
 		      <div class="modal-footer">
@@ -93,7 +117,8 @@
      {% endif %}
     
          
-    
-                           
-
+{% block javascript%}
+    <script src="{{ asset('assets/js/like/axios.js')}} "></script>
+    <script src="{{ asset('assets/js/like/message.js') }}"></script>
+{% endblock %}
 {% endblock %}
